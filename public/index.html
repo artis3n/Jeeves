@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" rel="stylesheet" />
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/controller.js"></script>
+
+
+
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+        <h1> <span id="title">TITLE GOES HERE</span>
+
+        </h1>
+    </div>
+
+   <div id="welcome-view" class="view">
+	<p> This shopping app is a demo for the CS152aj class on Web and Mobile programming using Javascript.
+		</p>
+	<button onclick="shoppingApp.showView('shoppingList')">View your Shopping List now </button>
+    <button onclick="shoppingApp.showView('about')">Go to the about page</button>
+
+   <div id="about-view" class="view">
+    <p>This is the about page</p>
+    <button onclick="shoppingApp.showView('welcome')">Go back to Welcome Page</button>
+</div>
+
+
+   <div id="shoppingList-view" class="view">
+	
+	<div class="input-group">
+		    <span class="input-group-btn" >
+			     <button id="refreshBtn" class="btn btn-default" onclick="shoppingApp.reloadModel()">
+				     Refresh</button>
+			</span>
+			<span> ...</span>
+			<span class="input-group-btn" >
+	   			<button class="btn btn-default" onclick="shoppingApp.showView('welcome')">
+					Home </button>
+			</span>
+	</div>
+
+	<div class="panel">
+		<div id="totalprice"> TOTAL PRICE GOES HERE </div>
+	</div>
+
+    <div class="panel">
+
+            <input type="text" class="form-control" id="newItemName" placeholder="Enter new items here" onchange="shoppingApp.addItem(this)"/>
+
+	
+
+
+        </div>
+
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Item Price</th>
+                    <th>Quantity</th>
+					<th>Total Price</th>
+					<th>Purchased</th>
+					<th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="itemTableBody">
+          
+            </tbody>
+        </table>
+
+        <div class="checkbox-inline">
+            <label><input id="showCompleteCheckbox" type="checkbox" onclick="shoppingApp.refreshView()"> 
+	            Show Purchased Items</label>
+        </div>
+
+        <div class="checkbox-inline">
+            <label><input id="cutOffText" type="text"  onchange="shoppingApp.refreshView()"> 
+	            Cutoff</label>
+        </div>
+    </div>
+
+  </div>
+ </div>
+</body>
+<script>
+// this is the code that actually starts the JavaScript application!!
+// when the document has been fully loaded, all the shoppingApp.start() method
+$(document).ready(shoppingApp.start());
+</script>
+</html>
