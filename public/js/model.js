@@ -7,7 +7,7 @@
 **/
 
 function ShoppingList() {
-    this.user = "Tim";
+    this.user = "Jeeves";
     this.cutoff = 0;
     this.items = [];
 

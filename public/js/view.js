@@ -16,7 +16,7 @@ var shoppingView = (function($){
     
     // updates the title with the user's name
     function updateTitle(user){
-        var newTitle = user + "'s Super Shopping List";
+        var newTitle = user + ": Your Personal Morning Assistant";
         $("#title").html(newTitle);
     }
     
