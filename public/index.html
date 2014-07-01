@@ -31,6 +31,9 @@
     <button ng-click="changeView('favorites')">View/Set Favorites</button>
     <button ng-click="changeView('login')">Login/Sign Up</button>
     <button ng-click="changeView('voice')">Say Something</button>
+    <button ng-click="changeView('settings')">Settings</button>
+    <button ng-click="changeView('profile')">Profile</button>
+    <button ng-click="changeView('contact')">Contact</button>
     </div>
 
    <div id="about" class="view" ng-hide="jeeves.view != 'about'">
@@ -38,14 +41,26 @@
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
     </div>
     <div id="settings" class="view" ng-hide="jeeves.view != 'settings' ">
-      
+      <div>
+        <h3>Settings</h3>
+        Settings will go here
+        <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+      </div>
     </div>
     <div id="contact" class="view" ng-hide="jeeves.view != 'contact'">
-
+      <div>
+        <h3>Contact Us</h3>
+        Contact us at:...
+        <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+      </div>
     </div>
 
     <div id="profile" class="view" ng-hide="jeeves.view != 'profile'">
-
+      <div>
+        <h3>Profile</h3>
+        User Profile
+        <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+      </div>
     </div>
 
    <div id="rss" class="view" ng-hide="jeeves.view != 'rss'">
