@@ -24,6 +24,9 @@
 		</p>
 	<button ng-click="changeView('rss')">View available RSS feeds </button>
     <button ng-click="changeView('about')">Go to the about page</button>
+    <button ng-click="changeView('favorites')">View/Set Favorites</button>
+    <button ng-click="changeView('login')">Login/Sign Up</button>
+    <button ng-click="changeView('voice')">Say Something</button>
     </div>
 
    <div id="about" class="view" ng-hide="jeeves.view != 'about'">
@@ -31,10 +34,22 @@
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
     </div>
 
-
    <div id="rss" class="view" ng-hide="jeeves.view != 'rss'">
     <div>The feeds will appear here once we can successfully get them from the database.</div>
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+   <div id="favorites" class="view" ng-hide="jeeves.view != 'favorites'">
+    <div>Here you will see a list of your favorites.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+   </div>
+   <div id="login" class="view" ng-hide="jeeves.view != 'login'">
+    <div>Here you will be able to log into your profile or set up a new profile.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+   </div>
+   <div id="voice" class="view" ng-hide="jeeves.view != 'voice'">
+    <div>Here you will be able to use voice commands to access app functions.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
    </div>
  </div>
 </body>
