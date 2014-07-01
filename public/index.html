@@ -24,6 +24,13 @@
 		</p>
 	<button ng-click="changeView('rss')">View available RSS feeds </button>
     <button ng-click="changeView('about')">Go to the about page</button>
+    <button ng-click="changeView('facebook')">Go to the facebook page</button>
+    <button ng-click="changeView('twitter')">Go to the twitter page</button>
+    <button ng-click="changeView('news')">Go to the news page</button>
+    <button ng-click="changeView('email')">Go to the email page</button>
+    <button ng-click="changeView('favorites')">View/Set Favorites</button>
+    <button ng-click="changeView('login')">Login/Sign Up</button>
+    <button ng-click="changeView('voice')">Say Something</button>
     </div>
 
    <div id="about" class="view" ng-hide="jeeves.view != 'about'">
@@ -40,9 +47,44 @@
     <div id="profile" class="view" ng-hide="jeeves.view != 'profile'">
 
     </div>
+
    <div id="rss" class="view" ng-hide="jeeves.view != 'rss'">
     <div>The feeds will appear here once we can successfully get them from the database.</div>
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="facebook" class="view" ng-hide="jeeves.view != 'facebook'">
+    <div>Welcome to the facebook notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="twitter" class="view" ng-hide="jeeves.view != 'twitter'">
+    <div>Welcome to the twitter notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="news" class="view" ng-hide="jeeves.view != 'news'">
+    <div>Welcome to the news notification page where all the news articles from a specific rss feed will appear.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="email" class="view" ng-hide="jeeves.view != 'email'">
+    <div>Welcome to the email notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+
+   <div id="favorites" class="view" ng-hide="jeeves.view != 'favorites'">
+    <div>Here you will see a list of your favorites.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+   </div>
+   <div id="login" class="view" ng-hide="jeeves.view != 'login'">
+    <div>Here you will be able to log into your profile or set up a new profile.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+   </div>
+   <div id="voice" class="view" ng-hide="jeeves.view != 'voice'">
+    <div>Here you will be able to use voice commands to access app functions.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
    </div>
  </div>
 </body>
