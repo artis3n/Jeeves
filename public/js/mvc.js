@@ -3,11 +3,17 @@
 var model = {
 	name: "Jeeves",
 	view: "welcome",
-	feeds: [{src: "Test 1", rss: "HTTP:Test 1"},
-	{src:"Test 2", rss: "HTTP:Test 2"}]
+	feeds: []
 };
 
 var jeevesApp = angular.module("jeevesApp", []);
+
+jeevesApp.run(function($http) {
+	$http.get("/model/jeeves").success(function(data) {
+		model.feeds = data;
+		console.log("data: " + JSON.stringify(data));
+	})
+})
 
 jeevesApp.controller("jeevesCtrl", function($scope) {
 	$scope.jeeves = model;
