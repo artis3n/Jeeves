@@ -24,6 +24,10 @@
 		</p>
 	<button ng-click="changeView('rss')">View available RSS feeds </button>
     <button ng-click="changeView('about')">Go to the about page</button>
+    <button ng-click="changeView('facebook')">Go to the facebook page</button>
+    <button ng-click="changeView('twitter')">Go to the twitter page</button>
+    <button ng-click="changeView('news')">Go to the news page</button>
+    <button ng-click="changeView('email')">Go to the email page</button>
     </div>
 
    <div id="about" class="view" ng-hide="jeeves.view != 'about'">
@@ -36,6 +40,28 @@
     <div>The feeds will appear here once we can successfully get them from the database.</div>
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
    </div>
+
+    <div id="facebook" class="view" ng-hide="jeeves.view != 'facebook'">
+    <div>Welcome to the facebook notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="twitter" class="view" ng-hide="jeeves.view != 'twitter'">
+    <div>Welcome to the twitter notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="news" class="view" ng-hide="jeeves.view != 'news'">
+    <div>Welcome to the news notification page where all the news articles from a specific rss feed will appear.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+    <div id="email" class="view" ng-hide="jeeves.view != 'email'">
+    <div>Welcome to the email notification page.</div>
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+   </div>
+
+
  </div>
 </body>
 </html>
