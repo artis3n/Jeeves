@@ -25,7 +25,7 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 	$scope.showFeeds = function() {
 		var result = [];
 		angular.forEach($scope.jeeves.feeds, function(feed) {
-			result.push({'name': feed.name, 'rss': feed.rss});
+			result.push(feed.name + ': ' + feed.rss);
 		})
 		return result;
 	}

@@ -20,20 +20,22 @@
     </div>
 
    <div id="welcome" class="view" ng-hide="jeeves.view != 'welcome'">
-	<p> Jeeves: "Hello! How can I help?"
-		</p>
-	<button ng-click="changeView('rss')">View available RSS feeds </button>
-    <button ng-click="changeView('about')">Go to the about page</button>
-    <button ng-click="changeView('facebook')">Go to the facebook page</button>
-    <button ng-click="changeView('twitter')">Go to the twitter page</button>
-    <button ng-click="changeView('news')">Go to the news page</button>
-    <button ng-click="changeView('email')">Go to the email page</button>
-    <button ng-click="changeView('favorites')">View/Set Favorites</button>
-    <button ng-click="changeView('login')">Login/Sign Up</button>
-    <button ng-click="changeView('voice')">Say Something</button>
-    <button ng-click="changeView('settings')">Settings</button>
-    <button ng-click="changeView('profile')">Profile</button>
-    <button ng-click="changeView('contact')">Contact</button>
+	   <p> Jeeves: "Hello! How can I help?"
+		  </p>
+      <div class="btn-group">
+	      <button ng-click="changeView('rss')" class="btn btn-success btn-block">View RSS feeds </button>
+        <button ng-click="changeView('about')" class="btn btn-default btn-block">Go to the about page</button>
+        <button ng-click="changeView('facebook')" class="btn btn-default btn-block">Go to the facebook page</button>
+        <button ng-click="changeView('twitter')" class="btn btn-default btn-block">Go to the twitter page</button>
+        <button ng-click="changeView('news')" class="btn btn-default btn-block">Go to the news page</button>
+        <button ng-click="changeView('email')" class="btn btn-default btn-block">Go to the email page</button>
+        <button ng-click="changeView('favorites')" class="btn btn-default btn-block">View/Set Favorites</button>
+        <button ng-click="changeView('login')" class="btn btn-primary btn-block">Login/Sign Up</button>
+        <button ng-click="changeView('voice')" class="btn btn-default btn-block">Say Something</button>
+        <button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
+        <button ng-click="changeView('profile')" class="btn btn-default btn-block">Profile</button>
+        <button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
+      </div>
     </div>
 
    <div id="about" class="view" ng-hide="jeeves.view != 'about'">
@@ -65,7 +67,9 @@
 
    <div id="rss" class="view" ng-hide="jeeves.view != 'rss'">
     <div>The feeds will appear here once we can successfully get them from the database.</div>
-    <div>{{showFeeds()}}</div>
+    <div ng-repeat="feed in jeeves.feeds">
+      <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
+    </div>
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
    </div>
 
