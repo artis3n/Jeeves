@@ -21,12 +21,4 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 	$scope.changeView = function(selected) {
 		$scope.jeeves.view = selected;
 	};
-
-	$scope.showFeeds = function() {
-		var result = [];
-		angular.forEach($scope.jeeves.feeds, function(feed) {
-			result.push(feed.name + ': ' + feed.rss);
-		})
-		return result;
-	}
 });
