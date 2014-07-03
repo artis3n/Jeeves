@@ -9,8 +9,8 @@ var model = {
 var jeevesApp = angular.module("jeevesApp", []);
 
 jeevesApp.run(function($http) {
-	$http.get("/model/jeeves").success(function(data) {
-		model.feeds = data;
+	$http.get("/model/test").success(function(data) {
+		model.feeds = data.find({name:"steve"});
 		console.log("data: " + JSON.stringify(data));
 	})
 })

@@ -14,7 +14,8 @@ var bodyParser = require('body-parser'); // this allows us to pass JSON values t
 var app = express();
 
 var monk = require('monk');
-var db = monk('http://localhost:27017/jeeves');
+var db = monk('129.64.228.61:27017/jeeves');
+console.log("db: " + JSON.stringify(db));
 
 
 // serve static content from the public folder 
@@ -51,7 +52,7 @@ app.get('/model/:collection', function(req, res) {
     console.log("Hi collection");
     var collection = db.get(req.params.collection);
     collection.find({}, {}, function(e, docs) {
-        console.log(JSON.stringify(docs));
+        console.log("data: " + JSON.stringify(docs));
         res.json(200, docs);
     })
 });
