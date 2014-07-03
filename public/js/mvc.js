@@ -9,8 +9,8 @@ var model = {
 var jeevesApp = angular.module("jeevesApp", []);
 
 jeevesApp.run(function($http) {
-	$http.get("/model/test").success(function(data) {
-		model.feeds = data.find({name:"steve"});
+	$http.get("/model/feeds").success(function(data) {
+		model.feeds = data;
 		console.log("data: " + JSON.stringify(data));
 	})
 })
@@ -21,4 +21,12 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 	$scope.changeView = function(selected) {
 		$scope.jeeves.view = selected;
 	};
+
+	$scope.showFeeds = function() {
+		var result = [];
+		angular.forEach($scope.jeeves.feeds, function(feed) {
+			result.push({'name': feed.name, 'rss': feed.rss});
+		})
+		return result;
+	}
 });
