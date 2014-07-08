@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html ng-app="jeevesApp">
 <head>
+  <script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
     <title>Jeeves</title>
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.css" rel="stylesheet" />
-    <!--<script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/model.js"></script>
-    <script src="js/view.js"></script>
-    <script src="js/controller.js"></script>-->
     <script src="js/angular.js"></script>
     <script src="js/mvc.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+    google.load("feeds", "1");
+
+    function initialize() {
+      var feed = new google.feeds.Feed("http://fastpshb.appspot.com/feed/1/fastpshb");
+      feed.load(function(result) {
+        if (!result.error) {
+          var container = document.getElementById("feed");
+          for (var i = 0; i < result.feed.entries.length; i++) {
+            var entry = result.feed.entries[i];
+            var div = document.createElement("div");
+            div.appendChild(document.createTextNode(entry.title));
+            container.appendChild(div);
+          }
+        }
+      });
+    }
+    google.setOnLoadCallback(initialize);
+
+    </script>
 
 
 </head>
@@ -79,7 +98,11 @@
     <div ng-repeat="feed in jeeves.feeds">
       <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
     </div>
-    <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
+    <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+    <div>
+      This is an example of pulling RSS feed data using the Google Feed API.
+      <div id="feed"></div>
+    </div>
    </div>
 
     <div id="facebook" class="view" ng-hide="jeeves.view != 'facebook'">
