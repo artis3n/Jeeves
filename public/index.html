@@ -25,8 +25,7 @@
       <div class="btn-group">
 	      <button ng-click="changeView('rss')" class="btn btn-primary btn-block">View RSS feeds </button>
         <button ng-click="changeView('about')" class="btn btn-success btn-block">Go to the about page</button>
-        <button ng-click="changeView('facebook')" class="btn btn-default btn-block">Go to the facebook page</button>
-        <button ng-click="changeView('twitter')" class="btn btn-default btn-block">Go to the twitter page</button>
+        <button ng-click="changeView('social')" class="btn btn-default btn-block">Go to social media</button>
         <button ng-click="changeView('news')" class="btn btn-default btn-block">Go to the news page</button>
         <button ng-click="changeView('email')" class="btn btn-default btn-block">Go to the email page</button>
         <button ng-click="changeView('favorites')" class="btn btn-default btn-block">View/Set Favorites</button>
@@ -49,6 +48,16 @@
         <button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
       </div>
     </div>
+    <div id="social" class="view" ng-hide="jeeves.view != 'social' ">
+      <div>
+        <h3>Social Media</h3>
+        <button ng-click="changeView('facebook')" class="btn btn-default btn-block">Go to the facebook page</button>
+        <button ng-click="changeView('twitter')" class="btn btn-default btn-block">Go to the twitter page</button>
+        <div style="padding-top: 30px">
+          <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+        </div>
+      </div>
+    </div>
     <div id="contact" class="view" ng-hide="jeeves.view != 'contact'">
       <div>
         <h3>Contact Us</h3>
@@ -66,7 +75,7 @@
     </div>
 
    <div id="rss" class="view" ng-hide="jeeves.view != 'rss'">
-    <div>The feeds will appear here once we can successfully get them from the database.</div>
+    <div>The feeds from the database will appear here.</div>
     <div ng-repeat="feed in jeeves.feeds">
       <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
     </div>

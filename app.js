@@ -49,7 +49,6 @@ app.get('/model/:collection/:id', function(req, res) {
 
 // get all items from the model
 app.get('/model/:collection', function(req, res) {
-    console.log("Hi collection");
     var collection = db.get(req.params.collection);
     collection.find({}, {}, function(e, docs) {
         console.log("data: " + JSON.stringify(docs));
