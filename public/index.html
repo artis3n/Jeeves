@@ -13,7 +13,8 @@
     google.load("feeds", "1");
 
     function initialize() {
-      var feed = new google.feeds.Feed("http://fastpshb.appspot.com/feed/1/fastpshb");
+      var feed = new google.feeds.Feed("http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml");
+      feed.setNumEntries(10);
       feed.load(function(result) {
         if (!result.error) {
           var container = document.getElementById("feed");
@@ -100,8 +101,9 @@
     </div>
     <button ng-click="changeView('welcome')">Go back to Welcome Page</button>
     <div>
-      This is an example of pulling RSS feed data using the Google Feed API.
-      <div id="feed"></div>
+      This is an example of pulling RSS feed data using the Google Feed API.<br><br>
+      <b>NYT top news:</b>
+      <div id="feed"><br></div>
     </div>
    </div>
 
