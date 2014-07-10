@@ -2,8 +2,8 @@
 
 var model = {
 	name: "Jeeves",
-	view: "welcome",
-	previousView: ["welcome"],
+	view: "weather",
+	previousView: ["weather"],
 	feeds: []
 };
 

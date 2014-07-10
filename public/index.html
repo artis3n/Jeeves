@@ -39,8 +39,7 @@
           <h1>Jeeves: Your Personal Morning Assistant</h1>
       </div>
 
-      <div id="welcome" class="view" ng-hide="jeeves.view != 'welcome'">
-          <p> Jeeves: "Hello! How can I help?"</p>
+      <div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
 
           <button ng-click="changeView('menu')" class="btn btn-primary btn-block">Menu </button>
           <button ng-click="changeView('favorites')" class="btn btn-primary btn-block">Favorites </button>
@@ -48,7 +47,10 @@
           <button ng-click="changeView('help')" class="btn btn-primary btn-block">Help </button>
 
           <br><br>
-          WEATHER INFO
+          <div>
+          <h2 class="text-center">Weather</h2>
+          <p class="text-center">Weather Info</p>
+        	</div>
       </div>
 
       <div id="favorites" class = "view" ng-hide="jeeves.view != 'favorites'">
@@ -100,24 +102,6 @@
             Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.
           </p>
           <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-        </div>
-      </div>
-
-      <div id="weather" class="view" ng-hide="jeeves.view != 'weather' ">
-        <div>
-          <h2>Weather</h2>
-          Weather Info
-          <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-          <button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
-          <button ng-click="changeView('wSetting')" class="btn btn-default btn-block">Weather Setting</button> 
-        </div>
-      </div>
-
-      <div id="wSetting" class="view" ng-hide="jeeves.view != 'wSetting' ">
-        <div>
-          <h2>Weather Setting</h2>
-          Zip Code Input
-          <button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
         </div>
       </div>
 
