@@ -10,28 +10,7 @@
 	<script src="js/mvc.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-
-	google.load("feeds", "1");
-
-	function initialize() {
-	  var feed = new google.feeds.Feed("http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml");
-	  feed.setNumEntries(10);
-	  feed.load(function(result) {
-		if (!result.error) {
-		  var container = document.getElementById("feed");
-		  for (var i = 0; i < result.feed.entries.length; i++) {
-			var entry = result.feed.entries[i];
-			var div = document.createElement("div");
-			div.appendChild(document.createTextNode(entry.title));
-			container.appendChild(div);
-		  }
-		}
-	  });
-	}
-	google.setOnLoadCallback(initialize);
-
-	</script>
+	<script src="js/loadfeeds.js"></script>
 
 </head>
 <body ng-controller="jeevesCtrl">
@@ -144,54 +123,7 @@
 	 		<div>
 	 			<!--Add a button for the user to click to initiate auth sequence -->
     		<button id="authorize-button" class="btn btn-default">Authorize</button>
-    		<script type="text/javascript">
-      	// Enter a client ID for a web application from the Google Developer Console.
-      	// The provided clientId will only work if the sample is run directly from
-      	// https://google-api-javascript-client.googlecode.com/hg/samples/authSample.html
-      	// In your Developer Console project, add a JavaScript origin that corresponds to the domain
-      	// where you will be running the script.
-      	var clientId = '718585900559-24g02h03tqtiiui9cdnl80a1m3a82q2l.apps.googleusercontent.com';
-
-      	// Enter the API key from the Google Develoepr Console - to handle any unauthenticated
-      	// requests in the code.
-      	// The provided key works for this sample only when run from
-      	// https://google-api-javascript-client.googlecode.com/hg/samples/authSample.html
-      	// To use in your own application, replace this API key with your own.
-      	var apiKey = 'AIzaSyAOsjRfBxUE893UO243KmMe12Q5uMHlbKQ';
-
-      	// To enter one or more authentication scopes, refer to the documentation for the API.
-      	var scopes = 'https://www.googleapis.com/auth/gmail.readonly';
-
-      	// Use a button to handle authentication the first time.
-      	function handleClientLoad() {
-        	gapi.client.setApiKey(apiKey);
-        	window.setTimeout(checkAuth,1);
-      	}
-
-      	function checkAuth() {
-        	gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-      	}
-
-
-      	function handleAuthResult(authResult) {
-        	var authorizeButton = document.getElementById('authorize-button');
-        	if (authResult && !authResult.error) {
-          	document.getElementById("authorize-button").innerHTML = "Authorized";
-          	document.getElementById("authorize-button").setAttribute('disabled', true);
-          	document.getElementById("authorize-button").style.opacity="0.5";
-
-        	} else {
-          	authorizeButton.style.visibility = '';
-          	authorizeButton.onclick = handleAuthClick;
-        	}
-      	}
-
-      	function handleAuthClick(event) {
-        	gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        	return false;
-      	}
-
-    	</script>
+    		<script src="js/googleauthorize.js"></script>
     	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 	 			</div>
 	 	</div>
@@ -212,30 +144,4 @@
 listMessages('me', function() {
           		console.log("Emails retrieved.");
           	});
-</script>
-
-<script>
-function listMessages(userId, query, callback) {
-  var getPageOfMessages = function(request, result) {
-    request.execute(function(resp) {
-      result = result.concat(resp.messages);
-      var nextPageToken = resp.nextPageToken;
-      if (nextPageToken) {
-        request = gapi.client.gmail.users.messages.list({
-          'userId': userId,
-          'pageToken': nextPageToken,
-          'q': query
-        });
-        getPageOfMessages(request, result);
-     	} else {
-     			callback(result);
-     	}
-    });
- 	};
-  var initialRequest = gapi.client.gmail.users.messages.list({
-    'userId': userId,
-    'q': query
- 	 });
-  getPageOfMessages(initialRequest, []);
-}
 </script>
