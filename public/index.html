@@ -176,11 +176,13 @@
       	function handleAuthResult(authResult) {
         	var authorizeButton = document.getElementById('authorize-button');
         	if (authResult && !authResult.error) {
-          	document.getElementById("authorize-button").innerHTML = "Authorized";
-          	document.getElementById("authorize-button").setAttribute('disabled', true);
-          	document.getElementById("authorize-button").style.opacity="0.5";
+          	document.getElementById("authorize-button").innerHTML = "Get Email";
+          	// document.getElementById("authorize-button").setAttribute('disabled', true);
+          	// document.getElementById("authorize-button").style.opacity="0.5";
 
-          	makeApiCall();
+          	listMessages('me', '', function() {
+          		console.log("Emails retrieved.");
+          	});
         	} else {
           	authorizeButton.style.visibility = '';
           	authorizeButton.onclick = handleAuthClick;
@@ -192,12 +194,29 @@
         	return false;
       	}
 
-      	// Load the API and make an API call.  Display the results on the screen.
-      	function makeApiCall() {
-        	gapi.client.load('gmail', 'v1', function() {
-          	
-        	});
-      	}
+      	function listMessages(userId, query, callback) {
+  				var getPageOfMessages = function(request, result) {
+    				request.execute(function(resp) {
+      				result = result.concat(resp.messages);
+      				var nextPageToken = resp.nextPageToken;
+      				if (nextPageToken) {
+        				request = gapi.client.gmail.users.messages.list({
+          				'userId': userId,
+          				'pageToken': nextPageToken,
+          				'q': query
+        				});
+        				getPageOfMessages(request, result);
+     				 } else {
+     				   callback(result);
+     				 }
+    				});
+ 					};
+  				var initialRequest = gapi.client.gmail.users.messages.list({
+    				'userId': userId,
+    				'q': query
+ 				  });
+  				getPageOfMessages(initialRequest, []);
+				}
     	</script>
     	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 	 			</div>
