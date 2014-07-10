@@ -31,7 +31,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-
 // get a particular item from the model
 app.get('/model/:collection/:id', function(req, res) {
     var collection = db.get(req.params.collection);
