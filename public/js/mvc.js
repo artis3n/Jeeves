@@ -23,26 +23,29 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 	};
 
 	$scope.listMessages = function(userId, query, callback) {
+  		gapi.client.load('gmail', 'v1', function() {
+  			console.log("API loaded");
+  		});
   		var getPageOfMessages = function(request, result) {
     		request.execute(function(resp) {
       		result = result.concat(resp.messages);
       		var nextPageToken = resp.nextPageToken;
       		if (nextPageToken) {
-        		request = gapi.client.request(www.googleapis.com/gmail/v1/users/me/messages/list, function() {
-        			'userId': userId,
-        			'pageToken': nextPageToken,
-        			'q': query
-        		});
+        		request = gmail.users().messages().list({
+          		'userId': userId,
+          		'pageToken': nextPageToken,
+          		'q': query
+        		}).execute();
         		getPageOfMessages(request, result);
      			} else {
-     				callback(result);
+     					callback(result);
      			}
     		});
  			};
-  		var initialRequest = gapi.client.request(www.googleapis.com/gmail/v1/users/me/messages/list, function() {
-        		'userId': userId,
-        		'q': query
-        		});
+  		var initialRequest = gmail.users().messages().list({
+    		'userId': userId,
+    		'q': query
+ 	 		}).execute();
   		var messages = getPageOfMessages(initialRequest, []);
 
   		angular.forEach(messages, function(message) {
