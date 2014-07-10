@@ -85,15 +85,14 @@
 	<div id="contact" class="view" ng-hide="jeeves.view != 'contact'">
 	  <div>
 		<h3>Contact Us</h3>
-		Contact us at:...
+		Contact us at: <a href="mailto:jeevescorp@gmail.com">jeevescorp@gmail.com</a>
 		<button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
 	  </div>
 	</div>
 
-	<div id="profile" class="view" ng-hide="jeeves.view != 'profile'">
+	<div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
 	  <div>
-		<h3>Profile</h3>
-		User Profile
+		<h3>Weather</h3>
 		<script type="text/javascript" src="http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget"></script>
 		<button ng-click="changeView('welcome')">Go back to Welcome Page</button> 
 	  </div>
@@ -139,11 +138,12 @@
    </div>
 
    <div id="login" class="view" ng-hide="jeeves.view != 'login'">
-	 	<div>
+	 	<div style="padding-bottom: 50px">
 	 		Here you will be able to log into your profile or set up a new profile.
+	 		<div style="padding-top: 20px"></div>
 	 		<div>
 	 			<!--Add a button for the user to click to initiate auth sequence -->
-    		<button id="authorize-button" style="visibility: hidden">Authorize</button>
+    		<button id="authorize-button" class="btn btn-default">Authorize</button>
     		<script type="text/javascript">
       	// Enter a client ID for a web application from the Google Developer Console.
       	// The provided clientId will only work if the sample is run directly from
@@ -160,7 +160,7 @@
       	var apiKey = 'AIzaSyAOsjRfBxUE893UO243KmMe12Q5uMHlbKQ';
 
       	// To enter one or more authentication scopes, refer to the documentation for the API.
-      	var scopes = 'https://www.googleapis.com/auth/plus.profile.emails.read';
+      	var scopes = 'https://www.googleapis.com/auth/gmail.readonly';
 
       	// Use a button to handle authentication the first time.
       	function handleClientLoad() {
@@ -176,7 +176,10 @@
       	function handleAuthResult(authResult) {
         	var authorizeButton = document.getElementById('authorize-button');
         	if (authResult && !authResult.error) {
-          	authorizeButton.style.visibility = 'hidden';
+          	document.getElementById("authorize-button").innerHTML = "Authorized";
+          	document.getElementById("authorize-button").setAttribute('disabled', true);
+          	document.getElementById("authorize-button").style.opacity="0.5";
+
           	makeApiCall();
         	} else {
           	authorizeButton.style.visibility = '';
@@ -191,28 +194,15 @@
 
       	// Load the API and make an API call.  Display the results on the screen.
       	function makeApiCall() {
-        	gapi.client.load('plus', 'v1', function() {
-          	var request = gapi.client.plus.people.get({
-            	'userId': 'me'
-          	});
-          	request.execute(function(resp) {
-            	var heading = document.createElement('h4');
-            	var image = document.createElement('img');
-            	image.src = resp.image.url;
-            	heading.appendChild(image);
-            	heading.appendChild(document.createTextNode(resp.displayName));
-
-            	document.getElementById('content').appendChild(heading);
-          	});
+        	gapi.client.load('gmail', 'v1', function() {
+          	
         	});
       	}
     	</script>
     	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-    	<div id="content"></div>
-    	<p>Retrieves your profile name using the Google Plus API.</p>
 	 			</div>
 	 	</div>
-		<button ng-click="changeView('welcome')">Go back to Welcome Page</button>
+		<button ng-click="changeView('welcome')" class="btn btn-default">Go back to Welcome Page</button>
    </div>
 
    <div id="voice" class="view" ng-hide="jeeves.view != 'voice'">
