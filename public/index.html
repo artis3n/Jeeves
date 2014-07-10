@@ -8,11 +8,12 @@
 	<link href="css/bootstrap-theme.css" rel="stylesheet" />
 	<script src="js/angular.js"></script>
 	<script src="js/mvc.js"></script>
+	<script src="js/googleauthorize.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script src="js/loadfeeds.js"></script>
-	<script src="js/googleauthorize.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+	<script src="js/loadfeeds.js"></script>
+	
 
 </head>
 <body ng-controller="jeevesCtrl">
@@ -125,14 +126,11 @@
 	 		<div>
 	 			<!--Add a button for the user to click to initiate auth sequence -->
     		<button id="authorize-button" class="btn btn-default">Authorize</button>
-    		<script type="text/javascript">
-					listMessages('me', function() {
-          		console.log("Emails retrieved.");
-          	});
-				</script>
-
-    		<button id="get-email-button" class="btn btn-default" ng-click="js/listmessages.js">Get Email</button>
+    		<button id="get-email-button" class="btn btn-default" ng-click="listMessages('me')">Get Email</button>
 	 			</div>
+	 	</div>
+	 	<div style="padding-top: 30px; padding-bottom: 30px" id="message-content-here">
+	 		<ul id="messageList"></ul>
 	 	</div>
 		<button ng-click="changeView('welcome')" class="btn btn-default">Go back to Welcome Page</button>
    </div>
