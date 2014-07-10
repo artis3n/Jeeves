@@ -11,6 +11,8 @@
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="js/loadfeeds.js"></script>
+	<script src="js/googleauthorize.js"></script>
+	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
 </head>
 <body ng-controller="jeevesCtrl">
@@ -123,8 +125,13 @@
 	 		<div>
 	 			<!--Add a button for the user to click to initiate auth sequence -->
     		<button id="authorize-button" class="btn btn-default">Authorize</button>
-    		<script src="js/googleauthorize.js"></script>
-    	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    		<script type="text/javascript">
+					listMessages('me', function() {
+          		console.log("Emails retrieved.");
+          	});
+				</script>
+
+    		<button id="get-email-button" class="btn btn-default" ng-click="js/listmessages.js">Get Email</button>
 	 			</div>
 	 	</div>
 		<button ng-click="changeView('welcome')" class="btn btn-default">Go back to Welcome Page</button>
@@ -138,10 +145,3 @@
  </div>
 </body>
 </html>
-
-
-<script>
-listMessages('me', function() {
-          		console.log("Emails retrieved.");
-          	});
-</script>
