@@ -15,8 +15,6 @@ var app = express();
 
 var monk = require('monk');
 var db = monk('localhost:27017/jeevesdb');
-console.log("db: " + JSON.stringify(db));
-
 
 // serve static content from the public folder 
 app.use("/", express.static(__dirname + '/public'));
