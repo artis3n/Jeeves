@@ -8,6 +8,8 @@
     <link href="css/bootstrap-theme.css" rel="stylesheet" />
     <script src="js/angular.js"></script>
     <script src="js/mvc.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("feeds", "1");
@@ -70,13 +72,17 @@
           	<h2 class="text-center">Weather</h2>
           	<div style="width: 24%; margin: 0 auto">
           		<!--This is the Weather Channel widget. -->
-          		<script type="text/javascript" src="http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget"></script>
+          		<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
           	</div>
           	<br>
+          	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
+  						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  						Number must be a valid zip code!
+						</div>
           	<div class="input-group" style="margin: 0 auto">
-          		<input type="text" class="form-control" placeholder="Zip Code" style="width: 30%; margin-left: 260px">
+          		<input type="text" class="form-control" placeholder="Zip Code" style="width: 30%; margin-left: 260px" id="weather_zipcode">
           		<span class="input-group-btn">
-          			<button class="btn btn-default" type="submit">Change</button>
+          			<button class="btn btn-default" type="submit" ng-click="changeWeather()">Change</button>
           		</span>
           	</div>
         	</div>
