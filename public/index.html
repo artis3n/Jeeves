@@ -1,18 +1,20 @@
-<!-- #################################################
-Please try to indent the HTML page as best as you can. 
-Use one "TAB" for every indention level.
-This thing really bugs me ;p
+<!-- #####################################################
+	Please try to indent the HTML page as best as you can. 
+	Use one "TAB" for every indention level.
+	This thing really bugs me ;p
 										-Wes
-###################################################### -->
+########################################################## -->
 
 <!DOCTYPE html>
 <html ng-app="jeevesApp">
 <head>
-  <!-- Do not touch. This implements TrackJS. -->
-  <script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 	Title goes here-->	
 	<title>Jeeves</title>
+
+  	<!-- Do not touch. This implements TrackJS. -->
+  	<script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
+
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.css" rel="stylesheet" />
@@ -105,31 +107,44 @@ This thing really bugs me ;p
 		</div>
 
 	    <div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
-			<button ng-click="changeView('menu')" class="btn btn-primary btn-block">Menu </button>
-			<button ng-click="changeView('favorites')" class="btn btn-primary btn-block">Favorites </button>
-			<button ng-click="changeView('speech')" class="btn btn-primary btn-block">Speech </button>
-			<button ng-click="changeView('help')" class="btn btn-primary btn-block">Help </button><br><br>
+	    	<div id="top-button">
+				<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
+				<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
+			</div>
+			<br>
+			<br>
 	      	<div>
 		       	<h2 class="text-center">Weather</h2>
-		        <div style="width: 24%; margin: 0 auto">
-		        	<!--This is the Weather Channel widget. -->
+		        <div align="center">
+		        	<!-- This is the Weather Channel widget.  -->
 		        	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
 		        </div>
 	        	<br>
-		        <!-- This alert appears when user enters a number that is not a viable
+		   		 <!--     This alert appears when user enters a number that is not a viable
 		        zip code (not 5 characters) -->
 	        	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
 					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 							Number must be a valid zip code!
 				</div>
 					
-	       		<div class="input-group" style="margin: 0 auto">
-	        		<input type="text" class="form-control" placeholder="Zip Code" style="width: 30%; margin-left: 260px" id="weather_zipcode">
-	        		<span class="input-group-btn">
-	        			<button class="btn btn-default" type="submit" ng-click="changeWeather()">Change</button>
-	        		</span>
+	       		<div align="center">
+		       		<div class="input-group" style="width: 160px">
+		        		<input type="text" class="form-control" placeholder="Zip Code" id="weather_zipcode">
+		        		<span class="input-group-btn">
+		        		<button class="btn btn-default" type="submit" ng-click="changeWeather()">Change</button>
+		        		</span>
+		        	</div>
 	        	</div>
 	      	</div>
+	      	<br>
+	      	<br>
+	      	<div id="buttom-button">
+	      		<button ng-click="changeView('speech')" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
+				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+				
+			</div>
+			<br>
+	      	<br>
 	    </div>
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'">
