@@ -2,7 +2,9 @@
 
 var model = {
 	name: "Jeeves",
-	view: "welcome",
+	view: "weather",
+	previousView: ["weather"],
+	weathersrc: 'http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget',
 	feeds: []
 };
 
@@ -11,15 +13,27 @@ var jeevesApp = angular.module("jeevesApp", []);
 jeevesApp.run(function($http) {
 	$http.get("/model/feeds").success(function(data) {
 		model.feeds = data;
-		console.log("data: " + JSON.stringify(data));
 	})
+	// Waiting for the server to test the NYT API
+	// $http.get("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1?api-key=985d8028d34e7d34a098bfdd6b6b604c:5:67948289").success(function(data){
+	// 	console.log(data);
+	// })
 })
 
 jeevesApp.controller("jeevesCtrl", function($scope) {
 	$scope.jeeves = model;
 
 	$scope.changeView = function(selected) {
-		$scope.jeeves.view = selected;
+		if(selected == 'back'){
+			$scope.jeeves.previousView.pop();
+			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
+			console.log("Returning to " + back + "...");
+			$scope.jeeves.view = back;
+		}else{
+			$scope.jeeves.previousView.push(selected);
+			console.log($scope.jeeves.previousView);
+			$scope.jeeves.view = selected;
+		}
 	};
 
 	$scope.listMessages = function(userId, query, callback) {
@@ -54,5 +68,19 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
   			node.appendChild(textnode);
   			document.getElementById("messageList").appendChild(node);
   		})
+
+	// Changes weather widget to reflect new zip code as enterred by user.
+	// Precondition: zip code is 5 characters long. If not, throws alert error.
+	$scope.changeWeather = function() {
+		var zip = document.getElementById("weather_zipcode").value;
+		if (zip.length == 5) {
+			console.log("Changing weather zip code to: " + zip);
+			document.getElementById('zip-error').style.display="none";
+			$scope.jeeves.weathersrc = 'http://voap.weather.com/weather/oap/' + zip + '?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget';
+			document.getElementById("weather_zipcode").value = "";
+		} else {
+			document.getElementById('zip-error').style.display="block";
+		}
 	}
+	
 });

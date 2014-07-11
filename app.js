@@ -15,8 +15,6 @@ var app = express();
 
 var monk = require('monk');
 var db = monk('localhost:27017/jeevesdb');
-console.log("db: " + JSON.stringify(db));
-
 
 // serve static content from the public folder 
 app.use("/", express.static(__dirname + '/public'));
@@ -32,7 +30,6 @@ app.use(function(req, res, next) {
     //console.log("myData = "+JSON.stringify(myData));
     next();
 });
-
 
 // get a particular item from the model
 app.get('/model/:collection/:id', function(req, res) {
