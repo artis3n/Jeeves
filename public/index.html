@@ -42,6 +42,48 @@
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.0.5</span></small></h1>
 		</div>
 
+		<!-- Move the weatehr division at the top because when angularJS is not read on the browser, ng-view won't work. -->
+		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
+	    	<div id="top-button">
+				<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
+				<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
+			</div>
+			<br>
+			<br>
+	      	<div>
+		       	<h2 class="text-center">Weather</h2>
+		        <div align="center">
+		        	<!-- This is the Weather Channel widget.  -->
+		        	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
+		        </div>
+	        	<br>
+		   		 <!--     This alert appears when user enters a number that is not a viable
+		        zip code (not 5 characters) -->
+	        	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
+					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							Number must be a valid zip code!
+				</div>
+					
+	       		<div align="center">
+		       		<div class="input-group" style="width: 160px">
+		        		<input type="text" class="form-control" placeholder="Zip Code" id="weather_zipcode" onkeydown="if (event.keyCode == 13) document.getElementById('changeZip').click()">
+		        		<span class="input-group-btn">
+		        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeZip">Change</button>
+		        		</span>
+		        	</div>
+	        	</div>
+	      	</div>
+	      	<br>
+	      	<br>
+	      	<div id="buttom-button">
+	      		<button ng-click="changeView('speech')" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
+				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+				
+			</div>
+			<br>
+	      	<br>
+	    </div>
+
 	   	<div id="menu" class = "view" ng-hide="jeeves.view != 'menu'">
 			<div>
 			<h2 class="text-center">Menu</h2>
@@ -105,47 +147,6 @@
 				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>   
 		    </div>
 		</div>
-
-	    <div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
-	    	<div id="top-button">
-				<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
-				<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
-			</div>
-			<br>
-			<br>
-	      	<div>
-		       	<h2 class="text-center">Weather</h2>
-		        <div align="center">
-		        	<!-- This is the Weather Channel widget.  -->
-		        	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
-		        </div>
-	        	<br>
-		   		 <!--     This alert appears when user enters a number that is not a viable
-		        zip code (not 5 characters) -->
-	        	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
-					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							Number must be a valid zip code!
-				</div>
-					
-	       		<div align="center">
-		       		<div class="input-group" style="width: 160px">
-		        		<input type="text" class="form-control" placeholder="Zip Code" id="weather_zipcode">
-		        		<span class="input-group-btn">
-		        		<button class="btn btn-default" type="submit" ng-click="changeWeather()">Change</button>
-		        		</span>
-		        	</div>
-	        	</div>
-	      	</div>
-	      	<br>
-	      	<br>
-	      	<div id="buttom-button">
-	      		<button ng-click="changeView('speech')" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
-				
-			</div>
-			<br>
-	      	<br>
-	    </div>
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'">
 			<p>Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</p>
