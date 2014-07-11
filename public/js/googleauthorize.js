@@ -46,7 +46,7 @@ function makeApiCall() {
       var content = document.getElementById("message-list");
       // console.log(JSON.stringify(resp));
       angular.forEach(resp, function(message) {
-        content.innerHTML += JSON.stringify(message.payload) + "<br>";
+        content.innerHTML += JSON.stringify(message) + "<br>";
       })
     });
   });
