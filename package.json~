@@ -1,6 +1,8 @@
 {
   "name": "app",
-  "author": "Ari Kalfus, Sam Raphael, Burak Sezer, Wes Wei Qian",
+  "version": "0.1.1",
+  "description": "Simple Example of REST webserver managing an array of JSON literals",
+  "author": "Tim Hickey <tjhickey@brandeis.edu> (http://www.cs.brandeis.edu/~tim)",
   "scripts": {
     "start": "nodejs --harmony ./app.js"
   },
