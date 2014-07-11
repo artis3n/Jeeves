@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html ng-app="jeevesApp">
 <head>
-  <!--Do not touch. This implements TrackJS. -->
+  <!-- Do not touch. This implements TrackJS. -->
   <script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Jeeves</title>
+
+	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/bootstrap-theme.css" rel="stylesheet" />
 	<script src="js/angular.js"></script>
+
 	<script src="js/mvc.js"></script>
 	<script src="js/googleauthorize.js"></script>
+	
+	<!-- Implement JQuery for Bootstrap animations. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-     <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- Implement scripts for Google APIs. -->
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
 	<script src="js/loadfeeds.js"></script>
 	
 
@@ -43,10 +52,48 @@
       </div>
     </div>
 
+    <div id="news" class="view" ng-hide="jeeves.view != 'news'">
+	    <div>
+	      <h2>News</h2>
+	      The feeds from the database will appear here.</div>
+	      <div ng-repeat="feed in jeeves.feeds">
+	        <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
+	      </div>
+	      <div>
+	        This is an example of pulling RSS feed data using the Google Feed API.<br><br>
+	        <b>NYT top news:</b>
+	        <div id="feed"><br>
+	      </div>
+	      <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+	      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
+	      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
+	    </div>
+	  </div>
+
+	  <div id="email" class="view" ng-hide="jeeves.view != 'email'">
+	    <div>
+	      <h2>Email</h2>
+	      <div style="padding-bottom: 50px">Welcome to the email notification page.
+	 			<div style="padding-top: 20px"></div>
+	 			<div>
+	 				<!--Add a button for the user to click to initiate auth sequence -->
+    			<button id="authorize-button" class="btn btn-default">Authorize</button>
+    			<button id="get-email-button" class="btn btn-default" ng-click="listMessages('me')">Get Email</button>
+	 				</div>
+	 		</div>
+	 		<div style="padding-top: 30px; padding-bottom: 30px" id="message-content-here">
+	 			<ul id="messageList"></ul>
+	 		</div>
+	      <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+	      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
+	      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>   
+	    </div>
+	  </div>
+
     <div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
       <button ng-click="changeView('menu')" class="btn btn-primary btn-block">Menu </button>
       <button ng-click="changeView('favorites')" class="btn btn-primary btn-block">Favorites </button>
-      <button ng-click="changeView('speech')" class="btn btn-primary btn-block">Speak </button>
+      <button ng-click="changeView('speech')" class="btn btn-primary btn-block">Speech </button>
       <button ng-click="changeView('help')" class="btn btn-primary btn-block">Help </button>
 
       <br><br>
@@ -57,10 +104,13 @@
         	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
         </div>
         <br>
+        <!-- This alert appears when user enters a number that is not a viable
+        zip code (not 5 characters) -->
         <div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
 					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 						Number must be a valid zip code!
 				</div>
+				
         <div class="input-group" style="margin: 0 auto">
         	<input type="text" class="form-control" placeholder="Zip Code" style="width: 30%; margin-left: 260px" id="weather_zipcode">
         	<span class="input-group-btn">
@@ -105,34 +155,6 @@
 	    </div>
 	  </div>
 
-		<div id="news" class="view" ng-hide="jeeves.view != 'news'">
-	    <div>
-	      <h2>News</h2>
-	      The feeds from the database will appear here.</div>
-	      <div ng-repeat="feed in jeeves.feeds">
-	        <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
-	      </div>
-	      <div>
-	        This is an example of pulling RSS feed data using the Google Feed API.<br><br>
-	        <b>NYT top news:</b>
-	        <div id="feed"><br>
-	      </div>
-	      <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-	      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
-	      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
-	    </div>
-	  </div>
-
-		<div id="email" class="view" ng-hide="jeeves.view != 'email'">
-	    <div>
-	      <h2>Email</h2>
-	      <div>Welcome to the email notification page.</div>
-	      <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-	      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
-	      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>   
-	    </div>
-	  </div>
-
 	  <div id="favorites" class = "view" ng-hide="jeeves.view != 'favorites'">
 	    <div>
 	      <h2>Favorites</h2>
@@ -169,8 +191,8 @@
 
    	<div id="speech" class ="view" ng-hide="jeeves.view != 'speech'">
     	<div>
-      	<h2>Speak</h2>
-      	Speak function will go here
+      	<h2>Speech</h2>
+      	Speech function will go here
       	<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
       	<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
     	</div>

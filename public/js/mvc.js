@@ -28,6 +28,7 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			console.log("Returning to " + back + "...");
+			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = back;
 		}else{
 			$scope.jeeves.previousView.push(selected);
