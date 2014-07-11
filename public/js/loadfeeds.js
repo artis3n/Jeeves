@@ -36,12 +36,16 @@
 
        	var feedOption="";
       	var clicked=false;
+   //   	var feedDivGroup=document.getElementById("feeds3");
+    //  	feedDivGroup.setAttribute('class', 'btn-group btn-group-justified');
     //Most Popular-------------------------------------------------------------------------------------------
       	var feedContainer = document.getElementById("feed2");
+      	feedContainer.setAttribute('class', 'btn-group btn-group-justified');
       	var feedDiv = document.createElement('div');
+      	feedDiv.setAttribute('class', 'btn-group');
       	var feedButton1=document.createElement('input');
       	feedButton1.setAttribute('type', 'button');
-        feedButton1.setAttribute('class', 'btn btn-default btn-block');
+        feedButton1.setAttribute('class', 'btn btn-default');
    		feedButton1.name="Most Popular";
     	feedButton1.setAttribute('value', "Most Popular");
     	feedButton1.onclick=function(){
@@ -53,9 +57,10 @@
     	feedContainer.appendChild(feedDiv);	
     //Business----------------------------------------------------------------------------------------------
       	var feedDiv2 = document.createElement('div');
+      	      	feedDiv2.setAttribute('class', 'btn-group');
       	var feedButton2=document.createElement('input');
       	feedButton2.setAttribute('type', 'button');
-        feedButton2.setAttribute('class', 'btn btn-default btn-block');
+        feedButton2.setAttribute('class', 'btn btn-default');
    		feedButton2.name="Business";
     	feedButton2.setAttribute('value', "Business");
     	feedButton2.onclick=function(){
@@ -67,9 +72,10 @@
     	feedContainer.appendChild(feedDiv2);
    	//Science----------------------------------------------------------------------------------------------
       	var feedDiv3 = document.createElement('div');
+      	 	feedDiv3.setAttribute('class', 'btn-group');
       	var feedButton3=document.createElement('input');
       	feedButton3.setAttribute('type', 'button');
-        feedButton3.setAttribute('class', 'btn btn-default btn-block');
+        feedButton3.setAttribute('class', 'btn btn-default');
    		feedButton3.name="Science";
     	feedButton3.setAttribute('value', "Science");
     	feedButton3.onclick=function(){
@@ -81,9 +87,10 @@
     	feedContainer.appendChild(feedDiv3);
      //Fashion----------------------------------------------------------------------------------------------
       	var feedDiv4 = document.createElement('div');
+      	feedDiv4.setAttribute('class', 'btn-group');
       	var feedButton4=document.createElement('input');
       	feedButton4.setAttribute('type', 'button');
-        feedButton4.setAttribute('class', 'btn btn-default btn-block');
+        feedButton4.setAttribute('class', 'btn btn-default');
    		feedButton4.name="Fashion";
     	feedButton4.setAttribute('value', "Fashion");
     	feedButton4.onclick=function(){
