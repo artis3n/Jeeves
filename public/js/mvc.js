@@ -68,6 +68,7 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
   			node.appendChild(textnode);
   			document.getElementById("messageList").appendChild(node);
   		})
+  	}
 
 	// Changes weather widget to reflect new zip code as enterred by user.
 	// Precondition: zip code is 5 characters long. If not, throws alert error.
