@@ -21,19 +21,15 @@ This thing really bugs me ;p
 	<script src="js/angular.js"></script>
 
 	<script src="js/mvc.js"></script>
-	<script src="js/googleauthorize.js"></script>
 	
 	<!-- Implement JQuery for Bootstrap animations. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
 
-  <!-- Implement gmail.js -->
-  <script src="js/gmail.min.js"></script>
-
   <!-- Implement scripts for Google APIs. -->
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+	<script src="https://apis.google.com/js/client.js?onload=load"></script>
 
 	<!-- Implement Google Feed API -->
 	<script src="js/loadfeeds.js"></script>
@@ -88,13 +84,14 @@ This thing really bugs me ;p
 				<div style="padding-bottom: 50px">Welcome to the email notification page.
 					<div style="padding-top: 20px"></div>
 						<div>
-							<!--Add a button for the user to click to initiate auth sequence -->
+							<!--Button for the user to click to initiate auth sequence -->
 							<button id="authorize-button" class="btn btn-default">Authorize</button>
-							<button id="get-email-button" class="btn btn-default" ng-click="listMessages('me')">Get Email</button>
+							<script src="js/googleauthorize.js"></script>
+							<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 						</div>
 					</div>
 					<div style="padding-top: 30px; padding-bottom: 30px" id="message-content-here">
-						<ul id="messageList"></ul>
+						<ul id="message-list"></ul>
 					</div>
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
 				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>

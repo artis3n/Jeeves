@@ -33,9 +33,36 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 		}
 	};
 
-	$scope.listMessages = function() {
-  		var gmail = Gmail();
-  		console.log(gmail.get.user_email());
+	$scope.listMessages = function(userId, query, callback) {
+  		
+  		var getPageOfMessages = function(request, result) {
+    		request.execute(function(resp) {
+      		result = result.concat(resp.messages);
+      		var nextPageToken = resp.nextPageToken;
+      		if (nextPageToken) {
+        		request = gmail.users().messages().list({
+          		'userId': userId,
+          		'pageToken': nextPageToken,
+          		'q': query
+        		}).execute();
+        		getPageOfMessages(request, result);
+     			} else {
+     					callback(result);
+     			}
+    		});
+ 			};
+  		var initialRequest = gmail.users().messages().list({
+    		'userId': userId,
+    		'q': query
+ 	 		}).execute();
+  		var messages = getPageOfMessages(initialRequest, []);
+
+  		angular.forEach(messages, function(message) {
+  			var node = document.createElement("LI");
+  			var textnode = document.createTextNode(message);
+  			node.appendChild(textnode);
+  			document.getElementById("messageList").appendChild(node);
+  		})
   	}
 
 	// Changes weather widget to reflect new zip code as enterred by user.
