@@ -1,0 +1,15 @@
+{
+  "name": "app",
+  "version": "0.1.1",
+  "description": "Simple Example of REST webserver managing an array of JSON literals",
+  "author": "Tim Hickey <tjhickey@brandeis.edu> (http://www.cs.brandeis.edu/~tim)",
+  "scripts": {
+    "start": "nodejs --harmony ./app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.4",
+    "mongodb": "^1.4.7",
+    "monk": "^0.9.0"
+  }
+}
