@@ -8,12 +8,13 @@
 <!DOCTYPE html>
 <html ng-app="jeevesApp">
 <head>
-	<!-- 	Title goes here-->	
+	<!--Title goes here-->	
 	<title>Jeeves</title>
 
-  	<!-- Do not touch. This implements TrackJS. -->
+  	<!-- Do not touch. This implements Developing Tracking Tool, TrackJS. -->
   	<script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
 
+  	<!-- The Mobille Interface -->
   	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 	<!-- Implement Bootstrap and AngularJS. -->
@@ -21,19 +22,20 @@
 	<link href="css/bootstrap-theme.css" rel="stylesheet" />
 	<script src="js/angular.js"></script>
 
+	<!-- The MVC -->
 	<script src="js/mvc.js"></script>
 	
 	<!-- Implement JQuery for Bootstrap animations. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+  	<script src="js/bootstrap.min.js"></script>
 
-  <!-- Implement scripts for Google APIs. -->
+  	<!-- Implement scripts for Google APIs. -->
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="https://apis.google.com/js/client.js?onload=load"></script>
 
 	<!-- Implement Google Feed API -->
-
+	<script src="js/loadfeeds.js"></script>
 </head>
 
 <body ng-controller="jeevesCtrl">
@@ -43,7 +45,7 @@
 		</div>
 
 		<!-- Move the weatehr division at the top because when angularJS is not read on the browser, ng-view won't work. -->
-		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
+		<div id="main" class="view" ng-hide="jeeves.view != 'main'">
 	    	<div id="top-button">
 				<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
 				<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
@@ -77,11 +79,54 @@
 	      	<br>
 	      	<div id="buttom-button">
 	      		<button ng-click="changeView('speech')" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
-				
+				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>	
 			</div>
-			<br>
-	      	<br>
+			<!--When the angular is not loaded yet, the ng-view won't work and we don't want to show the rest of the html. -->
+			<div>
+				<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+		      	<br>
+	      	</div>
+	    </div>
+
+	    <div id="weather" class="view" ng-hide="jeeves.view != 'weather'">
+	    	<div>
+		       	<h2 class="text-center">Weather</h2>
+		        <div align="center">
+		        	<!-- This is the Weather Channel widget.  -->
+		        	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
+		        </div>
+	        	<br>
+		   		 <!--     This alert appears when user enters a number that is not a viable
+		        zip code (not 5 characters) -->
+	        	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
+					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							Number must be a valid zip code!
+				</div>
+					
+	       		<div align="center">
+		       		<div class="input-group" style="width: 160px">
+		        		<input type="text" class="form-control" placeholder="Zip Code" id="weather_zipcode" onkeydown="if (event.keyCode == 13) document.getElementById('changeZip').click()">
+		        		<span class="input-group-btn">
+		        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeZip">Change</button>
+		        		</span>
+		        	</div>
+	        	</div>
+	        	<br>
+	        	<br>
+	        	<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+         		<button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
+          		<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
+	      	</div>
 	    </div>
 
 	   	<div id="menu" class = "view" ng-hide="jeeves.view != 'menu'">
@@ -102,30 +147,26 @@
 			</div>
 	    </div>
 
-      <div id="news" class="view" ng-hide="jeeves.view != 'news'">
-        <div>
-          <h2>News</h2>
-          The feeds from the database will appear here.</div>
-          <div ng-repeat="feed in jeeves.feeds">
-            <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
-          </div>
-          <div>
-            This is an example of pulling RSS feed data using the Google Feed API.<br><br>
-            <b>NYT top news:</b>
-            <div id="feed2"><br></div>
-            <div id="feed"><br>
-            </div>
-            <div id="feed1"><br>
-            </div>
-          <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-          <button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
-          <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
-        </div>
-      </div>
-        <!-- Implement Google Feed API -->
-
-    <script src="js/loadfeeds.js"></script>
-
+	    <!-- Still Working Progress -->
+      	<div id="news" class="view" ng-hide="jeeves.view != 'news'">
+	        <div>
+				<h2>News</h2>
+				The feeds from the database will appear here.
+			</div>
+			<div ng-repeat="feed in jeeves.feeds">
+				<b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
+			</div>
+			<div>
+				This is an example of pulling RSS feed data using the Google Feed API.<br><br>
+				<b>NYT top news:</b>
+				<div id="feed2"><br></div>
+				<div id="feed"><br></div>
+				<div id="feed1"><br></div>
+				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+				<button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
+				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
+	        </div>
+     	</div>
 
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'">
 		    <div>
