@@ -35,6 +35,9 @@
 	<!-- Implement Google Feed API -->
 	<script src="js/loadfeeds.js"></script>
 
+	<!--php.js for PHP functions in JavaScript -->
+	<script src="node_modules/phpjs/functions/url/base64_decode.js"></script>
+
 </head>
 
 <body ng-controller="jeevesCtrl">
@@ -81,6 +84,7 @@
 				<div id="feed2"><br></div>
 				<div id="feed"><br></div>
 				<div id="feed1"><br></div>
+				<button ng-click="getFullArticle()" class="btn btn-default btn-block">Call FeedEnlarger</button>
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
 				<button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
 				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>

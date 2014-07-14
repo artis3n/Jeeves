@@ -28,7 +28,8 @@ jeevesApp.run(function($http) {
     });
 })
 
-jeevesApp.controller("jeevesCtrl", function($scope,$http) {
+
+jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
 
 	$scope.imgurl = function() {
@@ -75,6 +76,16 @@ jeevesApp.controller("jeevesCtrl", function($scope,$http) {
             console.log("Data: " + data.main.temp)
     	});
     	document.getElementById("weather_city").value = "";
+	}
+
+	$scope.getFullArticle= function(){
+
+		console.log("called get Full Article");
+		$http.jsonp("").success(function(){
+			console.log("Worked");
+		}).error(function(){
+
+		});
 	}
 	
 });
