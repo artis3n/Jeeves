@@ -57,8 +57,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	};
 
-	// Changes weather widget to reflect new zip code as enterred by user.
-	// Precondition: zip code is 5 characters long. If not, throws alert error.
 	$scope.changeWeather = function() {
 		$scope.jeeves.city = document.getElementById("weather_city").value;
 		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
