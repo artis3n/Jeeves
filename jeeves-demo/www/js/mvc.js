@@ -23,8 +23,6 @@ jeevesApp.run(function($http) {
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
-            console.log("Weather: " + JSON.stringify(model.weather))
-            console.log("Data: " + data.main.temp)
     });
 })
 
@@ -47,8 +45,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		if(selected == 'back'){
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-			console.log("Returning to " + back + "...");
-			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = back;
 		}else if(selected == 'menu'){
 			$scope.jeeves.previousView.push(selected);

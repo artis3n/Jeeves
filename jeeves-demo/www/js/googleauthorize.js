@@ -45,12 +45,11 @@ function makeApiCall() {
       labelIds: ['INBOX']
     });
     request.execute(function(resp) {
-      console.log(JSON.stringify(resp));
       var content = document.getElementById("message-list");
       angular.forEach(resp, function(message) {
-        var email = gapi.client.gmail.users.messages.get({'id': message.id});
-        var raw = email.payload.parts[0].body.data;
-        console.log(raw);
+        var email = gapi.client.gmail.users.messages.get({'id': message.id, 'format': 'raw'});
+        // var raw = email.payload.parts;
+        // console.log(raw);
         content.innerHTML += JSON.stringify(email) + "<br>";
       })
     });
