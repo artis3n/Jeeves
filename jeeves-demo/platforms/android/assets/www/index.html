@@ -35,9 +35,6 @@
 	<!-- Implement Google Feed API -->
 	<script src="js/loadfeeds.js"></script>
 
-	<!--php.js for PHP functions in JavaScript -->
-	<script src="node_modules/phpjs/functions/url/base64_decode.js"></script>
-
 </head>
 
 <body ng-controller="jeevesCtrl">
@@ -114,7 +111,7 @@
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
 			<div>
-			    <h2 class="text-center">Weather</h2>
+			    <h2 class="text-center">Weather of {{jeeves.city}}</h2>
 			    <div align="center">
 				    <span>
 		    			<div><img ng-src="{{ imgurl() }}"></div>
@@ -127,7 +124,7 @@
     			<br>
 	       		<div align="center">
 		       		<div class="input-group" style="width: 210px">
-		        		<input type="text" class="form-control" placeholder="City Name, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
+		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
 		        		<span class="input-group-btn">
 			        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
 		        		</span>
@@ -154,7 +151,6 @@
 				        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
 			        		</span>
 			        	</div>
-			        	<!-- Requirement in license but will be moved to the Setting Page. -->
 			    		<font size="1">Powered by OpenWeatherMap.org</font>
 				</div>
 				<hr>

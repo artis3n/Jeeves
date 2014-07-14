@@ -22,8 +22,6 @@ jeevesApp.run(function($http) {
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
-            console.log("Weather: " + JSON.stringify(model.weather))
-            console.log("Data: " + data.main.temp)
     });
 })
 
@@ -46,9 +44,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		if(selected == 'back'){
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-			console.log("Returning to " + back + "...");
+			$scope.jeeves.view = back;
+		}else if(selected == 'menu'){
+			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
-			$scope.jeeves.view = back;	
+			$scope.jeeves.view = selected;
+			$scope.jeeves.fourButton = false;
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
@@ -56,8 +57,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	};
 
-	// Changes weather widget to reflect new zip code as enterred by user.
-	// Precondition: zip code is 5 characters long. If not, throws alert error.
 	$scope.changeWeather = function() {
 		$scope.jeeves.city = document.getElementById("weather_city").value;
 		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
