@@ -18,11 +18,11 @@ jeevesApp.run(function($http) {
 	})
 
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
-            model.weather.temp.current = data.main.temp;
-            model.weather.temp.min = data.main.temp_min;
-            model.weather.temp.max = data.main.temp_max;
-            model.weather.clouds = data.clouds ? data.clouds.all : undefined;
-    });
+			model.weather.temp.current = data.main.temp;
+			model.weather.temp.min = data.main.temp_min;
+			model.weather.temp.max = data.main.temp_max;
+			model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+	});
 })
 
 
@@ -30,15 +30,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
 
 	$scope.imgurl = function() {
-                var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
-                if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
-                    return baseUrl + 'sunny.png';
-                } else if ($scope.jeeves.weather.clouds < 90) {
-                   return baseUrl + 'partly_cloudy.png';
-                } else {
-                    return baseUrl + 'cloudy.png';
-                }
-    };
+				var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
+				if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
+					return baseUrl + 'sunny.png';
+				} else if ($scope.jeeves.weather.clouds < 90) {
+				   return baseUrl + 'partly_cloudy.png';
+				} else {
+					return baseUrl + 'cloudy.png';
+				}
+	};
 
 	$scope.changeView = function(selected) {
 		if(selected == 'back'){
@@ -55,14 +55,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.changeWeather = function() {
 		$scope.jeeves.city = document.getElementById("weather_city").value;
 		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
-            model.weather.temp.current = data.main.temp;
-            model.weather.temp.min = data.main.temp_min;
-            model.weather.temp.max = data.main.temp_max;
-            model.weather.clouds = data.clouds ? data.clouds.all : undefined;
-            console.log("Weather: " + JSON.stringify(model.weather))
-            console.log("Data: " + data.main.temp)
-    	});
-    	document.getElementById("weather_city").value = "";
+			model.weather.temp.current = data.main.temp;
+			model.weather.temp.min = data.main.temp_min;
+			model.weather.temp.max = data.main.temp_max;
+			model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+			console.log("Weather: " + JSON.stringify(model.weather))
+			console.log("Data: " + data.main.temp)
+		});
+		document.getElementById("weather_city").value = "";
 	}
 
 	$scope.getFullArticle= function(){
