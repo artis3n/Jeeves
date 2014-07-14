@@ -25,12 +25,15 @@
 	
 	<!-- Implement JQuery for Bootstrap animations. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+ 	<script src="js/bootstrap.min.js"></script>
 
-  <!-- Implement scripts for Google APIs. -->
+  	<!-- Implement scripts for Google APIs. -->
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="https://apis.google.com/js/client.js?onload=load"></script>
+
+	<!-- Implement Google Feed API -->
+	<script src="js/loadfeeds.js"></script>
 
 </head>
 
@@ -58,29 +61,25 @@
 			</div>
 	    </div>
 
-      <div id="news" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
-        <div>
-          <h2>News</h2>
-          The feeds from the database will appear here.</div>
-          <div ng-repeat="feed in jeeves.feeds">
-            <b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
-          </div>
-          <div>
-            This is an example of pulling RSS feed data using the Google Feed API.<br><br>
-            <b>NYT top news:</b>
-            <div id="feed2"><br></div>
-            <div id="feed"><br>
-            </div>
-            <div id="feed1"><br>
-            </div>
-          <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-          <button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
-          <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
-        </div>
-      </div>
-      <!-- Implement Google Feed API -->
-			<script src="js/loadfeeds.js"></script>
-
+      	<div id="news" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
+	        <div>
+				<h2>News</h2>
+				The feeds from the database will appear here.
+			</div>
+			<div ng-repeat="feed in jeeves.feeds">
+				<b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
+			</div>
+			<div>
+				This is an example of pulling RSS feed data using the Google Feed API.<br><br>
+				<b>NYT top news:</b>
+				<div id="feed2"><br></div>
+				<div id="feed"><br></div>
+				<div id="feed1"><br></div>
+				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+				<button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
+				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
+	        </div>
+      	</div>
 
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 		    <div>
