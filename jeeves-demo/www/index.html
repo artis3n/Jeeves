@@ -103,34 +103,24 @@
 		    </div>
 		</div>
 
-		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
+		<div id="main" class="view" ng-hide="jeeves.view != 'main'" ng-cloak>
 	    	<div id="top-button">
 				<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
 				<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
 			</div>
 			<br>
 			<br>
-	      	<div>
-		       	<h2 class="text-center">Weather</h2>
-		        <div align="center">
-		        	<!-- This is the Weather Channel widget.  -->
-		        	<script type="text/javascript" id="weather-widget" src='http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget'></script>
-		        </div>
-	        	<br>
-		   		 <!--     This alert appears when user enters a number that is not a viable zip code (not 5 characters) -->
-	        	<div class="alert alert-danger alert-dismissible text-center" id="zip-error" role="alert" style="display: none">
-					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							Number must be a valid zip code!
-				</div>
-					
-	       		<div align="center">
-		       		<div class="input-group" style="width: 160px">
-		        		<input type="text" class="form-control" placeholder="Zip Code" id="weather_zipcode" onkeydown="if (event.keyCode == 13) document.getElementById('changeZip').click()">
-		        		<span class="input-group-btn">
-		        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeZip">Change</button>
-		        		</span>
-		        	</div>
-	        	</div>
+			<div>
+			    <h2 class="text-center">Weather</h2>
+			    <div align="center">
+				    <span>
+		    			<div><img ng-src="{{ imgurl() }}"></div>
+		    		</span>
+		    		<span>
+		    			<h3>Current: {{ jeeves.weather.temp.current}}</h3>
+		    			min: {{ jeeves.weather.temp.min}}, max: {{ jeeves.weather.temp.max}}
+		    		</span>
+    			</div>
 	      	</div>
 	      	<br>
 	      	<br>
@@ -139,6 +129,38 @@
 				<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
 				
 			</div>
+			<br>
+	      	<br>
+	    </div>
+
+	    <div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
+			<div>
+			    <h2 class="text-center">Weather</h2>
+			    <div align="center">
+				    <span>
+		    			<div><img ng-src="{{ imgurl() }}"></div>
+		    		</span>
+		    		<span>
+		    			<h3>Current: {{ jeeves.weather.temp.current}}</h3>
+		    			min: {{ jeeves.weather.temp.min}}, max: {{ jeeves.weather.temp.max}}
+		    		</span>
+    			</div>
+    			<br>
+	       		<div align="center">
+		       		<div class="input-group" style="width: 200px">
+		        		<input type="text" class="form-control" placeholder="City Name" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeZip').click()">
+		        		<span class="input-group-btn">
+			        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeZip">Change</button>
+		        		</span>
+		        	</div>
+	        	</div>
+	      	</div>
+	      	<br>
+	      	<br>
+	      	<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+		      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
+		      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
+		    </div>
 			<br>
 	      	<br>
 	    </div>
