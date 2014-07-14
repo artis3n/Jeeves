@@ -45,11 +45,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			$scope.jeeves.view = back;
-		}else if(selected == 'menu'){
-			$scope.jeeves.previousView.push(selected);
-			console.log($scope.jeeves.previousView);
-			$scope.jeeves.view = selected;
-			$scope.jeeves.fourButton = false;
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
