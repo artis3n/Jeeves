@@ -49,6 +49,8 @@ function makeApiCall() {
       var content = document.getElementById("message-list");
       angular.forEach(resp, function(message) {
         var email = gapi.client.gmail.users.messages.get({'id': message.id});
+        var raw = email.payload.parts[0].body.data;
+        console.log(raw);
         content.innerHTML += JSON.stringify(email) + "<br>";
       })
     });
