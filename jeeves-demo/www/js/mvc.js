@@ -7,8 +7,7 @@ var model = {
 	city: 'Waltham',
 	country: 'us',
 	feeds: [],
-	fourButton: true,
-	weather: { temp: {}, clouds: null }
+	weather: { temp: {}, clouds: -3 }
 };
 
 var jeevesApp = angular.module("jeevesApp", []);
@@ -34,7 +33,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.imgurl = function() {
                 var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
-                if ($scope.jeeves.weather.clouds < 20) {
+                if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
                     return baseUrl + 'sunny.png';
                 } else if ($scope.jeeves.weather.clouds < 90) {
                    return baseUrl + 'partly_cloudy.png';
@@ -49,17 +48,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			console.log("Returning to " + back + "...");
 			console.log($scope.jeeves.previousView);
-			$scope.jeeves.view = back;
-		}else if(selected == 'menu'){
-			$scope.jeeves.previousView.push(selected);
-			console.log($scope.jeeves.previousView);
-			$scope.jeeves.view = selected;
-			$scope.jeeves.fourButton = false;		
+			$scope.jeeves.view = back;	
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = selected;
-			$scope.jeeves.fourButton = true;
 		}
 	};
 
