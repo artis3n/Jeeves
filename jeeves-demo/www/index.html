@@ -126,15 +126,14 @@
     			</div>
     			<br>
 	       		<div align="center">
-		       		<div class="input-group" style="width: 200px">
-		        		<input type="text" class="form-control" placeholder="City Name" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
+		       		<div class="input-group" style="width: 210px">
+		        		<input type="text" class="form-control" placeholder="City Name, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
 		        		<span class="input-group-btn">
 			        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
 		        		</span>
 		        	</div>
-		        	<br>
 		        	<!-- Requirement in license but will be moved to the Setting Page. -->
-		    		Power by OpenWeatherMap.org
+		    		<font size="1">Powered by OpenWeatherMap.org</font>
 	        	</div>
 	      	</div>
 	    </div>
@@ -146,11 +145,22 @@
 
 		<div id="settings" class="view" ng-hide="jeeves.view != 'settings' " ng-cloak>
 		    <div>
-		      <h2>Settings</h2>
-		      Settings will go here
-		      <button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-		      <button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
-		      <button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
+		     <h2 class="text-center">Settings</h2>
+		     	<div>
+					<h3>Weather</h3>
+					<div class="input-group" style="width: 210px">
+			        		<input type="text" class="form-control" placeholder="City Name, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
+			        		<span class="input-group-btn">
+				        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
+			        		</span>
+			        	</div>
+			        	<!-- Requirement in license but will be moved to the Setting Page. -->
+			    		<font size="1">Powered by OpenWeatherMap.org</font>
+				</div>
+				<hr>
+				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
+				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
+				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
 		    </div>
 	  	</div>
 
