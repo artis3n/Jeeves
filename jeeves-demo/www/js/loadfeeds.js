@@ -46,9 +46,9 @@
         var feedButton1=document.createElement('input');
         feedButton1.setAttribute('type', 'button');
         feedButton1.setAttribute('class', 'btn btn-default');
-      feedButton1.name="Most Popular";
-      feedButton1.setAttribute('value', "Most Popular");
-      feedButton1.onclick=function(){
+        feedButton1.name="Most Popular";
+        feedButton1.setAttribute('value', "Most Popular");
+        feedButton1.onclick=function(){
         clicked=true;
         feedOption="http://feeds.arstechnica.com/arstechnica/index?format=xml";
         //feedOption="http://www.guardian.co.uk/science/mostclipped/rss";
@@ -59,7 +59,7 @@
       feedContainer.appendChild(feedDiv); 
     //Business----------------------------------------------------------------------------------------------
         var feedDiv2 = document.createElement('div');
-                feedDiv2.setAttribute('class', 'btn-group');
+        feedDiv2.setAttribute('class', 'btn-group');
         var feedButton2=document.createElement('input');
         feedButton2.setAttribute('type', 'button');
         feedButton2.setAttribute('class', 'btn btn-default');
@@ -123,13 +123,14 @@
             //button.setAttribute('name', entry.title);
             button0.setAttribute('value', entry0.title);  
           //  button0.setAttribute('ng-click', printArticle());
+              button0.onclick=function(){
+              var div21 = document.createElement("div");
+              div21.setAttribute('class', 'bg-primary');
+              div21.appendChild(document.createTextNode(entry0.contentSnippet));
+              var container2 = document.getElementById("feed1");
+              container2.appendChild(div21);  
           
-            //  var div21 = document.createElement("div");
-            //  div21.setAttribute('class', 'bg-primary');
-            //  div21.appendChild(document.createTextNode(entry0.contentSnippet));
-            //  var container2 = document.getElementById("feed1");
-            //  container2.appendChild(div21);  
-            //});
+             };
 
             //buttonList[0]=button;       
                 div0.appendChild(button0);
