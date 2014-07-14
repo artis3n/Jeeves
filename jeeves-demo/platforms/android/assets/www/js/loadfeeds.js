@@ -36,26 +36,33 @@
 
        	var feedOption="";
       	var clicked=false;
+   //   	var feedDivGroup=document.getElementById("feeds3");
+    //  	feedDivGroup.setAttribute('class', 'btn-group btn-group-justified');
     //Most Popular-------------------------------------------------------------------------------------------
       	var feedContainer = document.getElementById("feed2");
+      	feedContainer.setAttribute('class', 'btn-group btn-group-justified');
       	var feedDiv = document.createElement('div');
+      	feedDiv.setAttribute('class', 'btn-group');
       	var feedButton1=document.createElement('input');
       	feedButton1.setAttribute('type', 'button');
-        feedButton1.setAttribute('class', 'btn btn-default btn-block');
+        feedButton1.setAttribute('class', 'btn btn-default');
    		feedButton1.name="Most Popular";
     	feedButton1.setAttribute('value', "Most Popular");
     	feedButton1.onclick=function(){
     		clicked=true;
-    		feedOption="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
+    		feedOption="http://feeds.arstechnica.com/arstechnica/index?format=xml";
+    		//feedOption="http://www.guardian.co.uk/science/mostclipped/rss";
+    		//feedOption="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
     		move();
     	};
     	feedDiv.appendChild(feedButton1);
     	feedContainer.appendChild(feedDiv);	
     //Business----------------------------------------------------------------------------------------------
       	var feedDiv2 = document.createElement('div');
+      	      	feedDiv2.setAttribute('class', 'btn-group');
       	var feedButton2=document.createElement('input');
       	feedButton2.setAttribute('type', 'button');
-        feedButton2.setAttribute('class', 'btn btn-default btn-block');
+        feedButton2.setAttribute('class', 'btn btn-default');
    		feedButton2.name="Business";
     	feedButton2.setAttribute('value', "Business");
     	feedButton2.onclick=function(){
@@ -67,9 +74,10 @@
     	feedContainer.appendChild(feedDiv2);
    	//Science----------------------------------------------------------------------------------------------
       	var feedDiv3 = document.createElement('div');
+      	 	feedDiv3.setAttribute('class', 'btn-group');
       	var feedButton3=document.createElement('input');
       	feedButton3.setAttribute('type', 'button');
-        feedButton3.setAttribute('class', 'btn btn-default btn-block');
+        feedButton3.setAttribute('class', 'btn btn-default');
    		feedButton3.name="Science";
     	feedButton3.setAttribute('value', "Science");
     	feedButton3.onclick=function(){
@@ -81,9 +89,10 @@
     	feedContainer.appendChild(feedDiv3);
      //Fashion----------------------------------------------------------------------------------------------
       	var feedDiv4 = document.createElement('div');
+      	feedDiv4.setAttribute('class', 'btn-group');
       	var feedButton4=document.createElement('input');
       	feedButton4.setAttribute('type', 'button');
-        feedButton4.setAttribute('class', 'btn btn-default btn-block');
+        feedButton4.setAttribute('class', 'btn btn-default');
    		feedButton4.name="Fashion";
     	feedButton4.setAttribute('value', "Fashion");
     	feedButton4.onclick=function(){
@@ -113,12 +122,15 @@
     				button0.name=entry0.title;
     				//button.setAttribute('name', entry.title);
     				button0.setAttribute('value', entry0.title);	
-    				button0.onclick=function(){
-    					var div21 = document.createElement("div");
-   						div21.appendChild(document.createTextNode(entry0.contentSnippet));
-   				 		var container2 = document.getElementById("feed1");
-   				 		container2.appendChild(div21);	
-    				};
+    			//	button0.setAttribute('ng-click', printArticle());
+    			
+    				//	var div21 = document.createElement("div");
+    				//	div21.setAttribute('class', 'bg-primary');
+   					//	div21.appendChild(document.createTextNode(entry0.contentSnippet));
+   				 	//	var container2 = document.getElementById("feed1");
+   				 	//	container2.appendChild(div21);	
+    				//});
+
     				//buttonList[0]=button;			 	
             		div0.appendChild(button0);
             		container.appendChild(div0);
@@ -133,6 +145,7 @@
     				button1.setAttribute('value', entry1.title);	
     				button1.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-success');
    						div21.appendChild(document.createTextNode(entry1.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -151,6 +164,7 @@
     				button2.setAttribute('value', entry2.title);	
     				button2.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-info');
    						div21.appendChild(document.createTextNode(entry2.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -169,6 +183,7 @@
     				button3.setAttribute('value', entry3.title);	
     				button3.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-warning');
    						div21.appendChild(document.createTextNode(entry3.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -187,6 +202,7 @@
     				button4.setAttribute('value', entry4.title);	
     				button4.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-danger');
    						div21.appendChild(document.createTextNode(entry4.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
