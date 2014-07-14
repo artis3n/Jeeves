@@ -2,11 +2,12 @@
 
 var model = {
 	name: "Jeeves",
-	view: "main",
-	previousView: ["main"],
-	weathersrc: 'http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget',
+	view: "weather",
+	previousView: ["weather"],
+	city: 'Waltham',
+	country: 'us',
 	feeds: [],
-	weather = { temp: {}, clouds: null }
+	weather: { temp: {}, clouds: -3 }
 };
 
 var jeevesApp = angular.module("jeevesApp", []);
@@ -14,15 +15,32 @@ var jeevesApp = angular.module("jeevesApp", []);
 jeevesApp.run(function($http) {
 	$http.get("/model/feeds").success(function(data) {
 		model.feeds = data;
-	});
+	})
 
-	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q=Waltham,us&units=metric&callback=JSON_CALLBACK').success(function(data) {
-		console.log(data)
-	});
+	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+            model.weather.temp.current = data.main.temp;
+            model.weather.temp.min = data.main.temp_min;
+            model.weather.temp.max = data.main.temp_max;
+            model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            console.log("Weather: " + JSON.stringify(model.weather))
+            console.log("Data: " + data.main.temp)
+    });
 })
 
-jeevesApp.controller("jeevesCtrl", function($scope) {
+
+jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
+
+	$scope.imgurl = function() {
+                var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
+                if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
+                    return baseUrl + 'sunny.png';
+                } else if ($scope.jeeves.weather.clouds < 90) {
+                   return baseUrl + 'partly_cloudy.png';
+                } else {
+                    return baseUrl + 'cloudy.png';
+                }
+    };
 
 	$scope.changeView = function(selected) {
 		if(selected == 'back'){
@@ -30,7 +48,7 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			console.log("Returning to " + back + "...");
 			console.log($scope.jeeves.previousView);
-			$scope.jeeves.view = back;
+			$scope.jeeves.view = back;	
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
@@ -38,50 +56,29 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 		}
 	};
 
-	$scope.listMessages = function(userId, query, callback) {
-  		
-  		var getPageOfMessages = function(request, result) {
-    		request.execute(function(resp) {
-      		result = result.concat(resp.messages);
-      		var nextPageToken = resp.nextPageToken;
-      		if (nextPageToken) {
-        		request = gmail.users().messages().list({
-          		'userId': userId,
-          		'pageToken': nextPageToken,
-          		'q': query
-        		}).execute();
-        		getPageOfMessages(request, result);
-     			} else {
-     					callback(result);
-     			}
-    		});
- 			};
-  		var initialRequest = gmail.users().messages().list({
-    		'userId': userId,
-    		'q': query
- 	 		}).execute();
-  		var messages = getPageOfMessages(initialRequest, []);
-
-  		angular.forEach(messages, function(message) {
-  			var node = document.createElement("LI");
-  			var textnode = document.createTextNode(message);
-  			node.appendChild(textnode);
-  			document.getElementById("messageList").appendChild(node);
-  		})
-  	}
-
 	// Changes weather widget to reflect new zip code as enterred by user.
 	// Precondition: zip code is 5 characters long. If not, throws alert error.
 	$scope.changeWeather = function() {
-		var zip = document.getElementById("weather_zipcode").value;
-		if (zip.length == 5) {
-			console.log("Changing weather zip code to: " + zip);
-			document.getElementById('zip-error').style.display="none";
-			$scope.jeeves.weathersrc = 'http://voap.weather.com/weather/oap/' + zip + '?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget';
-			document.getElementById("weather_zipcode").value = "";
-		} else {
-			document.getElementById('zip-error').style.display="block";
-		}
+		$scope.jeeves.city = document.getElementById("weather_city").value;
+		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+            model.weather.temp.current = data.main.temp;
+            model.weather.temp.min = data.main.temp_min;
+            model.weather.temp.max = data.main.temp_max;
+            model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            console.log("Weather: " + JSON.stringify(model.weather))
+            console.log("Data: " + data.main.temp)
+    	});
+    	document.getElementById("weather_city").value = "";
+	}
+
+	$scope.getFullArticle= function(){
+
+		console.log("called get Full Article");
+		$http.jsonp("").success(function(){
+			console.log("Worked");
+		}).error(function(){
+
+		});
 	}
 	
 });
