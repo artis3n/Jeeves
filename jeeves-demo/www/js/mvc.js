@@ -2,11 +2,12 @@
 
 var model = {
 	name: "Jeeves",
-	view: "main",
-	previousView: ["main"],
+	view: "weather",
+	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
 	feeds: [],
+	fourButton: true,
 	weather: { temp: {}, clouds: null }
 };
 
@@ -48,10 +49,16 @@ jeevesApp.controller("jeevesCtrl", function($scope,$http) {
 			console.log("Returning to " + back + "...");
 			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = back;
+		}else if(selected == 'menu'){
+			$scope.jeeves.previousView.push(selected);
+			console.log($scope.jeeves.previousView);
+			$scope.jeeves.view = selected;
+			$scope.jeeves.fourButton = false;		
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = selected;
+			$scope.jeeves.fourButton = true;
 		}
 	};
 
