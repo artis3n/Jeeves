@@ -50,7 +50,9 @@
     	feedButton1.setAttribute('value', "Most Popular");
     	feedButton1.onclick=function(){
     		clicked=true;
-    		feedOption="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
+    		feedOption="http://feeds.arstechnica.com/arstechnica/index?format=xml";
+    		//feedOption="http://www.guardian.co.uk/science/mostclipped/rss";
+    		//feedOption="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
     		move();
     	};
     	feedDiv.appendChild(feedButton1);
@@ -120,12 +122,15 @@
     				button0.name=entry0.title;
     				//button.setAttribute('name', entry.title);
     				button0.setAttribute('value', entry0.title);	
-    				button0.onclick=function(){
-    					var div21 = document.createElement("div");
-   						div21.appendChild(document.createTextNode(entry0.contentSnippet));
-   				 		var container2 = document.getElementById("feed1");
-   				 		container2.appendChild(div21);	
-    				};
+    			//	button0.setAttribute('ng-click', printArticle());
+    			
+    				//	var div21 = document.createElement("div");
+    				//	div21.setAttribute('class', 'bg-primary');
+   					//	div21.appendChild(document.createTextNode(entry0.contentSnippet));
+   				 	//	var container2 = document.getElementById("feed1");
+   				 	//	container2.appendChild(div21);	
+    				//});
+
     				//buttonList[0]=button;			 	
             		div0.appendChild(button0);
             		container.appendChild(div0);
@@ -140,6 +145,7 @@
     				button1.setAttribute('value', entry1.title);	
     				button1.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-success');
    						div21.appendChild(document.createTextNode(entry1.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -158,6 +164,7 @@
     				button2.setAttribute('value', entry2.title);	
     				button2.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-info');
    						div21.appendChild(document.createTextNode(entry2.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -176,6 +183,7 @@
     				button3.setAttribute('value', entry3.title);	
     				button3.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-warning');
    						div21.appendChild(document.createTextNode(entry3.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	
@@ -194,6 +202,7 @@
     				button4.setAttribute('value', entry4.title);	
     				button4.onclick=function(){
     					var div21 = document.createElement("div");
+    					div21.setAttribute('class', 'bg-danger');
    						div21.appendChild(document.createTextNode(entry4.contentSnippet));
    				 		var container2 = document.getElementById("feed1");
    				 		container2.appendChild(div21);	

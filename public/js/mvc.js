@@ -16,7 +16,7 @@ jeevesApp.run(function($http) {
 	})
 })
 
-jeevesApp.controller("jeevesCtrl", function($scope) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
 
 	$scope.changeView = function(selected) {
@@ -78,5 +78,22 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 			document.getElementById('zip-error').style.display="block";
 		}
 	}
+
+	//print article modified, index button modified, cant call printArticle in loads feeds, loads feeds modified, buy filterfive
+	$scope.printArticle = function(){
+
+	console.log("called printArticle");
+	var dv="http://feedenlarger.com";
+	var dc="/makefulltextfeed.php?url=www.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FHomePage.xml&max=1&links=remove&exc=1&format=json&submit=Create+full+text+feed";
+	$http.jsonp("http://feedenlarger.com/makefulltextfeed.php?url=www.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FHomePage.xml&max=1&links=remove&exc=1&format=json&submit=Create+full+text+feed").
+	success(function(data){
+		var x=data;
+		console.log(x);
+	}).error(function(data){
+		console.log("stops here");
+	//	$scope.article="Request Failed";
+	});
+
+}
 	
 });
