@@ -5,7 +5,8 @@ var model = {
 	view: "main",
 	previousView: ["main"],
 	weathersrc: 'http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget',
-	feeds: []
+	feeds: [],
+	weather = { temp: {}, clouds: null }
 };
 
 var jeevesApp = angular.module("jeevesApp", []);
@@ -13,7 +14,11 @@ var jeevesApp = angular.module("jeevesApp", []);
 jeevesApp.run(function($http) {
 	$http.get("/model/feeds").success(function(data) {
 		model.feeds = data;
-	})
+	});
+
+	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q=Waltham,us&units=metric&callback=JSON_CALLBACK').success(function(data) {
+		console.log(data)
+	});
 })
 
 jeevesApp.controller("jeevesCtrl", function($scope) {
