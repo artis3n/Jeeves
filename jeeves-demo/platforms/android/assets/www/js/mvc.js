@@ -2,8 +2,8 @@
 
 var model = {
 	name: "Jeeves",
-	view: "weather",
-	previousView: ["weather"],
+	view: "main",
+	previousView: ["main"],
 	weathersrc: 'http://voap.weather.com/weather/oap/02453?template=LAWNV&par=3000000007&unit=0&key=twciweatherwidget',
 	feeds: []
 };
