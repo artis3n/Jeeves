@@ -16,7 +16,7 @@ jeevesApp.run(function($http) {
 	})
 })
 
-jeevesApp.controller("jeevesCtrl", function($scope) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
 
 	$scope.changeView = function(selected) {
@@ -45,6 +45,16 @@ jeevesApp.controller("jeevesCtrl", function($scope) {
 		} else {
 			document.getElementById('zip-error').style.display="block";
 		}
+	}
+
+	$scope.getFullArticle= function(){
+
+		console.log("called get Full Article");
+		$http.jsonp("").success(function(){
+			console.log("Worked");
+		}).error(function(){
+
+		});
 	}
 	
 });
