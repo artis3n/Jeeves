@@ -1,0 +1,25 @@
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes.dex : \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/nl/xservices/plugins/LaunchMyApp.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/R$drawable.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/R$attr.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/HelloWorld.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/BuildConfig.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/R$string.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/R.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/com/phonegap/helloworld/R$xml.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowserDialog.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$3.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$4$1.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$1.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$1.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$3.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$2.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$2.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$InAppBrowserClient.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$4.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$4.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppChromeClient.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/classes/org/apache/cordova/plugin/TTS.class \
+/home/akalfus/Dropbox/College_Work/JBS/Jeeves/jeeves-demo/platforms/android/ant-build/dexedLibs/classes-0ad5a26204d91ebdfaba00c04b167aa3.jar \
