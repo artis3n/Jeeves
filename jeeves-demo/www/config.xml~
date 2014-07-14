@@ -68,4 +68,5 @@
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="*" />
     <gap:plugin name="com.geotab.phonegap.tts" version="0.0.1" />
+    <gap:plugin name="org.li8.inappbrowser" version="0.1" />
 </widget>

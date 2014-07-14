@@ -49,5 +49,9 @@ function makeApiCall() {
         content.innerHTML += JSON.stringify(message) + "<br>";
       })
     });
+    angular.forEach(request, function(message) {
+      var email = gapi.client.gmail.users.messages.get(message.id);
+      console.log(email.payload);
+    })
   });
 }
