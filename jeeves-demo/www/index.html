@@ -112,29 +112,30 @@
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
 			<div>
 				<h2 class="text-center">Weather of {{jeeves.city}}</h2>
-				<div align="center">
-					<span>
-						<div><img ng-src="{{ imgurl() }}"></div>
-					</span>
-					<span>
-						<h3>Current: {{ jeeves.weather.temp.current}}&deg F</h3>
-						min: {{ jeeves.weather.temp.min}}, max: {{ jeeves.weather.temp.max}}
-					</span>
-				</div>
-				<br>
-				<div align="center">
-					<div class="input-group" style="width: 210px">
-						<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
-						</span>
-					</div>
-					<font size="1">Powered by OpenWeatherMap.org</font>
-				</div>
-			</div>
-		</div>
+			    <div align="center">
+				    <span>
+		    			<div><img ng-src="{{ imgurl() }}"></div>
+		    		</span>
+		    		<span>
+		    			<h3>Current: {{ jeeves.weather.temp.current}}&deg <span class="degree-letter">F</span></h3>
+		    			min: {{ jeeves.weather.temp.min}}&deg <span class="degree-letter">F</span>, max: {{ jeeves.weather.temp.max}}&deg <span class="degree-letter">F</span>
+		    		</span>
+    			</div>
+    			<br>
+	       		<div align="center">
+		       		<div class="input-group" style="width: 210px">
+		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
+		        		<span class="input-group-btn">
+			        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
+		        		</span>
+		        	</div>
+		        	<!-- Requirement in license but will be moved to the Setting Page. -->
+		    		<font size="1">Powered by OpenWeatherMap.org</font>
+	        	</div>
+	      	</div>
+	    </div>
 
-		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
+ 		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
 			<p>Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</p>
 			<button ng-click="changeView('back')">Back to Menu</button>
 		</div>
