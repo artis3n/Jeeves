@@ -41,13 +41,19 @@ function handleAuthClick(event) {
 // Load the API and make an API call.  Display the results on the screen.
 function makeApiCall() {
   gapi.client.load('gmail', 'v1', function() {
-    var request = gapi.client.gmail.users.messages.list();
+    var request = gapi.client.gmail.users.messages.list({
+      labelIds: ['INBOX']
+    });
     request.execute(function(resp) {
+      console.log(JSON.stringify(resp));
       var content = document.getElementById("message-list");
-      // console.log(JSON.stringify(resp));
       angular.forEach(resp, function(message) {
-        content.innerHTML += JSON.stringify(message) + "<br>";
+        var email = gapi.client.gmail.users.messages.get({'id': message.id});
+        var raw = email.payload.parts[0].body.data;
+        console.log(raw);
+        content.innerHTML += JSON.stringify(email) + "<br>";
       })
     });
+    console.log(JSON.stringify(request));
   });
 }
