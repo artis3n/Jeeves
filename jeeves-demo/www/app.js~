@@ -4,13 +4,14 @@
 'use strict';
 var express = require('express');
 var bodyParser = require('body-parser'); // this allows us to pass JSON values to the server (see app.put below)
+var php = require('phpjs');
 var app = express();
 
 var monk = require('monk');
 var db = monk('localhost:27017/jeevesdb');
 
 // serve static content from the public folder 
-app.use("/", express.static(__dirname + './'));
+app.use("/", express.static(__dirname));
 
 
 // parse the bodies of all other queries as json
