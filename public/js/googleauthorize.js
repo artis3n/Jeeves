@@ -45,12 +45,12 @@ function makeApiCall() {
       labelIds: ['INBOX']
     });
     request.execute(function(resp) {
-      console.log(JSON.stringify(resp.messages));
       var content = document.getElementById("message-list");
       if (resp.messages == null) {
         content.innerHTML = "<b>Your inbox is empty.</b>";
       } else {
         content.innerHTML = "";
+        var count = 0;
         angular.forEach(resp.messages, function(message) {
           var email = gapi.client.gmail.users.messages.get({
           'id': message.id
@@ -62,22 +62,27 @@ function makeApiCall() {
                 header = item.value;
               }
             })
-            content.innerHTML += '<b>Subject: ' + header + '</b><br>'
+            var contentType = "";
+            angular.forEach(stuff.payload.parts[0].headers, function(item) {
+              if (item.name == "Content-Type") {
+                contentType = item.value;
+              }
+            })
+            content.innerHTML += '<b>Subject: ' + header + '</b><br>';
             var contents = stuff.payload.parts[0].body.data;
-            content.innerHTML += base64.decode(contents) + "<br><br>";
+            try {
+              content.innerHTML += base64.decode(contents) + "<br><br>";
+              console.log(header + ": " + contentType + " - OK");
+            } catch (err) {
+              count++;
+              var error = header + ": " + contentType + " - NO " + message.id
+              console.log(error.toUpperCase());
+            }
+            content.innerHTML += "<br><b>ERROR COUNT: " + count + "</b>";
+            content.innerHTML += "<br><b>TOTAL EMAILS: " + resp.messages.length + "</b>";
+            content.innerHTML += "<br><b>EMAIL PERCENTAGE: " + Math.round((count / resp.messages.length) * 100) + "%</b>";
           })
         })
-      // angular.forEach(resp, function(message) {
-      //   var email = gapi.client.gmail.users.messages.get({
-      //     'id': '14736b951e854c09'
-      //   });
-      //   email.execute(function(stuff) {
-      //     if ()
-      //     content.innerHTML += '<b>Subject: ' + stuff.payload.headers[15].value + '</b><br>'
-      //     var contents = stuff.payload.parts[0].body.data;
-      //     content.innerHTML += decodeURIComponent(escape(contents)) + "<br><br>";
-      //   })
-      // })
       }
     });
   });
