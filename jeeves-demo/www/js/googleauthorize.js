@@ -56,7 +56,7 @@ function makeApiCall() {
       email.execute(function(stuff) {
         content.innerHTML += '<b>Subject: ' + stuff.payload.headers[15].value + '</b><br>'
         var contents = stuff.payload.parts[0].body.data;
-        content.innerHTML += decodeURIComponent(contents) + "<br><br>";
+        content.innerHTML += utf8.decode(contents) + "<br><br>";
       })
       // angular.forEach(resp, function(message) {
       //   var email = gapi.client.gmail.users.messages.get({
