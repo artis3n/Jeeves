@@ -45,19 +45,28 @@ function makeApiCall() {
       labelIds: ['INBOX']
     });
     request.execute(function(resp) {
+      console.log(JSON.stringify(resp.messages));
       var content = document.getElementById("message-list");
       if (resp.messages == null) {
         content.innerHTML = "<b>Your inbox is empty.</b>";
       } else {
         content.innerHTML = "";
-        var email = gapi.client.gmail.users.messages.get({
-          'id': '14736b951e854c09'
-        });
-      email.execute(function(stuff) {
-        content.innerHTML += '<b>Subject: ' + stuff.payload.headers[15].value + '</b><br>'
-        var contents = stuff.payload.parts[0].body.data;
-        content.innerHTML += utf8.decode(contents) + "<br><br>";
-      })
+        angular.forEach(resp.messages, function(message) {
+          var email = gapi.client.gmail.users.messages.get({
+          'id': message.id
+          });
+          email.execute(function(stuff) {
+            var header = "";
+            angular.forEach(stuff.payload.headers, function(item) {
+              if (item.name == "Subject") {
+                header = item.value;
+              }
+            })
+            content.innerHTML += '<b>Subject: ' + header + '</b><br>'
+            var contents = stuff.payload.parts[0].body.data;
+            content.innerHTML += base64.decode(contents) + "<br><br>";
+          })
+        })
       // angular.forEach(resp, function(message) {
       //   var email = gapi.client.gmail.users.messages.get({
       //     'id': '14736b951e854c09'
