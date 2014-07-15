@@ -91,8 +91,7 @@
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
 				<h2>Email</h2>
-				<div style="padding-bottom: 50px">Welcome to the email notification page.
-					<div style="padding-top: 20px"></div>
+				<div style="padding-bottom: 10px">Welcome to the email notification page.
 						<div>
 							<!--Button for the user to click to initiate auth sequence -->
 							<button id="authorize-button" class="btn btn-default">Authorize</button>
@@ -100,7 +99,7 @@
 							<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 						</div>
 					</div>
-					<div style="padding-top: 30px; padding-bottom: 30px" id="message-content-here">
+					<div style="padding-bottom: 30px" id="message-content-here">
 						<ul id="message-list"></ul>
 					</div>
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
