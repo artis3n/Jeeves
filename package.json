@@ -1,0 +1,13 @@
+{
+  "name": "app",
+  "author": "Ari Kalfus, Sam Raphael, Burak Sezer, Wes Wei Qian",
+  "scripts": {
+    "start": "nodejs --harmony ./app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.4",
+    "mongodb": "^1.4.7",
+    "monk": "^0.9.0"
+  }
+}
