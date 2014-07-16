@@ -7,6 +7,7 @@ var model = {
 	city: 'Waltham',
 	country: 'us',
 	feeds: [],
+	articles: [],
 	weather: { temp: {}, clouds: -3 }
 };
 
@@ -68,9 +69,42 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.getFullArticle= function(){
 
 		console.log("called get Full Article");
-		$http.jsonp("").success(function(){
+		$http.get('http://beta.content.guardianapis.com/world/2014/jul/15/israel-approves-egyptian-ceasefire-in-gaza-live-updates?format=json&show-fields=all&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			console.log("Worked");
-		}).error(function(){
+			console.log(data.response.content.webTitle);
+		});
+	}
+
+	$scope.getListArticle=function(section){
+	//	var x=section;
+		var x='politics';
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		//	console.log(data.response.results[1].webTitle);
+			$scope.jeeves.articles=data.response.results;
+			//console.log("asdf"+$scope.jeeves.articles[1].webTitle);
+
+	  var container = document.getElementById("buttonTitles");
+      //  var buttonList=[];
+
+      //First Entry------------------------------------------------------------------------------------------------------
+      var entry0 = $scope.jeeves.articles[0];
+      console.log(entry0);
+      var div0 = document.createElement("div");
+      var button0 = document.createElement('input');
+      button0.setAttribute('type', 'button');
+      button0.setAttribute('class', 'btn btn-default btn-block');
+      button0.name=entry0.webTitle;
+      //button.setAttribute('name', entry.title);
+      button0.setAttribute('value', entry0.webTitle);  
+      button0.onclick=function(){
+      		var div21 = document.createElement("div");
+     		div21.appendChild(document.createTextNode(entry0.fields.body));
+     	 	var container2 = document.getElementById("feed1");
+    	  	container2.appendChild(div21);       
+			}
+		      	div0.appendChild(button0);
+       		   container.appendChild(div0);
+
 
 		});
 	}

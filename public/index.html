@@ -72,9 +72,34 @@
 				<h2>News</h2>
 				The feeds from the database will appear here.
 			</div>
-			<div ng-repeat="feed in jeeves.feeds">
-				<b>{{feed.name}}</b>: <i>{{feed.rss}}</i>
+			<div class="btn-group">
+				<button ng-click="getListArticle('US')" class="btn btn-default btn-block">US</button>
+				<button ng-click="getListArticle('World')" class="btn btn-default btn-block">World</button>
+				<button ng-click="getListArticle('Sports')" class="btn btn-default btn-block">Sports</button>
+				<button ng-click="getListArticle('Business')" class="btn btn-default btn-block">Business</button>
+				<button ng-click="getListArticle('Money')" class="btn btn-default btn-block">Money</button>
+				<button ng-click="getListArticle('Environment')" class="btn btn-default btn-block">Environment</button>
+				<button ng-click="getListArticle('Science')" class="btn btn-default btn-block">Science</button>
+				<button ng-click="getListArticle('Tech')" class="btn btn-default btn-block">Tech</button>
+
 			</div>
+			<div id="buttonTitles"><br>
+				
+
+
+
+		<!--		<button ng-click="getFullArticle('{{article[0].webTitle}}')" class="btn btn-default btn-block">{{article[0].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[1].webTitle}}')" class="btn btn-default btn-block">{{article[1].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[2].webTitle}}')" class="btn btn-default btn-block">{{article[2].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[3].webTitle}}')" class="btn btn-default btn-block">{{article[3].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[4].webTitle}}')" class="btn btn-default btn-block">{{article[4].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[5].webTitle}}')" class="btn btn-default btn-block">{{article[5].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[6].webTitle}}')" class="btn btn-default btn-block">{{article[6].webTitle}}</button>
+				<button ng-click="getFullArticle('{{article[7].webTitle}}')" class="btn btn-default btn-block">{{article[7].webTitle}}</button>
+		-->
+			</div>
+		
+
 			<div>
 				This is an example of pulling RSS feed data using the Google Feed API.<br><br>
 				<b>NYT top news:</b>
