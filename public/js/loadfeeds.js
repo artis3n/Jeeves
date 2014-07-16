@@ -13,7 +13,7 @@ function initialize() {
 feedButton1.setAttribute('value', "Most Popular");
 feedButton1.onclick=function(){
   clicked=true;
-  feedOption="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
+  feedOption="http://www.theguardian.com/us/rss";
   move();
 };
 feedDiv.appendChild(feedButton1);
