@@ -6,6 +6,7 @@ var model = {
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
+	section: 'news',
 	feeds: [],
 	articles: [],
 	weather: { temp: {}, clouds: -3 }
@@ -46,6 +47,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			$scope.jeeves.view = back;
+		}else if (selected == 'news'){
+			$scope.jeeves.previousView.push(selected);
+			console.log($scope.jeeves.previousView);
+			$scope.jeeves.view = selected;
+			$scope.getListArticle();
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
@@ -66,18 +72,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     	document.getElementById("weather_city").value = "";
 	}
 
-	$scope.getFullArticle= function(){
-
-		console.log("called get Full Article");
-		$http.get('http://beta.content.guardianapis.com/world/2014/jul/15/israel-approves-egyptian-ceasefire-in-gaza-live-updates?format=json&show-fields=all&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			console.log("Worked");
-			console.log(data.response.content.webTitle);
-		});
+	$scope.changeSection=function(selected){
+		$scope.jeeves.section = selected;
+		$scope.getListArticle();
 	}
 
-	$scope.getListArticle=function(section){
-	//	var x=section;
-		var x='politics';
+	$scope.getListArticle=function(){
+		var x=$scope.jeeves.section;
+
 		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		//	console.log(data.response.results[1].webTitle);
 			$scope.jeeves.articles=data.response.results;
@@ -92,8 +94,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
       var entry0 = $scope.jeeves.articles[0]; var div0 = document.createElement("div"); var button0 = document.createElement('input');
       button0.setAttribute('type', 'button'); button0.setAttribute('class', 'btn btn-default btn-block'); button0.name=entry0.webTitle; button0.setAttribute('value', entry0.webTitle);  
       button0.onclick=function(){ var container0 = document.getElementById("feed1"); container0.setAttribute('class', 'alert alert-success'); container0.innerHTML=entry0.fields.body;}
-		span.appendChild(button0.onclick);
-		div0.appendChild(button0); container.appendChild(div0); span.appendChild(container);
+	//	span.appendChild(button0.onclick);
+		div0.appendChild(button0); container.appendChild(div0);// span.appendChild(container);
 	      //Second Entry------------------------------------------------------------------------------------------------------
       var entry1 = $scope.jeeves.articles[1]; var div1 = document.createElement("div"); var button1 = document.createElement('input');
       button1.setAttribute('type', 'button'); button1.setAttribute('class', 'btn btn-default btn-block'); button1.name=entry1.webTitle; button1.setAttribute('value', entry1.webTitle);  
