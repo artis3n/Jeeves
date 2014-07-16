@@ -87,6 +87,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	  var span =document.createElement("span");
 	  var container = document.getElementById("buttonTitles");
+	  container.innerHTML="";
 	  container.setAttribute('class', 'btn-group-vertical');
       //  var buttonList=[];
 
