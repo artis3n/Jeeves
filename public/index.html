@@ -104,10 +104,12 @@
 						<button id="authorize-button" class="btn btn-default">Authorize</button>
 						<!-- Handle Google Authorization and pulling
 						email messages -->
-						<div class="form-group col-xs-5" id="label-div" style="display: none">
-							<select multiple class="form-control" placeholder=".col-xs-5" id="label-list"></select>
-							<p class="help-block">Hold <kbd>ctrl</kbd> to select from which labels you would like to read email.</p>
-							<button type="submit" class="btn btn-default">Submit</button>
+						<div style="width: 250px">
+							<div class="form-group" id="label-div" style="display: none">
+								<select multiple class="form-control" id="label-list"></select>
+								<p class="help-block">Hold <kbd>ctrl</kbd> to select from which labels you would like to read email.</p>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</div>
 						</div>
 						<script src="js/googleauthorize.js"></script>
 						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
