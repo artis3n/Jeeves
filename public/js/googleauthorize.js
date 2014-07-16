@@ -57,10 +57,19 @@ function getLabels() {
 }
 
 function postLabels(labels) {
+  document.getElementById('label-div').setAttribute('style', 'display: block');
   var labelList = document.getElementById("label-list");
+  angular.forEach(labels, function(label) {
+    var option = document.createElement("option");
+    option.setAttribute('value', label);
+    option.setAttribute('placeholder', '.col-xs-5');
+    option.innerHTML = label;
+    labelList.appendChild(option);
+  })
 }
 
 function getEmail() {
+
   var requestEmails = gapi.client.gmail.users.messages.list({
     labelIds: jeevesApp.emailFolder
   });
@@ -89,13 +98,7 @@ function getEmail() {
           })
           content.innerHTML += '<b>Subject: ' + header + '</b><br>';
           var contents = stuff.payload.parts[0].body.data;
-          try {
-            content.innerHTML += base64.decode(contents) + "<br><br>";
-            console.log(header + ": " + contentType + " - OK");
-          } catch (err) {
-            var error = header + ": " + contentType + " - NO " + message.id
-            console.log(error.toUpperCase());
-          };
+          content.innerHTML += base64.decode(contents) + "<br><br>";
         })
       })
     }
