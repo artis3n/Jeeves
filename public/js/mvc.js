@@ -6,6 +6,7 @@ var model = {
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
+	emailFolder: ['INBOX'],
 	feeds: [],
 	weather: { temp: {}, clouds: -3 }
 };
