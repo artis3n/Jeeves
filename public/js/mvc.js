@@ -6,6 +6,7 @@ var model = {
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
+	section: 'news',
 	feeds: [],
 	articles: [],
 	weather: { temp: {}, clouds: -3 }
@@ -46,6 +47,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			$scope.jeeves.view = back;
+		}else if (selected == 'news'){
+			$scope.jeeves.previousView.push(selected);
+			console.log($scope.jeeves.previousView);
+			$scope.jeeves.view = selected;
+			$scope.getListArticle();
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			console.log($scope.jeeves.previousView);
@@ -66,18 +72,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     	document.getElementById("weather_city").value = "";
 	}
 
-	$scope.getFullArticle= function(){
-
-		console.log("called get Full Article");
-		$http.get('http://beta.content.guardianapis.com/world/2014/jul/15/israel-approves-egyptian-ceasefire-in-gaza-live-updates?format=json&show-fields=all&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			console.log("Worked");
-			console.log(data.response.content.webTitle);
-		});
+	$scope.changeSection=function(selected){
+		$scope.jeeves.section = selected;
+		$scope.getListArticle();
 	}
 
-	$scope.getListArticle=function(section){
-	//	var x=section;
-		var x='politics';
+	$scope.getListArticle=function(){
+		var x=$scope.jeeves.section;
+
 		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		//	console.log(data.response.results[1].webTitle);
 			$scope.jeeves.articles=data.response.results;
