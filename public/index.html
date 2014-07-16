@@ -35,8 +35,8 @@
 	<!-- Implement Google Feed API -->
 	<script src="js/loadfeeds.js"></script>
 
+	<!-- Better base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
-	<script src="js/webtoolkit.utf8.js"></script>
 
 </head>
 
@@ -98,6 +98,8 @@
 						<div>
 							<!--Button for the user to click to initiate auth sequence -->
 							<button id="authorize-button" class="btn btn-default">Authorize</button>
+							<!-- Handle Google Authorization and pulling
+							email messages -->
 							<script src="js/googleauthorize.js"></script>
 							<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 						</div>
