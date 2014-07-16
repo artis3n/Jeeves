@@ -87,23 +87,31 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
       //  var buttonList=[];
 
       //First Entry------------------------------------------------------------------------------------------------------
-      var entry0 = $scope.jeeves.articles[0];
-      console.log(entry0);
-      var div0 = document.createElement("div");
-      var button0 = document.createElement('input');
-      button0.setAttribute('type', 'button');
-      button0.setAttribute('class', 'btn btn-default btn-block');
-      button0.name=entry0.webTitle;
-      //button.setAttribute('name', entry.title);
-      button0.setAttribute('value', entry0.webTitle);  
-      button0.onclick=function(){
-      		var div21 = document.createElement("div");
-     		div21.appendChild(document.createTextNode(entry0.fields.body));
-     	 	var container2 = document.getElementById("feed1");
-    	  	container2.appendChild(div21);       
-			}
-		      	div0.appendChild(button0);
-       		   container.appendChild(div0);
+      var entry0 = $scope.jeeves.articles[0]; var div0 = document.createElement("div"); var button0 = document.createElement('input');
+      button0.setAttribute('type', 'button'); button0.setAttribute('class', 'btn btn-default btn-block'); button0.name=entry0.webTitle; button0.setAttribute('value', entry0.webTitle);  
+      button0.onclick=function(){ document.getElementById("feed1").innerHTML=entry0.fields.body;}
+		       div0.appendChild(button0); container.appendChild(div0);
+	      //Second Entry------------------------------------------------------------------------------------------------------
+      var entry1 = $scope.jeeves.articles[1]; var div1 = document.createElement("div"); var button1 = document.createElement('input');
+      button1.setAttribute('type', 'button'); button1.setAttribute('class', 'btn btn-default btn-block'); button1.name=entry1.webTitle; button1.setAttribute('value', entry1.webTitle);  
+      button1.onclick=function(){ document.getElementById("feed1").innerHTML=entry1.fields.body;}
+		       div1.appendChild(button1); container.appendChild(div1);
+		             //Third Entry------------------------------------------------------------------------------------------------------
+      var entry2 = $scope.jeeves.articles[2]; var div2 = document.createElement("div"); var button2 = document.createElement('input');
+      button2.setAttribute('type', 'button'); button2.setAttribute('class', 'btn btn-default btn-block'); button2.name=entry2.webTitle; button2.setAttribute('value', entry2.webTitle);  
+      button2.onclick=function(){ document.getElementById("feed1").innerHTML=entry2.fields.body;}
+		       div2.appendChild(button2); container.appendChild(div2);
+		             //First Entry------------------------------------------------------------------------------------------------------
+      var entry3 = $scope.jeeves.articles[3]; var div3 = document.createElement("div"); var button3 = document.createElement('input');
+      button3.setAttribute('type', 'button'); button3.setAttribute('class', 'btn btn-default btn-block'); button3.name=entry3.webTitle; button3.setAttribute('value', entry3.webTitle);  
+      button3.onclick=function(){ document.getElementById("feed1").innerHTML=entry3.fields.body;}
+		       div3.appendChild(button3); container.appendChild(div3);
+		             //First Entry------------------------------------------------------------------------------------------------------
+      var entry4 = $scope.jeeves.articles[4]; var div4 = document.createElement("div"); var button4 = document.createElement('input');
+      button4.setAttribute('type', 'button'); button4.setAttribute('class', 'btn btn-default btn-block'); button4.name=entry4.webTitle; button4.setAttribute('value', entry4.webTitle);  
+      button4.onclick=function(){ document.getElementById("feed1").innerHTML=entry4.fields.body;}
+		       div4.appendChild(button4); container.appendChild(div4);
+
 
 
 		});
