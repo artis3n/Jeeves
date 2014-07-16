@@ -63,8 +63,6 @@
 			<button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
 			<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 			<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
-			<button ng-click="changeView('speech')" class="btn btn-default btn-block">Speech</button>
-			<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
 			<hr>
 			<button ng-click="changeView('back')" class="btn btn-warning btn-block">Go Back (Development)</button>   
 			</div>
@@ -85,7 +83,6 @@
 				<div id="feed"><br></div>
 				<div id="feed1"><br></div>
 				<button ng-click="getFullArticle()" class="btn btn-default btn-block">Call FeedEnlarger</button>
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
 				<button ng-click="changeView('speak')" class="btn btn-default btn-block">Use speak</button>
 				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>
 			</div>
@@ -103,13 +100,10 @@
 							<script src="js/googleauthorize.js"></script>
 							<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 						</div>
-					</div>
-					<div style="padding-bottom: 30px" id="message-content-here">
-						<ul id="message-list"></ul>
-					</div>
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
-				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>   
+				</div>
+				<div style="padding-bottom: 30px" id="message-content-here">
+					<ul id="message-list"></ul>
+				</div>
 			</div>
 		</div>
 
@@ -140,36 +134,36 @@
 	    </div>
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
-			<p>Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</p>
-			<button ng-click="changeView('back')">Back to Menu</button>
+ 			<h2 class="text-center">About</h2>
+			<p style="text-indent: 5em;"><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font></p>
 		</div>
 
 		<div id="settings" class="view" ng-hide="jeeves.view != 'settings' " ng-cloak>
 			<div>
-			 <h2 class="text-center">Settings</h2>
-				<div>
-					<h3>Weather</h3>
-					<div class="input-group" style="width: 210px">
-							<input type="text" class="form-control" placeholder="City Name, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
-							</span>
-						</div>
-						<font size="1">Powered by OpenWeatherMap.org</font>
+			<h2 class="text-center">Settings</h2>
+			<div>
+				<h3>Weather</h3>
+				<h4><i>Change Location</i></h4>
+				<div class="input-group" style="width: 210px">
+					<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
+					</span>
 				</div>
-				<hr>
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
-				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
+				<p><font size="1">Powered by OpenWeatherMap.org</font></p>
+			</div>
+			<hr>
 			</div>
 		</div>
 
 		<div id="contact" class="view" ng-hide="jeeves.view != 'contact'" ng-cloak>
 			<div>
-				<h2>Contact Us</h2>
-				Contact us at:...
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go back to Menu</button>
-				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>
+				<h2 class="text-center">Contact Us</h2>
+				<p style="text-indent: 5em;"><font size="4"> Co-Founders: </font></p>
+				<p style="text-indent: 5em;"><img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10314024_4131147334668_1448501559062959054_n.jpg?oh=a3e89dcd1c71d0daac430ec2b2cf9a54&oe=5453FA50&__gda__=1415069884_c2b2d9c31111b5341d5bf53abd5aaf7d" alt="Ari Kalfus" width="60" height="80"><b><font size = "4">  Ari Kalfus</font></b>: akalfus@brandeis.edu</p>
+				<p style="text-indent: 5em;"><img src="https://scontent-a.xx.fbcdn.net/hphotos-xaf1/t1.0-9/1604413_10202736434833868_462765446_n.jpg" alt="Burak Sezer" width="60" height="80"><b><font size = "4">  Burak Sezer</font></b>: bsezer@brandeis.edu</p>
+				<p style="text-indent: 5em;"><img src="https://scontent-b.xx.fbcdn.net/hphotos-xpf1/t1.0-9/1607065_10151908263002308_212651559_n.jpg" alt="Sam Raphael" width="60" height="60"><b><font size = "4">  Sam Raphael</font></b>: sraph@brandeis.edu</p>	
+				<p style="text-indent: 5em;"><img src="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xfp1/t1.0-9/10489684_670812976326270_6814612110053956320_n.jpg" alt="Wesley Wei Qian" width="60" height="60"><b><font size = "4">  Wesely Wei Qian</font></b>: weschin@brandeis.edu</p>					
 			</div>
 		 </div>
 
@@ -177,9 +171,6 @@
 			<div>
 				<h2>Favorites</h2>
 				Favorites will go here<br>
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
-				<button ng-click="changeView('speech')" class="btn btn-default btn-block">Use speech</button>  
-				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button>  
 			</div>
 		</div>
 
