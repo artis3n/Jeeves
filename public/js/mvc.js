@@ -4,6 +4,7 @@ var model = {
 	name: "Jeeves",
 	view: "weather",
 	newsViews:"newsArticles",
+	showNumber: 5,
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
@@ -74,6 +75,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.changeSection=function(selected){
 		$scope.jeeves.section = selected;
+		$scope.jeeves.showNumber = 5;
 		$scope.getListArticle();
 	}
 
@@ -87,7 +89,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			container.innerHTML="";
 			container.setAttribute('class', 'btn-group btn-block');
 
-			for (i = 0; i < 10; i++){
+			for (i = 0; i < $scope.jeeves.showNumber; i++){
 				var entry = $scope.jeeves.articles[i]; 
 				var div = document.createElement("div"); 
 				var button = document.createElement('input');
@@ -104,8 +106,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
 				}
 				button.ondblclick=function(){
-					var container = document.getElementById(this.id+"_div"); 
-					container.outerHTML="";
+					var containerContent = document.getElementById(this.id+"_div"); 
+					containerContent.outerHTML="";
 					var divSub = document.createElement("div");
 					divSub.setAttribute('id',this.id+"_div");
 					div.appendChild(divSub);
@@ -114,6 +116,23 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				div.appendChild(divSub);
 				container.appendChild(div);
 			}
+
+			if($scope.jeeves.showNumber < 10){
+				var buttonMore = document.createElement('input');
+				buttonMore.setAttribute('type', 'button'); 
+				buttonMore.setAttribute('class', 'btn btn-default btn-block');
+				buttonMore.name="More"; 
+				buttonMore.setAttribute('value', "More");
+				buttonMore.addEventListener("click", $scope.updateShowAmount)
+				container.appendChild(buttonMore); 
+			}
 		});
+	}
+
+	$scope.updateShowAmount=function(){
+		console.log("Get there");
+		$scope.jeeves.showNumber = $scope.jeeves.showNumber +5;
+		console.log("Show Number: " + $scope.jeeves.showNumber);
+		$scope.getListArticle();
 	}
 });
