@@ -60,8 +60,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	};
 
-	$scope.changeWeather = function() {
-		$scope.jeeves.city = document.getElementById("weather_city").value;
+	$scope.changeWeather = function(setting) {
+		if (setting){
+			$scope.jeeves.city = document.getElementById("weather_city_setting").value;
+		}else{
+			$scope.jeeves.city = document.getElementById("weather_city").value;
+		}
 		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.temp.min = data.main.temp_min;
@@ -71,6 +75,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
             console.log("Data: " + data.main.temp)
     	});
     	document.getElementById("weather_city").value = "";
+    	document.getElementById("weather_city_setting").value = "";
 	}
 
 	$scope.changeSection=function(selected){
@@ -94,11 +99,24 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
       //  var buttonList=[];
 
       //First Entry------------------------------------------------------------------------------------------------------
-      var entry0 = $scope.jeeves.articles[0]; var div0 = document.createElement("div"); var button0 = document.createElement('input');
-      button0.setAttribute('type', 'button'); button0.setAttribute('class', 'btn btn-default btn-block'); button0.name=entry0.webTitle; button0.setAttribute('value', entry0.webTitle);  
-      button0.onclick=function(){ var container0 = document.getElementById("feed1"); container0.setAttribute('class', 'alert alert-success'); container0.innerHTML=entry0.fields.body;}
+      var entry0 = $scope.jeeves.articles[0]; 
+  	  var div0 = document.createElement("div"); 
+      var button0 = document.createElement('input');
+      button0.setAttribute('type', 'button'); 
+      button0.setAttribute('class', 'btn btn-default btn-block'); 
+      button0.name=entry0.webTitle; 
+      button0.setAttribute('value', entry0.webTitle); 
+      var div01 = document.createElement("div");
+      div01.setAttribute('id', 'div01');
+      button0.onclick=function(){ 
+      	var container0 = document.getElementById("div01"); 
+      	container0.setAttribute('class', 'alert alert-success'); 
+      	container0.innerHTML=entry0.fields.body;
+      }
 	//	span.appendChild(button0.onclick);
-		div0.appendChild(button0); container.appendChild(div0);// span.appendChild(container);
+		div0.appendChild(button0); 
+		div0.appendChild(div01);
+		container.appendChild(div0);// span.appendChild(container);
 	      //Second Entry------------------------------------------------------------------------------------------------------
       var entry1 = $scope.jeeves.articles[1]; var div1 = document.createElement("div"); var button1 = document.createElement('input');
       button1.setAttribute('type', 'button'); button1.setAttribute('class', 'btn btn-default btn-block'); button1.name=entry1.webTitle; button1.setAttribute('value', entry1.webTitle);  
