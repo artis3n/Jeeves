@@ -24,7 +24,11 @@
 	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-	<!-- Better base64 decoding algorithm -->
+	<!-- SPEECH FUNCTIONALITY -->
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/reco.js"></script>
+
+	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
 
 </head>
@@ -48,7 +52,6 @@
 				<button ng-click="changeView('news')" class="btn btn-primary btn-block">News </button>
 				<button ng-click="changeView('email')" class="btn btn-primary btn-block">Email</button>
 				<hr>
-				<button ng-click="changeView('favorites')" class="btn btn-default btn-block">View/Set Favorites</button>
 				<button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
@@ -57,28 +60,29 @@
 			</div>
 		</div>
 
-		<div id="news" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
-			<div class="page-header">
+		<div id="news1" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
+			<div>
 				<h2 class="text-center">News</h2>
 			</div>
 			<div align = "center">
-			<div class="btn-group">
-  				<button type="button" class="btn btn-default" ng-click="changeSection('news')">News</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('world')">World</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('sport')">Sports</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('business')">Business</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('technology')">Tech</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('science')">Science</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('travel')">Travel</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('comment')">Comment</button>
-  				<button type="button" class="btn btn-default" ng-click="changeSection('culture')">Culture</button>
-			</div>
+		<!--	<div class="btn-group"> -->
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('news')">News</button>
+  				<div id="news" ng-hide="jeeves.newsViews!= 'news'"><br></div>
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('world')">World</button>
+  				<div id="world" ng-hide="jeeves.newsViews!='world'"><br></div>
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('sport')">Sports</button>
+  				<div id="sport" ng-hide="jeeves.newsViews!='sport'"><br></div>
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('business')">Business</button>
+  				<div id="business" ng-hide="jeeves.newsViews!='business'"><br></div>
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('technology')">Tech</button>
+  				<div id="technology" ng-hide="jeeves.newsViews!='technology'"><br></div>
+  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('science')">Science</button>
+  				<div id="science" ng-hide="jeeves.newsViews!='science'"><br></div>
+		<!--	</div> -->
 			</div>
 			<br>
 			<div align = "center">
 				<span>
-					<div id="buttonTitles"><br></div>
-					<br>
 					<div id="feed1"><br></div>
 				</span>
 			</div>
@@ -120,7 +124,7 @@
 		       		<div class="input-group" style="width: 210px">
 		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
 		        		<span class="input-group-btn">
-			        		<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
+			        		<button class="btn btn-default" type="submit" ng-click="changeWeather(false)" id="changeCity">Change</button>
 		        		</span>
 		        	</div>
 		    		<font size="1">Powered by OpenWeatherMap.org</font>
@@ -140,11 +144,11 @@
 				<h3>Weather</h3>
 				<h4><i>Change Location</i></h4>
 				<div class="input-group" style="width: 210px">
-					<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="submit" ng-click="changeWeather()" id="changeCity">Change</button>
-					</span>
-				</div>
+		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city_setting" onkeydown="if (event.keyCode == 13) document.getElementById('changeCitySetting').click()">
+		        		<span class="input-group-btn">
+			        		<button class="btn btn-default" type="submit" ng-click="changeWeather(true)" id="changeCitySetting">Change</button>
+		        		</span>
+		        	</div>
 				<p><font size="1">Powered by OpenWeatherMap.org</font></p>
 			</div>
 			<hr>
@@ -154,11 +158,11 @@
 		<div id="contact" class="view" ng-hide="jeeves.view != 'contact'" ng-cloak>
 			<div>
 				<h2 class="text-center">Contact Us</h2>
-				<p style="text-indent: 5em;"><font size="4"> Co-Founders: </font></p>
-				<p style="text-indent: 5em;"><img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10314024_4131147334668_1448501559062959054_n.jpg?oh=a3e89dcd1c71d0daac430ec2b2cf9a54&oe=5453FA50&__gda__=1415069884_c2b2d9c31111b5341d5bf53abd5aaf7d" alt="Ari Kalfus" width="60" height="80"><b><font size = "4">  Ari Kalfus</font></b>: akalfus@brandeis.edu</p>
-				<p style="text-indent: 5em;"><img src="https://scontent-a.xx.fbcdn.net/hphotos-xaf1/t1.0-9/1604413_10202736434833868_462765446_n.jpg" alt="Burak Sezer" width="60" height="80"><b><font size = "4">  Burak Sezer</font></b>: bsezer@brandeis.edu</p>
-				<p style="text-indent: 5em;"><img src="https://scontent-b.xx.fbcdn.net/hphotos-xpf1/t1.0-9/1607065_10151908263002308_212651559_n.jpg" alt="Sam Raphael" width="60" height="60"><b><font size = "4">  Sam Raphael</font></b>: sraph@brandeis.edu</p>	
-				<p style="text-indent: 5em;"><img src="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xfp1/t1.0-9/10489684_670812976326270_6814612110053956320_n.jpg" alt="Wesley Wei Qian" width="60" height="60"><b><font size = "4">  Wesely Wei Qian</font></b>: weschin@brandeis.edu</p>					
+				<p><font size="4"> Co-Founders: </font></p>
+				<p><img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10314024_4131147334668_1448501559062959054_n.jpg?oh=a3e89dcd1c71d0daac430ec2b2cf9a54&oe=5453FA50&__gda__=1415069884_c2b2d9c31111b5341d5bf53abd5aaf7d" alt="Ari Kalfus" width="60" height="80"><b><font size = "4">  Ari Kalfus</font></b>: akalfus@brandeis.edu</p>
+				<p><img src="https://scontent-a.xx.fbcdn.net/hphotos-xaf1/t1.0-9/1604413_10202736434833868_462765446_n.jpg" alt="Burak Sezer" width="60" height="80"><b><font size = "4">  Burak Sezer</font></b>: bsezer@brandeis.edu</p>
+				<p><img src="https://scontent-b.xx.fbcdn.net/hphotos-xpf1/t1.0-9/1607065_10151908263002308_212651559_n.jpg" alt="Sam Raphael" width="60" height="60"><b><font size = "4">  Sam Raphael</font></b>: sraph@brandeis.edu</p>	
+				<p><img src="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xfp1/t1.0-9/10489684_670812976326270_6814612110053956320_n.jpg" alt="Wesley Wei Qian" width="60" height="60"><b><font size = "4">  Wesely Wei Qian</font></b>: weschin@brandeis.edu</p>					
 			</div>
 		 </div>
 
