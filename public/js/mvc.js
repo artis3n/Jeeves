@@ -83,7 +83,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
 
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=100&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			$scope.jeeves.articles=data.response.results;
 			var container = document.getElementById(x);
 			container.innerHTML="";
@@ -103,7 +103,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				button.onclick=function(){ 
 					var container = document.getElementById(this.id+"_div");
 					container.setAttribute('class', 'alert alert-success'); 
-					container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
+					if($scope.jeeves.showNumber <= 10){
+						container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
+					}else{
+						container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
+					}
 				}
 				button.ondblclick=function(){
 					var containerContent = document.getElementById(this.id+"_div"); 
@@ -117,15 +121,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				container.appendChild(div);
 			}
 
-			if($scope.jeeves.showNumber < 10){
-				var buttonMore = document.createElement('input');
-				buttonMore.setAttribute('type', 'button'); 
-				buttonMore.setAttribute('class', 'btn btn-default btn-block');
-				buttonMore.name="More"; 
-				buttonMore.setAttribute('value', "More");
-				buttonMore.addEventListener("click", $scope.updateShowAmount)
-				container.appendChild(buttonMore); 
-			}
+			var buttonMore = document.createElement('input');
+			buttonMore.setAttribute('type', 'button'); 
+			buttonMore.setAttribute('class', 'btn btn-default btn-block');
+			buttonMore.name="More"; 
+			buttonMore.setAttribute('value', "More");
+			buttonMore.addEventListener("click", $scope.updateShowAmount)
+			container.appendChild(buttonMore); 
 		});
 	}
 
