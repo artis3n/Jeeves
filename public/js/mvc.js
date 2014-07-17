@@ -3,6 +3,7 @@
 var model = {
 	name: "Jeeves",
 	view: "weather",
+	newsViews:"newsArticles",
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
@@ -79,6 +80,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.getListArticle=function(){
 		var x=$scope.jeeves.section;
+		$scope.jeeves.newsViews=x;
 
 		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		//	console.log(data.response.results[1].webTitle);
@@ -86,9 +88,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			//console.log("asdf"+$scope.jeeves.articles[1].webTitle);
 
 	  var span =document.createElement("span");
-	  var container = document.getElementById("buttonTitles");
+	  var container = document.getElementById(x);
 	  container.innerHTML="";
-	  container.setAttribute('class', 'btn-group-vertical');
+	  container.setAttribute('class', 'btn-group btn-block');
       //  var buttonList=[];
 
       //First Entry------------------------------------------------------------------------------------------------------
