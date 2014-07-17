@@ -117,11 +117,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
       button4.setAttribute('type', 'button'); button4.setAttribute('class', 'btn btn-default btn-block'); button4.name=entry4.webTitle; button4.setAttribute('value', entry4.webTitle);  
       button4.onclick=function(){ var container4 = document.getElementById("feed1"); container4.setAttribute('class', 'alert alert-success'); container4.innerHTML=entry4.fields.body;}
 		       div4.appendChild(button4); container.appendChild(div4);
-
-
-
-
 		});
 	}
-	
 });
