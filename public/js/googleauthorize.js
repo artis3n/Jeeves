@@ -62,7 +62,6 @@ function postLabels(labels) {
   angular.forEach(labels, function(label) {
     var option = document.createElement("option");
     option.setAttribute('value', label);
-    option.setAttribute('placeholder', '.col-xs-5');
     option.innerHTML = label;
     labelList.appendChild(option);
   })
