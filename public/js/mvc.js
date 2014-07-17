@@ -83,7 +83,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
 
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=100&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			$scope.jeeves.articles=data.response.results;
 			var container = document.getElementById(x);
 			container.innerHTML="";
@@ -121,13 +121,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				container.appendChild(div);
 			}
 
-			var buttonMore = document.createElement('input');
-			buttonMore.setAttribute('type', 'button'); 
-			buttonMore.setAttribute('class', 'btn btn-default btn-block');
-			buttonMore.name="More"; 
-			buttonMore.setAttribute('value', "More");
-			buttonMore.addEventListener("click", $scope.updateShowAmount)
-			container.appendChild(buttonMore); 
+			if($scope.jeeves.showNumber<95){
+				var buttonMore = document.createElement('input');
+				buttonMore.setAttribute('type', 'button'); 
+				buttonMore.setAttribute('class', 'btn btn-default btn-block');
+				buttonMore.name="More"; 
+				buttonMore.setAttribute('value', "More");
+				buttonMore.addEventListener("click", $scope.updateShowAmount)
+				container.appendChild(buttonMore);
+			} 
 		});
 	}
 
