@@ -42,7 +42,7 @@ function handleAuthClick(event) {
 function makeApiCall() {
   gapi.client.load('gmail', 'v1', function() {
     var request = gapi.client.gmail.users.messages.list({
-      labelIds: ['INBOX', 'UNREAD']
+      labelIds: ['INBOX']
     });
     request.execute(function(resp) {
       document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
@@ -61,13 +61,11 @@ function makeApiCall() {
               console.log("Payload null: " + message.id);
             }
             var header = "";
+            var sender = "";
             angular.forEach(stuff.payload.headers, function(item) {
               if (item.name == "Subject") {
                 header = item.value;
               }
-            })
-            var sender = "";
-            angular.forEach(stuff.payload.headers, function(item) {
               if (item.name == "From") {
                 sender = item.value;
               }
@@ -83,7 +81,7 @@ function makeApiCall() {
               content.innerHTML += '<b>From: ' + sender + '</b><br>';
               content.innerHTML += contents + "<br><br>";
             } catch (err) {
-              console.log("Encodings: " + encodings++);
+              console.log("Encoding error: " + encodings++);
             }
           })
         })

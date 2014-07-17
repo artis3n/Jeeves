@@ -15,10 +15,6 @@ var model = {
 var jeevesApp = angular.module("jeevesApp", []);
 
 jeevesApp.run(function($http) {
-	$http.get("/model/feeds").success(function(data) {
-		model.feeds = data;
-	})
-
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.temp.min = data.main.temp_min;
