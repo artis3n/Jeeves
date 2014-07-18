@@ -136,9 +136,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				button.ondblclick=function(){
 					var containerContent = document.getElementById(this.id+"_div"); 
 					containerContent.outerHTML="";
-					var divSub = document.createElement("div");
-					divSub.setAttribute('id',this.id+"_div");
-					div.appendChild(divSub);
+					$scope.getListArticle();
 				}
 				div.appendChild(button); 
 				div.appendChild(divSub);
