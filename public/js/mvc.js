@@ -103,20 +103,23 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		$scope.getListArticle();
 	}
 
-	$scope.reco = function() {
+	$scope.reco= function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
 
-		function successCallback(results) {
-			if (results == "Help") {
-				alert("You said help.");
-			} else {
-				alert("You didn't say help.");
-			}
-		}
+		function successCallback(results){
+			var result = JSON.stringify(results);
+			result = result.substring(2,result.length - 2);
+    		alert("Results: " + result);
+    		//if (results.match("/help/") === help){
+    			//$scope.changeView('help');
+    		//}
+ 		}
 
-		function failCallback(error) {
-			alert("There was an error.");
+		function failCallback(error){
+		    alert("Error: " + error);
+
 		}
+		//return results;
 	}
 
 	$scope.getListArticle=function(){
@@ -178,23 +181,5 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.collapse=function(){
 		$scope.jeeves.newsViews='';
-	}
-
-
-	$scope.reco= function(){
-		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Cordova Speech Recognizer Plugin");
-
-		function successCallback(results){
-    		alert("Results: " + results);
-    		//if (results.match("/help/") === help){
-    			//$scope.changeView('help');
-    		//}
- 		}
-
-		function failCallback(error){
-		    console.log("Error: " + error);
-
-		}
-		//return results;
 	}
 });
