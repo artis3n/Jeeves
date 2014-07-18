@@ -120,13 +120,23 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			alert("Result: "+result);
 
 			if($scope.jeeves.view == 'weather'){
-	    		if (result.lastIndexOf("change city to")===0){
-	    			var index = result.lastIndexOf(" ");
-	    			var city = result.slice(index+1);
-	    			$scope.jeeves.city = city;
+				var city = "INVALID";
+
+	    		if (result.lastIndexOf("change city to")==0){
+	    			city = result.slice(15);
+	    			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 	    			$scope.changeWeather(null);
-	    		} else {
+	    		}else if (result.lastIndexOf("change to")==0){
+	    			city = result.slice(10);
+	    		}else if (result.lastIndexOf("change weather to")==0){
+	    			city = result.slice(18);
+	    		}else {
 	    			alert("Invalid Command");
+	    		}
+
+	    		if(city !== "INVALID"){
+	    			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
+	    			$scope.changeWeather(null);
 	    		}
     		}else if($scope.jeeves.view == 'news'){
 
@@ -217,5 +227,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.collapse=function(){
 		$scope.jeeves.newsViews='';
+	}
+
+	$scope.capitaliseFirstLetter=function(string){
+    	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 });
