@@ -105,6 +105,22 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		$scope.getListArticle();
 	}
 
+	$scope.reco = function() {
+		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
+
+		function successCallback(results) {
+			if (results == "Help") {
+				alert("You said help.");
+			} else {
+				alert("You didn't say help.");
+			}
+		}
+
+		function failCallback(error) {
+			alert("There was an error.");
+		}
+	}
+
 	$scope.getListArticle=function(){
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
@@ -138,9 +154,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				button.ondblclick=function(){
 					var containerContent = document.getElementById(this.id+"_div"); 
 					containerContent.outerHTML="";
-					var divSub = document.createElement("div");
-					divSub.setAttribute('id',this.id+"_div");
-					div.appendChild(divSub);
+					$scope.getListArticle();
 				}
 				div.appendChild(button); 
 				div.appendChild(divSub);
