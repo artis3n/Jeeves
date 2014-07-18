@@ -120,9 +120,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function failCallback(error){
 		    alert("Error: " + error);
-
 		}
-		//return results;
 	}
 
 	$scope.getListArticle=function(){
