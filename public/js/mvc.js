@@ -3,7 +3,7 @@
 var model = {
 	name: "Jeeves",
 	view: "weather",
-	newsViews:"newsArticles",
+	newsViews:"news",
 	showNumber: 5,
 	previousView: ["weather"],
 	city: 'Waltham',
@@ -125,8 +125,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	    		if (result.lastIndexOf("change city to")==0){
 	    			city = result.slice(15);
-	    			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
-	    			$scope.changeWeather(null);
 	    		}else if (result.lastIndexOf("change to")==0){
 	    			city = result.slice(10);
 	    		}else if (result.lastIndexOf("change weather to")==0){
@@ -180,22 +178,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     		}else if($scope.jeeves.view == 'menu'){
     			
     		}else if($scope.jeeves.view == 'about'){
-    			
-    		}else if($scope.jeeves.view == 'setting'){
-    			
-    		}else if($scope.jeeves.view =='contact' ){
-    			
-    		}else if($scope.jeeves.view == 'favorite' ){
-    			
-    		}else if($scope.jeeves.view == 'help' ){
-    			
-    		}
-
-    		}else if($scope.jeeves.view == 'email'){
-    			
-    		}else if($scope.jeeves.view == 'menu'){
-    			
-    		}else if($scope.jeeves.view == 'about'){
     			if(result == 'read'){
     			  //tts read abt page
     			}
@@ -208,7 +190,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	    			$scope.changeWeather(null);    				
     				}
     			}
-    		}else if($scope.jeeves.view =='contact' ){
+    		}else if($scope.jeeves.view == 'contact' ){
 				   if(result === 'read' || result.match(/read/) != null){
 				   	 //read tts of contact
 				   }
