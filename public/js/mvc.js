@@ -115,6 +115,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var result = JSON.stringify(results);
 			result.substring(2, result.length - 2).toLowerCase().trim();
 
+			//All the result will come back as a string all in lower cases and has no white space in both end.
+			result = result.substring(2,result.length - 2);
+			result = result.toLowerCase().trim();
+			alert("Result: "+result);
+
 			if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
     		}else if($scope.jeeves.view == 'news'){
