@@ -26,7 +26,6 @@
 
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="js/reco.js"></script>
 
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
@@ -184,7 +183,7 @@
 		<div id="speech" class ="view" ng-hide="jeeves.view != 'speech'" ng-cloak>
 			<div>
 				<h2>Speech</h2>
-				Speech function will go here
+				<button ng-click="reco()" class="btn btn-default">Speech</button>
 				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
 			</div>

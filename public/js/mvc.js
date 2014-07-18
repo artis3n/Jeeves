@@ -80,6 +80,22 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		$scope.getListArticle();
 	}
 
+	$scope.reco = function() {
+		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
+
+		function successCallback(results) {
+			if (results == "Help") {
+				alert("You said help.");
+			} else {
+				alert("You didn't say help.");
+			}
+		}
+
+		function failCallback(error) {
+			alert("There was an error.");
+		}
+	}
+
 	$scope.getListArticle=function(){
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
