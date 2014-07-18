@@ -114,8 +114,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			var result = JSON.stringify(results);
 
+			//All the result will come back as a string all in lower cases and has no white space in both end.
+			result = result.substring(2,result.length - 2);
+			result = result.toLowerCase().trim();
+			alert("Result: "+result);
+
 			if($scope.jeeves.view == 'weather'){
-				speechWeather(result);
+				$scope.speechWeather(result);
     		}else if($scope.jeeves.view == 'news'){
     			if (result == 'help'){
     			alert(result + ': You said help.');
@@ -141,7 +146,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     			}
     			//tell me about jeeves === global
     		}else if($scope.jeeves.view == 'setting'){
-				speechWeather(result);
+				$scope.speechWeather(result);
     		}else if($scope.jeeves.view == 'contact' ){
 				   if(result == 'read' || result.match(/read/) != null){
 				   	 //read tts of contact
