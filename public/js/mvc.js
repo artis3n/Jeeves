@@ -7,6 +7,7 @@ var model = {
 	newsShow: "",
 	previousView: ["weather"],
 	city: 'Waltham',
+	curNum: 0,
 	country: 'us',
 	emailLabels: ['INBOX'],
 	section: 'news',
@@ -81,22 +82,22 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.changeSection=function(selected){
 		$scope.jeeves.section = selected;
+		$scope.jeeves.curNum=0;
 		$scope.getListArticle();
 	}
 
 	$scope.getListArticle=function(){
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
-
 		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			$scope.jeeves.articles=data.response.results;
-
 			var container = document.getElementById(x);
 			container.innerHTML="";
 			container.setAttribute('class', 'btn-group btn-block');
+			console.log($scope.jeeves.curNum);
 
 			//First Entry------------------------------------------------------------------------------------------------------
-			var entry0 = $scope.jeeves.articles[0]; 
+			var entry0 = $scope.jeeves.articles[11]; 
 			var div0 = document.createElement("div"); 
 			var button0 = document.createElement('input');
 			button0.setAttribute('type', 'button'); 
@@ -123,7 +124,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			container.appendChild(div0);
 
 			//Second Entry------------------------------------------------------------------------------------------------------
-			var entry1 = $scope.jeeves.articles[1]; 
+			var entry1 = $scope.jeeves.articles[12]; 
 			var div1 = document.createElement("div"); 
 			var button1 = document.createElement('input');
 			button1.setAttribute('type', 'button'); 
@@ -149,7 +150,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			container.appendChild(div1);
 
 			//Third Entry------------------------------------------------------------------------------------------------------
-			var entry2 = $scope.jeeves.articles[2]; 
+			var entry2 = $scope.jeeves.articles[13]; 
 			var div2 = document.createElement("div"); 
 			var button2 = document.createElement('input');
 			button2.setAttribute('type', 'button'); 
@@ -175,7 +176,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			container.appendChild(div2);
 
 			//Fourth Entry------------------------------------------------------------------------------------------------------
-			var entry3 = $scope.jeeves.articles[3]; 
+			var entry3 = $scope.jeeves.articles[14]; 
 			var div3 = document.createElement("div"); 
 			var button3 = document.createElement('input');
 			button3.setAttribute('type', 'button'); 
@@ -201,7 +202,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			container.appendChild(div3);
 
 			//Fifth Entry------------------------------------------------------------------------------------------------------
-			var entry4 = $scope.jeeves.articles[4]; 
+			var entry4 = $scope.jeeves.articles[15]; 
 			var div4 = document.createElement("div"); 
 			var button4 = document.createElement('input');
 			button4.setAttribute('type', 'button'); 
@@ -225,6 +226,20 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			div4.appendChild(button4); 
 			div4.appendChild(div41);
 			container.appendChild(div4);
+
+			var divMore = document.createElement("div");
+			var buttonMore = document.createElement("input");
+			buttonMore.setAttribute('type', 'button');
+			buttonMore.setAttribute('class', 'btn btn-default btn-block');
+			buttonMore.name="more";
+			buttonMore.setAttribute('value', 'more');
+			buttonMore.onclick=function(){
+			 		$scope.jeeves.curNum=$scope.jeeves.curNum+5;
+			 		$scope.getListArticle();
+			 }
+			divMore.appendChild(buttonMore);
+			container.appendChild(divMore);
+
 		});
 	}
 });
