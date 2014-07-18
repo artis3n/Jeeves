@@ -105,20 +105,21 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		$scope.getListArticle();
 	}
 
-	$scope.reco = function() {
+	$scope.reco= function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
 
-		function successCallback(results) {
-			if (results == "Help") {
-				alert("You said help.");
-			} else {
-				alert("You didn't say help.");
-			}
-		}
+		function successCallback(results){
+    		alert("Results: " + results);
+    		//if (results.match("/help/") === help){
+    			//$scope.changeView('help');
+    		//}
+ 		}
 
-		function failCallback(error) {
-			alert("There was an error.");
+		function failCallback(error){
+		    console.log("Error: " + error);
+
 		}
+		//return results;
 	}
 
 	$scope.getListArticle=function(){
