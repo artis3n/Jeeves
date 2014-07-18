@@ -42,7 +42,7 @@ function handleAuthClick(event) {
 function makeApiCall() {
   gapi.client.load('gmail', 'v1', function() {
     var request = gapi.client.gmail.users.messages.list({
-      labelIds: ['INBOX']
+      labelIds: ['INBOX', 'UNREAD']
     });
     request.execute(function(resp) {
       document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
