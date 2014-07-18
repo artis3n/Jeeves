@@ -114,67 +114,25 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			var result = JSON.stringify(results);
 
-
-			//All the result will come back as a string all in lower cases and has no white space in both end.
-			result = result.substring(2,result.length - 2);
-			result = result.toLowerCase().trim();
-			alert("Result: "+result);
-
 			if($scope.jeeves.view == 'weather'){
-				var city = "INVALID";
-
-	    		if (result.lastIndexOf("change city to")==0){
-	    			city = result.slice(15);
-	    		}else if (result.lastIndexOf("change to")==0){
-	    			city = result.slice(10);
-	    		}else if (result.lastIndexOf("change weather to")==0){
-	    			city = result.slice(18);
-	    		}else {
-	    			alert("Invalid Command");
-	    		}
-
-	    		if(city !== "INVALID"){
-	    			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
-	    			$scope.changeWeather(null);
-	    		}
+				speechWeather(result);
     		}else if($scope.jeeves.view == 'news'){
-
-
-    		if (result == 'help'){
+    			if (result == 'help'){
     			alert(result + ': You said help.');
     			$scope.changeView('help');
     			$scope.$apply();
-    		} else if(result == 'news') {
-    			alert(result + ': You said news.');
-    			$scope.changeView('news');
-    			$scope.$apply();
-    		} else if(result.substring(0, 15) == 'Read Me section') {
-    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
-    			$scope.changeSection(result.substring(15, result.length));
-    			$scope.$apply();
-    		}
-    		else if(result == 'edittttt') {
-    			alert(result + ': You said news.');
-    			$scope.changeView('news');
-    			$scope.$apply();
-    		}else{
-    			alert(result + ": You didn't say help.");
-    		}
-
-
-			if($scope.jeeves.view == 'weather'){
-	    		if (result.lastIndexOf("change city to")===0){
-	    			var index = result.lastIndexOf(" ");
-	    			var city = result.slice(index+1);
-	    			$scope.jeeves.city = city;
-	    			$scope.changeWeather(null);
-	    		} else {
-	    			alert("Invalid Command");
+	    		} else if(result.substring(0, 15) == 'Read Me section') {
+	    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
+	    			$scope.changeSection(result.substring(15, result.length));
+	    			$scope.$apply();
 	    		}
-    		}else if($scope.jeeves.view == 'news'){
-
     		}else if($scope.jeeves.view == 'email'){
-    			
+    			if (result.match(/authorize/) != null) {
+    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
+    			} else if (result == "read my emails" || "read" || "start reading") {
+    				var content = document.getElementById('email-announcement').innerText;
+    				$scope.tts(content);
+    			}
     		}else if($scope.jeeves.view == 'menu'){
     			
     		}else if($scope.jeeves.view == 'about'){
@@ -183,30 +141,23 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     			}
     			//tell me about jeeves === global
     		}else if($scope.jeeves.view == 'setting'){
-				if (result.lastIndexOf("change city to")===0){
-	    			var index = result.lastIndexOf(" ");
-	    			var city = result.slice(index+1);
-	    			$scope.jeeves.city = city;
-	    			$scope.changeWeather(null);    				
-    				}
-    			}
+				speechWeather(result);
     		}else if($scope.jeeves.view == 'contact' ){
-				   if(result === 'read' || result.match(/read/) != null){
+				   if(result == 'read' || result.match(/read/) != null){
 				   	 //read tts of contact
 				   }
     		}else if($scope.jeeves.view == 'favorite' ){
-    			if(result ===  'read' || result.match(/read/) != null){
+    			if(result ==  'read' || result.match(/read/) != null){
 				   	 //read tts of favs
 				   }
     		}else if($scope.jeeves.view == 'help' ){
-    			if(result === 'read' || result.match(/read/) != null){
+    			if(result == 'read' || result.match(/read/) != null){
 				   	 //read tts of helpscreen
 				   }
-				if (result.lastIndexOf("help")===0){
+				if (result.lastIndexOf("help")==0){
 					 if (result.match(/cmd/)){
 					 	//do cmd help
 					 }
-
 					 else if (result.match(/change city to/)){
 					 	//do cmd help
 					 }  
@@ -245,9 +196,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					 }  
 				} 
 		   		$scope.$apply();
-
     		}
-
  		}
 
 		function failCallback(error){
@@ -255,25 +204,38 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	}
 
-	$scope.tts = function() {
-		navigator.tts.startup(startupWin, fail);
-		function startupWin(result) {
-		    alert("Startup win");
-		    // When result is equal to STARTED we are ready to play
-		    alert("Result "+result);
-		    //TTS.STARTED==2 use this once so is answered
-		    if (result == 2) {
-		        navigator.tts.getLanguage(win, fail);
-		        navigator.tts.speak("The text to speech service is ready");
-		    }
-		}                               
+	$scope.speechWeather = function(result) {
+		var city = "INVALID";
 
-		function win(result) {
-		    alert(result);
+		if (result.lastIndexOf("change city to")==0){
+			city = result.slice(15);
+		}else if (result.lastIndexOf("change to")==0){
+			city = result.slice(10);
+		}else if (result.lastIndexOf("change weather to")==0){
+			city = result.slice(18);
+		}else {
+			alert("Invalid Command");
 		}
+
+		if(city !== "INVALID"){
+			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
+			$scope.changeWeather(null);
+		}
+	}
+
+	$scope.tts = function(message) {
+		navigator.tts.startup(success, fail);
+		function success() {
+			navigator.notification.beep(1);
+		    navigator.tts.speak(message, shutdown);
+		    }
 
 		function fail(result) {
 		    alert("Error = " + result);
+		}
+
+		function shutdown() {
+			navigator.tts.shutdown();
 		}
 	}
 
