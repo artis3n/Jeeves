@@ -109,10 +109,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			var result = JSON.stringify(results);
 			result = result.substring(2,result.length - 2);
-    		alert("Results: " + result);
-    		//if (results.match("/help/") === help){
-    			//$scope.changeView('help');
-    		//}
+    		if (result == 'help'){
+    			alert(result + ': You said help.');
+    			$scope.changeView('help');
+    			$scope.$apply();
+    		} else {
+    			alert(result + ": You didn't say help.");
+    		}
  		}
 
 		function failCallback(error){
