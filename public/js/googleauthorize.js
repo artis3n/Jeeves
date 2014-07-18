@@ -41,66 +41,51 @@ function handleAuthClick(event) {
 // Load the API and make an API call.  Display the results on the screen.
 function makeApiCall() {
   gapi.client.load('gmail', 'v1', function() {
-    getLabels();
-  });
-}
-
-function getLabels() {
-  var requestLabels = gapi.client.gmail.users.labels.list();
-  var names = [];
-  requestLabels.execute(function(resp) {
-    angular.forEach(resp.labels, function(label) {
-      names.push(label.name);
-    })
-    postLabels(names);
-  });
-}
-
-function postLabels(labels) {
-  document.getElementById('label-div').setAttribute('style', 'display: block');
-  var labelList = document.getElementById("label-list");
-  angular.forEach(labels, function(label) {
-    var option = document.createElement("option");
-    option.setAttribute('value', label);
-    option.setAttribute('placeholder', '.col-xs-5');
-    option.innerHTML = label;
-    labelList.appendChild(option);
-  })
-}
-
-function getEmail() {
-
-  var requestEmails = gapi.client.gmail.users.messages.list({
-    labelIds: jeevesApp.emailFolder
-  });
-  requestEmails.execute(function(resp) {
-    var content = document.getElementById("message-list");
-    if (resp.messages == null) {
-      content.innerHTML = "<b>Your inbox is empty.</b>";
-    } else {
-      content.innerHTML = "";
-      angular.forEach(resp.messages, function(message) {
-        var email = gapi.client.gmail.users.messages.get({
-        'id': message.id
-        });
-        email.execute(function(stuff) {
-          var header = "";
-          angular.forEach(stuff.payload.headers, function(item) {
-            if (item.name == "Subject") {
-              header = item.value;
+    var request = gapi.client.gmail.users.messages.list({
+      labelIds: ['INBOX']
+    });
+    request.execute(function(resp) {
+      document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
+      var content = document.getElementById("message-list");
+      if (resp.messages == null) {
+        content.innerHTML = "<b>Your inbox is empty.</b>";
+      } else {
+        var encodings = 0;
+        content.innerHTML = "";
+        angular.forEach(resp.messages, function(message) {
+          var email = gapi.client.gmail.users.messages.get({
+          'id': message.id
+          });
+          email.execute(function(stuff) {
+            if (stuff.payload == null) {
+              console.log("Payload null: " + message.id);
+            }
+            var header = "";
+            var sender = "";
+            angular.forEach(stuff.payload.headers, function(item) {
+              if (item.name == "Subject") {
+                header = item.value;
+              }
+              if (item.name == "From") {
+                sender = item.value;
+              }
+            })
+            try {
+              var contents = "";
+              if (stuff.payload.parts == null) {
+                contents = base64.decode(stuff.payload.body.data);
+              } else {
+                contents = base64.decode(stuff.payload.parts[0].body.data);
+              }
+              content.innerHTML += '<b>Subject: ' + header + '</b><br>';
+              content.innerHTML += '<b>From: ' + sender + '</b><br>';
+              content.innerHTML += contents + "<br><br>";
+            } catch (err) {
+              console.log("Encoding error: " + encodings++);
             }
           })
-          var contentType = "";
-          angular.forEach(stuff.payload.parts[0].headers, function(item) {
-            if (item.name == "Content-Type") {
-              contentType = item.value;
-            }
-          })
-          content.innerHTML += '<b>Subject: ' + header + '</b><br>';
-          var contents = stuff.payload.parts[0].body.data;
-          content.innerHTML += base64.decode(contents) + "<br><br>";
         })
-      })
-    }
+      }
+    });
   });
 }

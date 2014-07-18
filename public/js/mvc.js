@@ -4,7 +4,7 @@ var model = {
 	name: "Jeeves",
 	view: "weather",
 	newsViews:"newsArticles",
-	newsShow: "",
+	showNumber: 5,
 	previousView: ["weather"],
 	city: 'Waltham',
 	curNum: 0,
@@ -18,18 +18,38 @@ var model = {
 var jeevesApp = angular.module("jeevesApp", []);
 
 jeevesApp.run(function($http) {
-	$http.get("/model/feeds").success(function(data) {
-		model.feeds = data;
-	})
-
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
     });
-})
+});
 
+// Create a sglclick action to avoid the ng-click conflict with ng-dblclick
+jeevesApp.directive('sglclick', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+          	var fn = $parse(attr['sglclick']);
+          	var delay = 300, clicks = 0, timer = null;
+          	element.on('click', function (event) {
+	            clicks++;  //count clicks
+	            if(clicks === 1) {
+	              	timer = setTimeout(function() {
+	               		scope.$apply(function (){
+	               			fn(scope, { $event: event });
+	               		}); 
+	                	clicks = 0;			//after action performed, reset counter
+	              	}, delay);
+	            } else {
+	                clearTimeout(timer);	//prevent single-click action
+	                clicks = 0;				//after action performed, reset counter
+            	}
+          	});
+        }
+    };
+}]);
 
 jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
@@ -52,12 +72,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.view = back;
 		}else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
-			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
 		}else{
 			$scope.jeeves.previousView.push(selected);
-			console.log($scope.jeeves.previousView);
 			$scope.jeeves.view = selected;
 		}
 	};
@@ -81,165 +99,72 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.changeSection=function(selected){
+		document.getElementById($scope.jeeves.section).innerHTML="";
 		$scope.jeeves.section = selected;
-		$scope.jeeves.curNum=0;
+		$scope.jeeves.showNumber = 5;
 		$scope.getListArticle();
 	}
 
 	$scope.getListArticle=function(){
 		var x = $scope.jeeves.section;
 		$scope.jeeves.newsViews=x;
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			$scope.jeeves.articles=data.response.results;
 			var container = document.getElementById(x);
 			container.innerHTML="";
 			container.setAttribute('class', 'btn-group btn-block');
-			console.log($scope.jeeves.curNum);
 
-			//First Entry------------------------------------------------------------------------------------------------------
-			var entry0 = $scope.jeeves.articles[11]; 
-			var div0 = document.createElement("div"); 
-			var button0 = document.createElement('input');
-			button0.setAttribute('type', 'button'); 
-			button0.setAttribute('class', 'btn btn-default btn-block'); 
-			button0.name=entry0.webTitle; 
-			button0.setAttribute('value', entry0.webTitle); 
-			var div01 = document.createElement("div");
-			div01.setAttribute('id', entry0.webTitle);
-			button0.onclick=function(){ 
-				$scope.jeeves.newsShow=entry0.webTitle;
-				var container0 = document.getElementById(entry0.webTitle); 
-				container0.setAttribute('class', 'alert alert-success'); 
-				container0.innerHTML=entry0.fields.body;
+			for (i = 0; i < $scope.jeeves.showNumber; i++){
+				var entry = $scope.jeeves.articles[i]; 
+				var div = document.createElement("div"); 
+				var button = document.createElement('input');
+				button.setAttribute('type', 'button'); 
+				button.setAttribute('class', 'btn btn-default btn-block'); 
+				button.setAttribute('id', x+"_" +i);
+				button.name=entry.webTitle; 
+				button.setAttribute('value', entry.webTitle); 
+				var divSub = document.createElement("div");
+				divSub.setAttribute('id', x+"_" +i + "_div");
+				button.onclick=function(){ 
+					var container = document.getElementById(this.id+"_div");
+					container.setAttribute('class', 'alert alert-success'); 
+					if($scope.jeeves.showNumber <= 10){
+						container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
+					}else{
+						container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
+					}
+				}
+				button.ondblclick=function(){
+					var containerContent = document.getElementById(this.id+"_div"); 
+					containerContent.outerHTML="";
+					var divSub = document.createElement("div");
+					divSub.setAttribute('id',this.id+"_div");
+					div.appendChild(divSub);
+				}
+				div.appendChild(button); 
+				div.appendChild(divSub);
+				container.appendChild(div);
 			}
-			button0.ondblclick=function(){
-				var container0 = document.getElementById(entry0.webTitle); 
-				container0.outerHTML="";
-				var div01 = document.createElement("div");
-				div01.setAttribute('id', entry0.webTitle);
-				div0.appendChild(div01);
-			}
-			div0.appendChild(button0); 
-			div0.appendChild(div01);
-			container.appendChild(div0);
 
-			//Second Entry------------------------------------------------------------------------------------------------------
-			var entry1 = $scope.jeeves.articles[12]; 
-			var div1 = document.createElement("div"); 
-			var button1 = document.createElement('input');
-			button1.setAttribute('type', 'button'); 
-			button1.setAttribute('class', 'btn btn-default btn-block'); 
-			button1.name=entry1.webTitle; 
-			button1.setAttribute('value', entry1.webTitle); 
-			var div11 = document.createElement("div");
-			div11.setAttribute('id',entry1.webTitle); 
-			button1.onclick=function(){ 
-				var container1 = document.getElementById(entry1.webTitle); 
-				container1.setAttribute('class', 'alert alert-success'); 
-				container1.innerHTML=entry1.fields.body;
-			}
-			button1.ondblclick=function(){
-				var container1 = document.getElementById(entry1.webTitle);
-				container1.outerHTML="";
-				var div11 = document.createElement("div");
-				div11.setAttribute('id', entry1.webTitle);
-				div1.appendChild(div11);
-			}
-			div1.appendChild(button1); 
-			div1.appendChild(div11);
-			container.appendChild(div1);
-
-			//Third Entry------------------------------------------------------------------------------------------------------
-			var entry2 = $scope.jeeves.articles[13]; 
-			var div2 = document.createElement("div"); 
-			var button2 = document.createElement('input');
-			button2.setAttribute('type', 'button'); 
-			button2.setAttribute('class', 'btn btn-default btn-block');
-			button2.name=entry2.webTitle; 
-			button2.setAttribute('value', entry2.webTitle);  
-			var div21 = document.createElement("div");
-			div21.setAttribute('id',entry2.webTitle);
-			button2.onclick=function(){
-				var container2 = document.getElementById(entry2.webTitle); 
-				container2.setAttribute('class', 'alert alert-success'); 
-				container2.innerHTML=entry2.fields.body;
-			}
-			button2.ondblclick=function(){
-				var container2 = document.getElementById(entry2.webTitle);
-				container2.outerHTML="";
-				var div21 = document.createElement("div");
-			div21.setAttribute('id',entry2.webTitle);
-			div2.appendChild(div21);
-			}
-			div2.appendChild(button2); 
-			div2.appendChild(div21);
-			container.appendChild(div2);
-
-			//Fourth Entry------------------------------------------------------------------------------------------------------
-			var entry3 = $scope.jeeves.articles[14]; 
-			var div3 = document.createElement("div"); 
-			var button3 = document.createElement('input');
-			button3.setAttribute('type', 'button'); 
-			button3.setAttribute('class', 'btn btn-default btn-block'); 
-			button3.name=entry3.webTitle; 
-			button3.setAttribute('value', entry3.webTitle);  
-			var div31 = document.createElement("div");
-			div31.setAttribute('id',entry3.webTitle);
-			button3.onclick=function(){ 
-				var container3 = document.getElementById(entry3.webTitle); 
-				container3.setAttribute('class', 'alert alert-success'); 
-				container3.innerHTML=entry3.fields.body;
-			}
-			button3.ondblclick=function(){
-				var container3 = document.getElementById(entry3.webTitle);
-				container3.outerHTML="";
-				var div31 = document.createElement("div");
-				div31.setAttribute('id',entry3.webTitle);
-				div3.appendChild(div31);
-			}
-			div3.appendChild(button3);
-			div3.appendChild(div31); 
-			container.appendChild(div3);
-
-			//Fifth Entry------------------------------------------------------------------------------------------------------
-			var entry4 = $scope.jeeves.articles[15]; 
-			var div4 = document.createElement("div"); 
-			var button4 = document.createElement('input');
-			button4.setAttribute('type', 'button'); 
-			button4.setAttribute('class', 'btn btn-default btn-block'); 
-			button4.name=entry4.webTitle; 
-			button4.setAttribute('value', entry4.webTitle);  
-			var div41 = document.createElement("div");
-			div41.setAttribute('id',entry4.webTitle);
-			button4.onclick=function(){ 
-				var container4 = document.getElementById(entry4.webTitle); 
-				container4.setAttribute('class', 'alert alert-success'); 
-				container4.innerHTML=entry4.fields.body;
-			}
-			button4.ondblclick=function(){
-				var container4 = document.getElementById(entry4.webTitle);
-				container4.outerHTML="";
-				var div41 = document.createElement('div');
-				div41.setAttribute('id',entry4.webTitle);
-				div4.appendChild(div41)
-			}
-			div4.appendChild(button4); 
-			div4.appendChild(div41);
-			container.appendChild(div4);
-
-			var divMore = document.createElement("div");
-			var buttonMore = document.createElement("input");
-			buttonMore.setAttribute('type', 'button');
-			buttonMore.setAttribute('class', 'btn btn-default btn-block');
-			buttonMore.name="more";
-			buttonMore.setAttribute('value', 'more');
-			buttonMore.onclick=function(){
-			 		$scope.jeeves.curNum=$scope.jeeves.curNum+5;
-			 		$scope.getListArticle();
-			 }
-			divMore.appendChild(buttonMore);
-			container.appendChild(divMore);
-
+			if($scope.jeeves.showNumber<95){
+				var buttonMore = document.createElement('input');
+				buttonMore.setAttribute('type', 'button'); 
+				buttonMore.setAttribute('class', 'btn btn-default btn-block');
+				buttonMore.name="More"; 
+				buttonMore.setAttribute('value', "More");
+				buttonMore.addEventListener("click", $scope.updateShowAmount)
+				container.appendChild(buttonMore);
+			} 
 		});
+	}
+
+	$scope.updateShowAmount=function(){
+		$scope.jeeves.showNumber = $scope.jeeves.showNumber +5;
+		$scope.getListArticle();
+	}
+
+	$scope.collapse=function(){
+		$scope.jeeves.newsViews='';
 	}
 });
