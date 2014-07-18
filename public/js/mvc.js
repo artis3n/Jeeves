@@ -113,11 +113,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			result = result.substring(2,result.length - 2);
 
     		if (result == 'help'){
-    			alert(result + ': You said help.');
     			$scope.changeView('help');
     			$scope.$apply();
-    		} else if(result == 'news') {
-    			alert(result + ': You said news.');
+    		} else if(result == 'go to news') {
     			$scope.changeView('news');
     			$scope.$apply();
     		} else if(result.substring(0, 15) == 'Read Me section') {
@@ -136,6 +134,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function failCallback(error){
 		    alert("Error: " + error);
+		}
+	}
+
+	$scope.tts = function() {
+		navigator.tts.startup(startupWin, fail);
+		function startupWin(result) {
+		    alert("Startup win");
+		    // When result is equal to STARTED we are ready to play
+		    alert("Result "+result);
+		    //TTS.STARTED==2 use this once so is answered
+		    if (result == 2) {
+		        navigator.tts.getLanguage(win, fail);
+		        navigator.tts.speak("The text to speech service is ready");
+		    }
+		}                               
+
+		function win(result) {
+		    alert(result);
+		}
+
+		function fail(result) {
+		    alert("Error = " + result);
 		}
 	}
 
