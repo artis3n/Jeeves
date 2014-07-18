@@ -112,9 +112,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var result = JSON.stringify(results);
 			result = result.substring(2,result.length - 2);
     		alert("Results: " + result);
-    		//if (results.match("/help/") === help){
-    			//$scope.changeView('help');
-    		//}
+    		if (results.match("/help/") == help){
+    			$scope.changeView('help');
+    			$scope.apply();
+    		}
+
  		}
 
 		function failCallback(error){
