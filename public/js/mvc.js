@@ -107,14 +107,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-    		alert("Results: " + results);
+			var result = JSON.stringify(results);
+			result = result.substring(2,result.length - 2);
+    		alert("Results: " + result);
     		//if (results.match("/help/") === help){
     			//$scope.changeView('help');
     		//}
  		}
 
 		function failCallback(error){
-		    console.log("Error: " + error);
+		    alert("Error: " + error);
 
 		}
 		//return results;
