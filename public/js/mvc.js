@@ -113,8 +113,23 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function successCallback(results){
 			var result = JSON.stringify(results);
-			result = result.substring(2,result.length - 2);
 
+
+			//All the result will come back as a string all in lower cases and has no white space in both end.
+			result = result.substring(2,result.length - 2);
+			result = result.toLowerCase().trim();
+			alert("Result: "+result);
+
+			if($scope.jeeves.view == 'weather'){
+	    		if (result.lastIndexOf("change city to")===0){
+	    			var index = result.lastIndexOf(" ");
+	    			var city = result.slice(index+1);
+	    			$scope.jeeves.city = city;
+	    			$scope.changeWeather(null);
+	    		} else {
+	    			alert("Invalid Command");
+	    		}
+    		}else if($scope.jeeves.view == 'news'){
 
 
     		if (result == 'help'){
@@ -165,7 +180,81 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     		}else if($scope.jeeves.view == 'help' ){
     			
     		}
-    		$scope.$apply();
+
+    		}else if($scope.jeeves.view == 'email'){
+    			
+    		}else if($scope.jeeves.view == 'menu'){
+    			
+    		}else if($scope.jeeves.view == 'about'){
+    			if(result == 'read'){
+    			  //tts read abt page
+    			}
+    			//tell me about jeeves === global
+    		}else if($scope.jeeves.view == 'setting'){
+				if (result.lastIndexOf("change city to")===0){
+	    			var index = result.lastIndexOf(" ");
+	    			var city = result.slice(index+1);
+	    			$scope.jeeves.city = city;
+	    			$scope.changeWeather(null);    				
+    				}
+    			}
+    		}else if($scope.jeeves.view =='contact' ){
+				   if(result === 'read' || result.match(/read/) != null){
+				   	 //read tts of contact
+				   }
+    		}else if($scope.jeeves.view == 'favorite' ){
+    			if(result ===  'read' || result.match(/read/) != null){
+				   	 //read tts of favs
+				   }
+    		}else if($scope.jeeves.view == 'help' ){
+    			if(result === 'read' || result.match(/read/) != null){
+				   	 //read tts of helpscreen
+				   }
+				if (result.lastIndexOf("help")===0){
+					 if (result.match(/cmd/)){
+					 	//do cmd help
+					 }
+
+					 else if (result.match(/change city to/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/read me/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/more articles/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/how many emails do i have/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/about/)){
+					 	//do cmd help
+					 }   								
+					 else if (result.match(/settings/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/menu/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/email/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/news/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/weather/)){
+					 	//do cmd help
+					 }
+					 else if (result.match(/contact/)){
+					 	//do cmd help
+					 }   
+					 else if (result.match(/what can i say/)){
+					 	//do cmd help
+					 }  
+				} 
+		   		$scope.$apply();
+
+    		}
 
  		}
 
