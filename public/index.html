@@ -26,7 +26,6 @@
 
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="js/reco.js"></script>
 
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
@@ -36,7 +35,7 @@
 <body ng-controller="jeevesCtrl">
 	<div class="container">
 		<div class="page-header">
-			<h1>Jeeves Personal Assistant <small><span id="version">v0.0.5</span></small></h1>
+			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.0</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
 			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
@@ -180,8 +179,9 @@
 		<div id="speech" class ="view" ng-hide="jeeves.view != 'speech'" ng-cloak>
 			<div>
 				<h2>Speech</h2>
+
 				Speech function will go here
-				<button ng-click="reco()" class="btn btn-default btn-block">SPEAK</>
+				<button ng-click="reco()" class="btn btn-default btn-block">SPEAK</button>
 				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
 			</div>
