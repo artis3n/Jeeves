@@ -113,11 +113,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function successCallback(results){
 			var result = JSON.stringify(results);
-
-			//All the result will come back as a string all in lower cases and has no white space in both end.
 			result = result.substring(2,result.length - 2);
-			result = result.toLowerCase().trim();
-			alert("Result: "+result);
 
 			if($scope.jeeves.view == 'weather'){
 	    		if (result.lastIndexOf("change city to")===0){
@@ -144,18 +140,35 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     			
     		}else if($scope.jeeves.view == 'help' ){
     			
-    		}else{
-    			alert("Opps!")
     		}
-
     		$scope.$apply();
  		}
 
 		function failCallback(error){
 		    alert("Error: " + error);
-
 		}
-		//return results;
+	}
+
+	$scope.tts = function() {
+		navigator.tts.startup(startupWin, fail);
+		function startupWin(result) {
+		    alert("Startup win");
+		    // When result is equal to STARTED we are ready to play
+		    alert("Result "+result);
+		    //TTS.STARTED==2 use this once so is answered
+		    if (result == 2) {
+		        navigator.tts.getLanguage(win, fail);
+		        navigator.tts.speak("The text to speech service is ready");
+		    }
+		}                               
+
+		function win(result) {
+		    alert(result);
+		}
+
+		function fail(result) {
+		    alert("Error = " + result);
+		}
 	}
 
 	$scope.getListArticle=function(){
