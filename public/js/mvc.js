@@ -111,12 +111,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			var result = JSON.stringify(results);
 			result = result.substring(2,result.length - 2);
-    		alert("Results: " + result);
-    		if (results.match("/help/") == help){
-    			$scope.changeView('help');
-    			$scope.apply();
-    		}
 
+    		if (result == 'help'){
+    			alert(result + ': You said help.');
+    			$scope.changeView('help');
+    			$scope.$apply();
+    		} else if(result == 'news') {
+    			alert(result + ': You said news.');
+    			$scope.changeView('news');
+    			$scope.$apply();
+    		} else if(result.substring(0, 15) == 'Read Me section') {
+    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
+    			$scope.changeSection(result.substring(15, result.length));
+    			$scope.$apply();
+    		}
+    		else if(result == 'edittttt') {
+    			alert(result + ': You said news.');
+    			$scope.changeView('news');
+    			$scope.$apply();
+    		}else{
+    			alert(result + ": You didn't say help.");
+    		}
  		}
 
 		function failCallback(error){
