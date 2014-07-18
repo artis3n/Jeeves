@@ -35,7 +35,7 @@
 <body ng-controller="jeevesCtrl">
 	<div class="container">
 		<div class="page-header">
-			<h1>Jeeves Personal Assistant <small><span id="version">v0.0.5</span></small></h1>
+			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.0</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
 			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
@@ -54,30 +54,26 @@
 				<button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
-				<hr>
-				<button ng-click="changeView('back')" class="btn btn-warning btn-block">Go Back </button>   
 			</div>
 		</div>
 
-		<div id="news1" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
+		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
 			<div>
 				<h2 class="text-center">News</h2>
 			</div>
 			<div align = "center">
-		<!--	<div class="btn-group"> -->
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('news')">News</button>
-  				<div id="news" ng-hide="jeeves.newsViews!= 'news'"><br></div>
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('world')">World</button>
-  				<div id="world" ng-hide="jeeves.newsViews!='world'"><br></div>
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('sport')">Sports</button>
-  				<div id="sport" ng-hide="jeeves.newsViews!='sport'"><br></div>
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('business')">Business</button>
-  				<div id="business" ng-hide="jeeves.newsViews!='business'"><br></div>
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('technology')">Tech</button>
-  				<div id="technology" ng-hide="jeeves.newsViews!='technology'"><br></div>
-  				<button type="button" class="btn btn-warning btn-block" ng-click="changeSection('science')">Science</button>
-  				<div id="science" ng-hide="jeeves.newsViews!='science'"><br></div>
-		<!--	</div> -->
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('news')" ng-dblclick="collapse()">News</button>
+  				<div id="news" ng-hide="jeeves.newsViews!= 'news'"></div>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('world')" ng-dblclick="collapse()">World</button>
+  				<div id="world" ng-hide="jeeves.newsViews!='world'"></div>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('sport')" ng-dblclick="collapse()">Sports</button>
+  				<div id="sport" ng-hide="jeeves.newsViews!='sport'"></div>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('business')" ng-dblclick="collapse()">Business</button>
+  				<div id="business" ng-hide="jeeves.newsViews!='business'"></div>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('technology')" ng-dblclick="collapse()">Tech</button>
+  				<div id="technology" ng-hide="jeeves.newsViews!='technology'"></div>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('science')" ng-dblclick="collapse()">Science</button>
+  				<div id="science" ng-hide="jeeves.newsViews!='science'"></div>
 			</div>
 			<br>
 			<div align = "center">
