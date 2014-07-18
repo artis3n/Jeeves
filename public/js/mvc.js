@@ -23,8 +23,32 @@ jeevesApp.run(function($http) {
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
     });
-})
+});
 
+// Create a sglclick action to avoid the ng-click conflict with ng-dblclick
+jeevesApp.directive('sglclick', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+          	var fn = $parse(attr['sglclick']);
+          	var delay = 300, clicks = 0, timer = null;
+          	element.on('click', function (event) {
+	            clicks++;  //count clicks
+	            if(clicks === 1) {
+	              	timer = setTimeout(function() {
+	               		scope.$apply(function (){
+	               			fn(scope, { $event: event });
+	               		}); 
+	                	clicks = 0;			//after action performed, reset counter
+	              	}, delay);
+	            } else {
+	                clearTimeout(timer);	//prevent single-click action
+	                clicks = 0;				//after action performed, reset counter
+            	}
+          	});
+        }
+    };
+}]);
 
 jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.jeeves = model;
@@ -134,9 +158,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.updateShowAmount=function(){
-		console.log("Get there");
 		$scope.jeeves.showNumber = $scope.jeeves.showNumber +5;
-		console.log("Show Number: " + $scope.jeeves.showNumber);
 		$scope.getListArticle();
+	}
+
+	$scope.collapse=function(){
+		$scope.jeeves.newsViews='';
 	}
 });
