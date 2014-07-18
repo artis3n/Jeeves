@@ -113,7 +113,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function successCallback(results){
 			var result = JSON.stringify(results);
-			result = result.substring(2,result.length - 2);
+			result = result.substring(2,result.length - 2).toLowerCase().trim();
 
 			if($scope.jeeves.view == 'weather'){
 	    		if (result.lastIndexOf("change city to")===0){
@@ -127,7 +127,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     		}else if($scope.jeeves.view == 'news'){
 
     		}else if($scope.jeeves.view == 'email'){
-    			
+    			if (result.match(/authorize/) != null) {
+    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
+    			} else if (result == "read my emails" || "read" || "start reading") {
+    				var content = document.getElementById('email-announcement').innerText;
+    				$scope.tts(content);
+    			}
     		}else if($scope.jeeves.view == 'menu'){
     			
     		}else if($scope.jeeves.view == 'about'){
@@ -149,25 +154,19 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	}
 
-	$scope.tts = function() {
-		navigator.tts.startup(startupWin, fail);
-		function startupWin(result) {
-		    alert("Startup win");
-		    // When result is equal to STARTED we are ready to play
-		    alert("Result "+result);
-		    //TTS.STARTED==2 use this once so is answered
-		    if (result == 2) {
-		        navigator.tts.getLanguage(win, fail);
-		        navigator.tts.speak("The text to speech service is ready");
+	$scope.tts = function(message) {
+		navigator.tts.startup(success, fail);
+		function success() {
+			navigator.notification.beep(1);
+		    navigator.tts.speak(message, shutdown);
 		    }
-		}                               
-
-		function win(result) {
-		    alert(result);
-		}
 
 		function fail(result) {
 		    alert("Error = " + result);
+		}
+
+		function shutdown() {
+			navigator.tts.shutdown();
 		}
 	}
 

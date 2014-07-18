@@ -60,26 +60,29 @@ function makeApiCall() {
             if (stuff.payload == null) {
               console.log("Payload null: " + message.id);
             }
-            var header = "";
-            var sender = "";
+            var header = document.createElement('div');
+            var sender = document.createElement('div');
             angular.forEach(stuff.payload.headers, function(item) {
               if (item.name == "Subject") {
-                header = item.value;
+                header.setAttribute('id', 'email-header');
+                header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
               }
               if (item.name == "From") {
-                sender = item.value;
+                sender.setAttribute('id', 'email-sender');
+                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
               }
             })
             try {
-              var contents = "";
+              content.appendChild(header);
+              content.appendChild(sender);
+              var contents = document.createElement('div');
+              contents.setAttribute('id', 'email-content');
               if (stuff.payload.parts == null) {
-                contents = base64.decode(stuff.payload.body.data);
+                contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
               } else {
-                contents = base64.decode(stuff.payload.parts[0].body.data);
+                contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
               }
-              content.innerHTML += '<b>Subject: ' + header + '</b><br>';
-              content.innerHTML += '<b>From: ' + sender + '</b><br>';
-              content.innerHTML += contents + "<br><br>";
+              content.appendChild(contents);
             } catch (err) {
               console.log("Encoding error: " + encodings++);
             }
