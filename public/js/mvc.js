@@ -160,8 +160,52 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     			if(result === 'read' || result.match(/read/) != null){
 				   	 //read tts of helpscreen
 				   }
+				if (result.lastIndexOf("help")===0){
+					 if (result.match(/cmd/)){
+					 	//do cmd help
+					 }
 
+					 else if (result.match(/change city to/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/read me/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/more articles/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/how many emails do i have/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/about/)){
+					 	//do cmd help
+					 }   								
+					 else if (result.match(/settings/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/menu/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/email/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/news/)){
+					 	//do cmd help
+					 }  
+					 else if (result.match(/weather/)){
+					 	//do cmd help
+					 }
+					 else if (result.match(/contact/)){
+					 	//do cmd help
+					 }   
+					 else if (result.match(/what can i say/)){
+					 	//do cmd help
+					 }  
+				}
     		}
+
+			
+    			
 
 
  		}
