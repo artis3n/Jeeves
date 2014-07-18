@@ -176,20 +176,10 @@
 			</div>
 		</div>
 
-		<div id="speech" class ="view" ng-hide="jeeves.view != 'speech'" ng-cloak>
-			<div>
-				<h2>Speech</h2>
-
-				<button ng-click="reco()" class="btn btn-default btn-block">SPEAK</button>
-				<button ng-click="changeView('help')" class="btn btn-default btn-block">Help</button> 
-				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
-			</div>
-		</div>
-
 		<div id="bottom-button" class="view" >
 			<br>
 			<br>
-			<button ng-click="changeView('speech')" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
+			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
 			<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
 			<br>
 			<br>	
