@@ -120,7 +120,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     			alert(result + ': You said news.');
     			$scope.changeView('news');
     			$scope.$apply();
-    		} else if(result.substring(0, 15) == 'Read Me section') {
+    		} else if(result.substring(0, 7) =='Read Me') {
     			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
     			$scope.changeSection(result.substring(15, result.length));
     			$scope.$apply();
