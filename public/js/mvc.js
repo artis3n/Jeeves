@@ -206,27 +206,54 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
  		function globalCmds(gResult){
  			if (gResult.match(/How’s the weather/)){
  				//How’s the weather?
- 			}else if (gResult.match(/Read me/) { //news
+ 			}else if (gResult.match(/read me/) { //news
  				//nest ifs for sections
  				//Read me <section>
- 				if (){
+ 				var news = gResult.substring( gResult.lastIndexOf("read me") );
+ 				if (news.match(/buisness/)){
 
- 				}else if () {
+ 				}else if (news.match(/news/)) {
 
- 				}else if () {
+ 				}else if (news.match(/sports/)) {
+
+ 				}else if (news.match(/tech/)) {
+
+ 				}else if(news.match(/science/)){
 
  				}
  			}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
  				
  			}else if (gResult=="go to") {//menu
  				//Go to <menu section>
- 				if (gResult.lastIndexOf())
+ 				var help = gResult.substring( gResult.lastIndexOf(/help/) );
+ 				if (help.match(/news/)){
+
+ 				}else if (help.match(/email/)) {
+
+ 				}else if (help.match(/favorites/)) {
+
+ 				}else if (help.match(/menu/)) {
+
+ 				}else if (help.match(/about/)) {
+
+ 				}else if (help.match(/settings/)) {
+
+ 				}else if (help.match(/contact/)) {
+
+ 				}
+
+
+
  			}else if () {//about
  				//Tell me about Jeeves
  				
- 			}else if () {//help
+ 			}else if (gResult.match(/help/)) {//help
  				//What can I do/say on <section>?
- 				
+ 				if () {
+
+ 				}else if () {
+
+ 				}else if () {};
  			}else if (gResult == "go to help") {// go to help
 
  			}
