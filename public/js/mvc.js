@@ -112,14 +112,19 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-			var results = JSON.stringify(results);
 			alert(results);
-			// result = result.substring(2, result.length - 2).toLowerCase().trim();
+
+			//Don't forget to break the for loop if there is a match!!!!!!!
 			for (var i = 0; i < results.length; i++) {
-				results[i] = results[i].toLowerCase();
-				alert(result[i]);
+				var result = results[i].toLowerCase();
+				alert(result);
+
 				if($scope.jeeves.view == 'weather'){
-				$scope.speechWeather(result);
+					// A Stop variable to break
+					var stop = $scope.speechWeather(result);
+					if(stop){
+						break;
+					}
 	    		}else if($scope.jeeves.view == 'news'){
 	    			if (result == 'go to help'){
 	    				$scope.changeView('help');
@@ -237,12 +242,40 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-<<<<<<< HEAD
-    		});
-=======
 			}
->>>>>>> master
  		}
+
+ 		// There is a bug in this section.
+ 		
+ 		// function globalCmds(gResult){
+ 		// 	if (gResult.match(/How’s the weather/)){
+ 		// 		//How’s the weather?
+ 		// 	}else if (gResult.match(/Read me/)) { 
+ 				//news
+ 		// 		//nest ifs for sections
+ 		// 		//Read me <section>
+ 		// 		if (){
+
+ 		// 		}else if () {
+
+ 		// 		}else if () {
+
+ 		// 		}
+ 		// 	}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
+ 				
+ 		// 	}else if (gResult=="go to") {//menu
+ 		// 		//Go to <menu section>
+ 		// 		if (gResult.lastIndexOf())
+ 		// 	}else if () {//about
+ 		// 		//Tell me about Jeeves
+ 				
+ 		// 	}else if () {//help
+ 		// 		//What can I do/say on <section>?
+ 				
+ 		// 	}else if (gResult == "go to help") {// go to help
+
+ 		// 	}
+ 		// }
 
 		function failCallback(error){
 		    alert("Error: " + error);
@@ -251,6 +284,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.speechWeather = function(result) {
 		var city = "INVALID";
+		var stop = false;
 
 		if (result.lastIndexOf("change city to")==0){
 			city = result.slice(15);
@@ -267,13 +301,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			alert("How's the weather?");
 			//TTS command to tell the weather
 		}else {
-			alert(results[0] + " is an invalid command.");
+			alert(result + " is an invalid command.");
 		}
 
 		if(city !== "INVALID"){
 			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 			$scope.changeWeather(null);
+			stop = true;
 		}
+
+		return stop;
 	}
 
 	$scope.startTTS = function() {
