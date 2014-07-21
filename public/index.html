@@ -200,20 +200,32 @@
 			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", 'Jeeves', 'Confirm');
 		}
 	}
-	</script>
-	<script type="text/javascript">
+
 	document.addEventListener("backbutton", goBack, false);
 
 	function goBack() {
-		navigator.tts.speak("Going to previous view");
+		navigator.tts.speak("Going to previous view.");
 		try {
 			$.getScript("js/mvc.js", function() {
-				changeView('email');
+				jeevesApp.$scope.changeView('back');
 			})
 		} catch (err) {
 			alert("Didn't work.");
 		}
 		
+	}
+
+	document.addEventListener("menubutton", openMenu, false);
+
+	function openMenu() {
+		navigator.tts.speak("Opening menu.");
+		try {
+			$.getScript("js/mvc.js", function() {
+				jeevesApp.$scope.changeView('menu');
+			})
+		} catch (err) {
+			alert("Didn't work.");
+		}
 	}
 	</script>
 </body>
