@@ -10,9 +10,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 	<!-- Implement Bootstrap and AngularJS. -->
-	<link href="css/bootstrap.css" rel="stylesheet" />
-	<link href="css/bootstrap-theme.css" rel="stylesheet" />
-	<script src="js/angular.js"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+	<script src="js/angular.min.js"></script>
+	<!-- Add AngularJS modules -->
+	<script src="js/angular-animate.min.js"></script>
+	<script src="js/angular-touch.min.js"></script>
 
 	<script src="js/mvc.js"></script>
 	
@@ -38,8 +41,12 @@
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.0</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
-			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">Menu </button>
-			<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">Favorites </button>
+			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">
+				<span class="glyphicon glyphicon-home"></span>
+				</button>
+			<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">
+				<span class="glyphicon glyphicon-star"></span>
+			</button>
 			<br>
 			<br>
 		</div>
@@ -181,7 +188,7 @@
 			<br>
 			<br>
 			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-			<button ng-click="tts()" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+			<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
 			<br>
 			<br>	
 		</div>
