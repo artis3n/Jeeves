@@ -120,13 +120,50 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
 	    			if (result == 'go to help'){
-	    			$scope.changeView('help');
-	    			$scope.$apply();
-		    		} else if(result.substring(0, 15) == 'Read Me section') {
-		    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
-		    			$scope.changeSection(result.substring(15, result.length));
-		    			$scope.$apply();
-		    		}
+	    				$scope.changeView('help');
+	    				$scope.$apply();
+		    		}     				
+		    		else if(result.substring(0, 7) =='read me') { 
+    					alert(result.substring(8, result.length));
+    					$scope.changeSection(result.substring(8, result.length));
+    					x=$scope.jeeves.section;
+						$scope.jeeves.showNumber = 5;
+						$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+							$scope.jeeves.articles=data.response.results; 
+							for (var i = 0; i < $scope.jeeves.showNumber; i++) {
+								var entry = $scope.jeeves.articles[i];
+								alert(entry.webTitle);
+								//replace alert by read entry.webTitle
+								};
+							}) 
+    						$scope.$apply();
+					}
+
+    				else if(result =='read me next'){
+    				alert('You said read me next.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result.substring(0, 15) =='read me article'){
+    				alert(': You said read me article '+result.substring(16, result.length)+'.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='more articles'){
+    				alert(': You said more articles.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='read me last article'){
+    				alert(': You said read me last article.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='read me previous article'){
+    				alert(': You said read me previous articles.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
 	    		}else if($scope.jeeves.view == 'email'){
 	    			if (result.match(/authorize/) != null) {
 	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
