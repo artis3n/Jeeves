@@ -175,6 +175,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						 }  
 						 else if (result.match(/about/)){
 						 	//do cmd help
+						 	navigator.tts.speak("Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it jeeves. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and free");
 						 }   								
 						 else if (result.match(/settings/)){
 						 	//do cmd help
@@ -209,7 +210,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
  			}else if (gResult.match(/read me/) { //news
  				//nest ifs for sections
  				//Read me <section>
- 				var news = gResult.substring( gResult.lastIndexOf("read me") );
+ 				var news = gResult.substring( gResult.lastIndexOf("read me") );//get burak's shit
  				if (news.match(/buisness/)){
 
  				}else if (news.match(/news/)) {
@@ -226,20 +227,44 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
  			}else if (gResult=="go to") {//menu
  				//Go to <menu section>
  				var help = gResult.substring( gResult.lastIndexOf(/help/) );
- 				if (help.match(/news/)){
-
+ 				if (help.match(/weather/)){
+ 					//5
+ 					navigator.tts.speak("you can say change city to ");
+ 					navigator.tts.speak("or you can say change to");
+ 					navigator.tts.speak("or you can say change weather to");
+ 					navigator.tts.speak("or you can say how's the weather");
+ 					navigator.tts.speak("or you can say will it rain snow be cloudy or sunny");
  				}else if (help.match(/email/)) {
-
+ 					//5
+ 					//read
+ 					navigator.tts.speak("you can say read me my emails");
+ 					navigator.tts.speak("or you can say read");
+ 					navigator.tts.speak("or you can say read me subject");
+ 					navigator.tts.speak("or you can say read me email by insert name");
+ 					navigator.tts.speak("or you can say how many emails do i have");
  				}else if (help.match(/favorites/)) {
-
+ 					//1
+ 					navigator.tts.speak("you can say read");
  				}else if (help.match(/menu/)) {
-
+ 					//1
+ 					navigator.tts.speak("you can say go to insert section");
  				}else if (help.match(/about/)) {
-
+ 					//1
+ 					navigator.tts.speak("you can say read");
+ 					navigator.tts.speak("or you can say tell me about jeeves")
  				}else if (help.match(/settings/)) {
-
+ 					//1
+ 					navigator.tts.speak("you can say change city to insert city"); 
  				}else if (help.match(/contact/)) {
-
+ 					//1
+ 					navigator.tts.speak("you can say read");
+ 				}else if (help.match(/news/)) {
+ 					//5
+ 					navigator.tts.speak("you can say read me insert section");
+ 					navigator.tts.speak("you can say read me next article");
+ 					navigator.tts.speak("you can say read me article insert title");
+ 					navigator.tts.speak("you can say more articles");
+ 					navigator.tts.speak("you can say read me last or previous article");
  				}
 
 
