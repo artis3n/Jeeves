@@ -7,7 +7,6 @@ var model = {
 	showNumber: 5,
 	previousView: ["weather"],
 	city: 'Waltham',
-	curNum: 0,
 	country: 'us',
 	emailLabels: ['INBOX'],
 	section: 'news',
@@ -94,8 +93,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
-            console.log("Weather: " + JSON.stringify(model.weather))
-            console.log("Data: " + data.main.temp)
+            // For Testing
+            // console.log("Weather: " + JSON.stringify(model.weather))
+            // console.log("Data: " + data.main.temp)
     	});
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
@@ -246,7 +246,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
  		}
 
  		// There is a bug in this section.
- 		
+
  		// function globalCmds(gResult){
  		// 	if (gResult.match(/How’s the weather/)){
  		// 		//How’s the weather?
@@ -292,13 +292,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			city = result.slice(10);
 		}else if (result.lastIndexOf("change weather to")==0){
 			city = result.slice(18);
-		}else if (result.lastIndexOf("change whether to")==0){
-			city = result.slice(18);
+		// }else if (result.lastIndexOf("change whether to")==0){
+		// 	city = result.slice(18);
 		}else if (result.lastIndexOf("what's the weather of")==0){
 			city = result.slice(22);
 		}else if (result.lastIndexOf("how's the weather")==0){
 			var str = ""
 			alert("How's the weather?");
+			stop = true;
 			//TTS command to tell the weather
 		}else {
 			alert(result + " is an invalid command.");
