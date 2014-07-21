@@ -109,17 +109,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.reco= function(){
-		navigator.speechrecognizer.recognize(successCallback, failCallback, 1, "Jeeves Personal Assistant");
+		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
 			var result = JSON.stringify(results);
-			result = result.substring(2, result.length - 2).toLowerCase().trim();
+			alert(result);
+			// result = result.substring(2, result.length - 2).toLowerCase().trim();
 
 			if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
     		}else if($scope.jeeves.view == 'news'){
-    			if (result == 'help'){
-    			alert(result + ': You said help.');
+    			if (result == 'go to help'){
     			$scope.changeView('help');
     			$scope.$apply();
 	    		} else if(result.substring(0, 15) == 'Read Me section') {
@@ -215,7 +215,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else if (result.lastIndexOf("change weather to")==0){
 			city = result.slice(18);
 		}else {
-			alert("Invalid Command");
+			alert(results[0] + " is an invalid command.");
 		}
 
 		if(city !== "INVALID"){
