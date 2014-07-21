@@ -116,7 +116,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			for (var i = 0; i < results.length; i++) {
 				result = results[i].toLowerCase();
 				if($scope.jeeves.view == 'weather'){
-				$scope.speechWeather(result);
+				$scope.weatherSpeech(result);
+				break;
 	    		}else if($scope.jeeves.view == 'news'){
 	    			if (result == 'go to help'){
 	    			$scope.changeView('help');
@@ -127,14 +128,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		    			$scope.$apply();
 		    		}
 	    		}else if($scope.jeeves.view == 'email'){
-	    			if (result.match(/authorize/) != null) {
-	    				navigator.tts.speak("Now authorizing");
-	    				break;
-	    			} else if (result == "read my emails" || "read" || "start reading") {
-	    				var content = document.getElementById('email-announcement').innerText;
-	    				navigator.tts.speak(content);
-	    				break;
-	    			}
+	    			$scope.emailSpeech(result);
+	    			break;
 	    		}else if($scope.jeeves.view == 'menu'){
 	    			
 	    		}else if($scope.jeeves.view == 'about'){
@@ -207,7 +202,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	}
 
-	$scope.speechWeather = function(result) {
+	$scope.weatherSpeech = function(result) {
 		var city = "INVALID";
 
 		if (result.lastIndexOf("change city to")==0){
@@ -231,6 +226,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		if(city !== "INVALID"){
 			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 			$scope.changeWeather(null);
+		}
+	}
+
+	$scope.emailSpeech = function(result) {
+		if (result.match(/authorize/) != null) {
+			navigator.tts.speak("Now authorizing");
+		} else if (result == "read my emails" || "read" || "start reading") {
+			var content = document.getElementById('email-announcement').innerText;
+			navigator.tts.speak(content);s
 		}
 	}
 
