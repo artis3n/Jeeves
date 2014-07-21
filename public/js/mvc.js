@@ -116,7 +116,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 			//Don't forget to break the for loop if there is a match!!!!!!!
 			for (var i = 0; i < results.length; i++) {
-				result = JSON.stringify(results[i]).toLowerCase();
+				var result = results[i].toLowerCase();
 				alert(result);
 				if($scope.jeeves.view == 'weather'){
 					// A Stop variable to break
@@ -125,51 +125,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						break;
 					}
 	    		}else if($scope.jeeves.view == 'news'){
-	    			if (result == 'go to help'){
-	    				$scope.changeView('help');
-	    				$scope.$apply();
-		    		}     				
-		    		else if(result.substring(0, 7) =='read me') { 
-    					alert(result.substring(8, result.length));
-    					$scope.changeSection(result.substring(8, result.length));
-    					x=$scope.jeeves.section;
-						$scope.jeeves.showNumber = 5;
-						$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-							$scope.jeeves.articles=data.response.result; 
-							for (var j = 0; j < $scope.jeeves.showNumber; j++) {
-								var entry = $scope.jeeves.articles[j];
-								alert(entry.webTitle);
-								//replace alert by read entry.webTitle
-								};
-							}) 
-    						$scope.$apply();
-    						break;
-					}
-    				else if(result =='read me next'){
-    				alert('You said read me next.');
-    				//$scope.changeSection(result.substring(12, result.length)); 
-    				$scope.$apply();	
-    				} 
-    				else if(result.substring(0, 15) =='read me article'){
-    				alert(': You said read me article '+result.substring(16, result.length)+'.');
-    				//$scope.changeSection(result.substring(12, result.length)); 
-    				$scope.$apply();	
-    				} 
-    				else if(result =='more articles'){
-    				alert(': You said more articles.');
-    				//$scope.changeSection(result.substring(12, result.length)); 
-    				$scope.$apply();	
-    				} 
-    				else if(result =='read me last article'){
-    				alert(': You said read me last article.');
-    				//$scope.changeSection(result.substring(12, result.length)); 
-    				$scope.$apply();	
-    				} 
-    				else if(result =='read me previous article'){
-    				alert(': You said read me previous articles.');
-    				//$scope.changeSection(result.substring(12, result.length)); 
-    				$scope.$apply();	
-    				} 
+	    			var stop = $scope.speechNews(result);
+	    			if(stop){
+	    				break;
+	    			}
 	    		}else if($scope.jeeves.view == 'email'){
 	    			if (result.match(/authorize/) != null) {
 	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
@@ -308,6 +267,84 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 			$scope.changeWeather(null);
 			stop = true;
+		}
+
+		return stop;
+	}
+
+	$scope.speechNews = function(result){
+		var stop =false;
+	    if (result == 'go to help'){
+	    	$scope.changeView('help');
+	    	$scope.$apply();
+	    	stop=true;
+		}     				
+		//reads a certain news section, e.g. read me news business.
+		else if(result.substring(0, 12) =='read me news') { 
+    		if(result.length>14){
+    			alert("moving to section: "+ result.substring(13, result.length));
+    			$scope.changeSection(result.substring(13, result.length));
+    		}
+    		x=$scope.jeeves.section;
+			$scope.jeeves.showNumber = 5;
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.articles=data.response.results;
+				var stop2=false;
+				for (var j = 0; j < $scope.jeeves.showNumber; j++) {
+					var entry = $scope.jeeves.articles[j];
+					alert("Article "+j+": "+entry.webTitle);
+
+					//for user dialogue 
+					alert("Tell us if you like to 'move on next', 'read article', 'more articles', 'read me last article', 'read me news <section>', 'quit'.");
+					navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
+					function successCallback(results){
+						for (var i = 0; i < results.length; i++) {
+							var result = results[i].toLowerCase();
+							alert("dialogue response: "+result);
+							if(result.substring(0, 12) =='read me news'){
+								stop2=true;
+								$scope.speechNews(result);
+								break;
+							}
+							else if(result=='read article'){
+								alert("Article Content: "+ entry.fields.body.textContent);
+								break;
+							}
+							else if(result=='more articles'){
+								$scope.updateShowAmount();
+								break;
+							}
+							else if(result=='read me last article'){
+								j=j-2;
+								break;
+							}
+							else if(result=='move on next'){
+								break;
+							}
+							else if(result=='quit'){	
+								stop2=true;
+								break;
+							}
+							else{
+								alert("unrecognized command, moving on...");
+								break;
+							}
+							//dont forget to break the loop
+						}
+
+					}
+					function failCallback(error){
+		   				 alert("Error: " + error);
+					}
+					if(stop2){
+						break;
+					}
+					//navigator.tts.speakZ(entry.webTitle);
+				};
+			}); 
+
+    		$scope.$apply();
+    		stop=true;
 		}
 
 		return stop;
