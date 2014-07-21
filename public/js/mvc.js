@@ -200,11 +200,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-<<<<<<< HEAD
-    		});
-=======
 			}
->>>>>>> master
  		}
 
 		function failCallback(error){
