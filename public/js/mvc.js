@@ -81,12 +81,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	};
 
 	$scope.changeWeather = function(setting) {
-		if (setting){
-			$scope.jeeves.city = document.getElementById("weather_city_setting").value;
-		}else{
-			$scope.jeeves.city = document.getElementById("weather_city").value;
+		if(setting !== null){
+			if (setting){
+				$scope.jeeves.city = document.getElementById("weather_city_setting").value;
+			}else{
+				$scope.jeeves.city = document.getElementById("weather_city").value;
+			}
 		}
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+
+		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
@@ -110,28 +113,83 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function successCallback(results){
 			var result = JSON.stringify(results);
+			//All the result will come back as a string all in lower cases and has no white space in both end.
 			result = result.substring(2,result.length - 2);
+			result = result.toLowerCase().trim();
+			alert("Result: "+result);
 
-    		if (result == 'help'){
-    			alert(result + ': You said help.');
-    			$scope.changeView('help');
-    			$scope.$apply();
-    		} else if(result == 'news') {
-    			alert(result + ': You said news.');
-    			$scope.changeView('news');
-    			$scope.$apply();
-    		} else if(result.substring(0, 7) =='Read Me') {
-    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
-    			$scope.changeSection(result.substring(15, result.length));
-    			$scope.$apply();
-    		}
-    		else if(result == 'edittttt') {
-    			alert(result + ': You said news.');
-    			$scope.changeView('news');
-    			$scope.$apply();
+			if($scope.jeeves.view == 'weather'){
+	    		if (result.lastIndexOf("change city to")===0){
+	    			var index = result.lastIndexOf(" ");
+	    			var city = result.slice(index+1);
+	    			$scope.jeeves.city = city;
+	    			$scope.changeWeather(null);
+	    		} else {
+	    			alert("Invalid Command");
+	    		}
+    		}else if($scope.jeeves.view == 'news'){
+
+    				if(result.substring(0, 7) =='read me') { 
+    					alert(result.substring(8, result.length));
+    					$scope.changeSection(result.substring(8, result.length));
+    					x=$scope.jeeves.section;
+						$scope.jeeves.showNumber = 5;
+						$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+							$scope.jeeves.articles=data.response.results; 
+							for (var i = 0; i < $scope.jeeves.showNumber; i++) {
+								var entry = $scope.jeeves.articles[i];
+								alert(entry.webTitle);
+								//replace alert by read entry.webTitle
+								};
+							}) 
+    						$scope.$apply();
+					}
+
+    				else if(result =='read me next'){
+    				alert('You said read me next.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result.substring(0, 15) =='read me article'){
+    				alert(': You said read me article '+result.substring(16, result.length)+'.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='more articles'){
+    				alert(': You said more articles.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='read me last article'){
+    				alert(': You said read me last article.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    				else if(result =='read me previous article'){
+    				alert(': You said read me previous articles.');
+    				//$scope.changeSection(result.substring(12, result.length)); 
+    				$scope.$apply();	
+    				} 
+    			
+    		}else if($scope.jeeves.view == 'email'){
+    			
+    		}else if($scope.jeeves.view == 'menu'){
+    			
+    		}else if($scope.jeeves.view == 'about'){
+    			
+    		}else if($scope.jeeves.view == 'setting'){
+    			
+    		}else if($scope.jeeves.view =='contact' ){
+    			
+    		}else if($scope.jeeves.view == 'favorite' ){
+    			
+    		}else if($scope.jeeves.view == 'help' ){
+    			
     		}else{
-    			alert(result + ": You didn't say help.");
+    			alert("Opps!")
     		}
+
+    		$scope.$apply();
  		}
 
 		function failCallback(error){
