@@ -115,7 +115,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var results = JSON.stringify(results);
 			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
-			angular.forEach(results, function(result)) {
+			angular.forEach(results, function(result) {
 				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
@@ -198,7 +198,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-    		}
+    		})
  		}
 
 		function failCallback(error){
@@ -220,6 +220,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else if (result.lastIndexOf("what's the weather of")==0){
 			city = result.slice(22);
 		}else if (result.lastIndexOf("how's the weather")==0){
+			var str = ""
+			alert("How's the weather?");
 			//TTS command to tell the weather
 		}else {
 			alert(results[0] + " is an invalid command.");
