@@ -195,6 +195,8 @@
 	</div>
 	<script type="text/javascript">
 	document.addEventListener("deviceready", startTTS, false);
+	document.addEventListener("backbutton", goBack, false);
+	document.addEventListener("menubutton", openMenu, false);
 
 	function startTTS() {
 		navigator.tts.startup(success, fail);
@@ -208,8 +210,6 @@
 		}
 	}
 
-	document.addEventListener("backbutton", goBack, false);
-
 	function goBack() {
 		navigator.tts.speak("Going to previous view.");
 		try {
@@ -221,8 +221,6 @@
 		}
 		
 	}
-
-	document.addEventListener("menubutton", openMenu, false);
 
 	function openMenu() {
 		navigator.tts.speak("Opening menu.");
