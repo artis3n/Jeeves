@@ -218,6 +218,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			city = result.slice(10);
 		}else if (result.lastIndexOf("change weather to")==0){
 			city = result.slice(18);
+		}else if (result.lastIndexOf("change whether to")==0){
+			city = result.slice(18);
+		}else if (result.lastIndexOf("what's the weather of")==0){
+			city = result.slice(22);
+		}else if (result.lastIndexOf("how's the weather")==0){
+			//TTS command to tell the weather
 		}else {
 			alert("Invalid Command");
 		}
