@@ -224,7 +224,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
  				}
  			}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
  				
- 			}else if (gResult=="go to") {//menu
+ 			}else if (gResult=="help") {//help
  				//Go to <menu section>
  				var help = gResult.substring( gResult.lastIndexOf(/help/) );
  				if (help.match(/weather/)){
@@ -269,10 +269,30 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 
 
- 			}else if () {//about
+ 			}else if (gResult.match(/about/)) {//about
  				//Tell me about Jeeves
- 				
- 			}else if (gResult.match(/help/)) {//help
+ 				if () {
+
+ 				}else if ("change city to") {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}
+ 			}else if (gResult.match(/go to/)) {//menu
  				//What can I do/say on <section>?
  				if () {
 
