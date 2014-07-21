@@ -112,15 +112,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-			var results = JSON.stringify(results);
+			//var results = JSON.stringify(results);
 			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
 			for (var i = 0; i < results.length; i++) {
-				results[i] = results[i].toLowerCase();
-				alert(result[i]);
+				result = JSON.stringify(results[i]).toLowerCase();
+				alert(result);
 				if($scope.jeeves.view == 'weather'){
-				$scope.speechWeather(result);
-	    		}else if($scope.jeeves.view == 'news'){
+					$scope.speechWeather(result);
+	    		}
+	    		else if($scope.jeeves.view == 'news'){
 	    			if (result == 'go to help'){
 	    				$scope.changeView('help');
 	    				$scope.$apply();
@@ -131,16 +132,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     					x=$scope.jeeves.section;
 						$scope.jeeves.showNumber = 5;
 						$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-							$scope.jeeves.articles=data.response.results; 
-							for (var i = 0; i < $scope.jeeves.showNumber; i++) {
-								var entry = $scope.jeeves.articles[i];
+							$scope.jeeves.articles=data.response.result; 
+							for (var j = 0; j < $scope.jeeves.showNumber; j++) {
+								var entry = $scope.jeeves.articles[j];
 								alert(entry.webTitle);
 								//replace alert by read entry.webTitle
 								};
 							}) 
     						$scope.$apply();
+    						break;
 					}
-
     				else if(result =='read me next'){
     				alert('You said read me next.');
     				//$scope.changeSection(result.substring(12, result.length)); 
@@ -237,11 +238,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-<<<<<<< HEAD
-    		});
-=======
 			}
->>>>>>> master
  		}
 
 		function failCallback(error){
