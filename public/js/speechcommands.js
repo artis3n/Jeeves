@@ -1,5 +1,0 @@
-var cmd = {
-	getWords = function(){
-		
-	}
-}
