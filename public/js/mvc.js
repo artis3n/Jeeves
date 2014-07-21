@@ -203,6 +203,35 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
  		}
 
+ 		function globalCmds(gResult){
+ 			if (gResult.match(/How’s the weather/)){
+ 				//How’s the weather?
+ 			}else if (gResult.match(/Read me/) { //news
+ 				//nest ifs for sections
+ 				//Read me <section>
+ 				if (){
+
+ 				}else if () {
+
+ 				}else if () {
+
+ 				}
+ 			}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
+ 				
+ 			}else if (gResult=="go to") {//menu
+ 				//Go to <menu section>
+ 				if (gResult.lastIndexOf())
+ 			}else if () {//about
+ 				//Tell me about Jeeves
+ 				
+ 			}else if () {//help
+ 				//What can I do/say on <section>?
+ 				
+ 			}else if (gResult == "go to help") {// go to help
+
+ 			}
+ 		}
+
 		function failCallback(error){
 		    alert("Error: " + error);
 		}
