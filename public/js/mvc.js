@@ -115,7 +115,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var results = JSON.stringify(results);
 			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
-			angular.forEach(results, function(result) {
+			for (var i = 0; i < results.length; i++) {
+				result[i] = result[i].toLowerCase();
+				alert(result[i]);
 				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
@@ -198,7 +200,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-    		})
+			}
  		}
 
 		function failCallback(error){
