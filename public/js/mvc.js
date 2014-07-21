@@ -112,30 +112,22 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-			alert(results);
-
-			//Don't forget to break the for loop if there is a match!!!!!!!
+			var results = results;
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
 				alert(result);
+
 				if($scope.jeeves.view == 'weather'){
-					// A Stop variable to break
-					var stop = $scope.speechWeather(result);
-					if(stop){
-						break;
-					}
+				$scope.weatherSpeech(result);
+				break;
 	    		}else if($scope.jeeves.view == 'news'){
 	    			var stop = $scope.speechNews(result);
 	    			if(stop){
 	    				break;
 	    			}
 	    		}else if($scope.jeeves.view == 'email'){
-	    			if (result.match(/authorize/) != null) {
-	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
-	    			} else if (result == "read my emails" || "read" || "start reading") {
-	    				var content = document.getElementById('email-announcement').innerText;
-	    				navigator.tts.speakZ(content);
-	    			}
+	    			$scope.emailSpeech(result);
+	    			break;
 	    		}else if($scope.jeeves.view == 'menu'){
 	    			
 	    		}else if($scope.jeeves.view == 'about'){
@@ -203,44 +195,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
  		}
 
- 		// There is a bug in this section.
-
- 		// function globalCmds(gResult){
- 		// 	if (gResult.match(/How’s the weather/)){
- 		// 		//How’s the weather?
- 		// 	}else if (gResult.match(/Read me/)) { 
- 				//news
- 		// 		//nest ifs for sections
- 		// 		//Read me <section>
- 		// 		if (){
-
- 		// 		}else if () {
-
- 		// 		}else if () {
-
- 		// 		}
- 		// 	}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
- 				
- 		// 	}else if (gResult=="go to") {//menu
- 		// 		//Go to <menu section>
- 		// 		if (gResult.lastIndexOf())
- 		// 	}else if () {//about
- 		// 		//Tell me about Jeeves
- 				
- 		// 	}else if () {//help
- 		// 		//What can I do/say on <section>?
- 				
- 		// 	}else if (gResult == "go to help") {// go to help
-
- 		// 	}
- 		// }
-
-		function failCallback(error){
+ 		function failCallback(error){
 		    alert("Error: " + error);
 		}
 	}
 
-	$scope.speechWeather = function(result) {
+	$scope.weatherSpeech = function(result) {
 		var city = "INVALID";
 		var stop = false;
 
@@ -359,6 +319,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function fail () {
 			navigator.notification.alert("Something went wrong with the TTS", 'Jeeves', 'Confirm');
+
+	$scope.emailSpeech = function(result) {
+		if (result.match(/authorize/) != null) {
+			navigator.tts.speak("Now authorizing");
+		} else if (result == "read my emails" || "read" || "start reading") {
+			var content = document.getElementById('email-announcement').innerText;
+			navigator.tts.speak(content);
 		}
 	}
 
