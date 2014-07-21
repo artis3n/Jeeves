@@ -115,7 +115,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var results = JSON.stringify(results);
 			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
-			angular.forEach(results, function(result) {
+			for (var i = 0; i < results.length; i++) {
+				results[i] = results[i].toLowerCase();
+				alert(result[i]);
 				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
@@ -169,7 +171,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
 	    			} else if (result == "read my emails" || "read" || "start reading") {
 	    				var content = document.getElementById('email-announcement').innerText;
-	    				$scope.tts(content);
+	    				navigator.tts.speakZ(content);
 	    			}
 	    		}else if($scope.jeeves.view == 'menu'){
 	    			
@@ -235,7 +237,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
-    		})
+<<<<<<< HEAD
+    		});
+=======
+			}
+>>>>>>> master
  		}
 
 		function failCallback(error){
@@ -270,19 +276,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 	}
 
-	$scope.tts = function(message) {
+	$scope.startTTS = function() {
 		navigator.tts.startup(success, fail);
-		function success() {
-			navigator.notification.beep(1);
-		    navigator.tts.speak(message, shutdown);
-		    }
 
-		function fail(result) {
-		    alert("Error = " + result);
+		function success () {
+			navigator.tts.speak("Hello! I am ready to begin reading.");
 		}
 
-		function shutdown() {
-			navigator.tts.shutdown();
+		function fail () {
+			navigator.notification.alert("Something went wrong with the TTS", 'Jeeves', 'Confirm');
 		}
 	}
 
