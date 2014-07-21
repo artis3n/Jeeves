@@ -112,10 +112,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-			var speechResults = JSON.stringify(results);
-			alert(speechResults);
+			var results = JSON.stringify(results);
+			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
-			angular.forEach(speechResults, function(result)) {
+			for (var i = 0; i < results.length; i++) {
+				results[i] = results[i].toLowerCase();
+				alert(result[i]);
 				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
@@ -198,7 +200,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					} 
 				}
 		   		$scope.$apply();
+<<<<<<< HEAD
     		});
+=======
+			}
+>>>>>>> master
  		}
 
 		function failCallback(error){
@@ -215,6 +221,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			city = result.slice(10);
 		}else if (result.lastIndexOf("change weather to")==0){
 			city = result.slice(18);
+		}else if (result.lastIndexOf("change whether to")==0){
+			city = result.slice(18);
+		}else if (result.lastIndexOf("what's the weather of")==0){
+			city = result.slice(22);
+		}else if (result.lastIndexOf("how's the weather")==0){
+			var str = ""
+			alert("How's the weather?");
+			//TTS command to tell the weather
 		}else {
 			alert(results[0] + " is an invalid command.");
 		}
