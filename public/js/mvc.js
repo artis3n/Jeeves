@@ -116,8 +116,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
 			for (var i = 0; i < results.length; i++) {
-				results[i] = results[i].toLowerCase();
-				alert(result[i]);
+				result = results[i].toLowerCase();
+				alert(result);
 				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
 	    		}else if($scope.jeeves.view == 'news'){
