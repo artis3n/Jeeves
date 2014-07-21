@@ -112,90 +112,91 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 
 		function successCallback(results){
-			var result = JSON.stringify(results);
-			alert(result);
+			var results = JSON.stringify(results);
+			alert(results);
 			// result = result.substring(2, result.length - 2).toLowerCase().trim();
-
-			if($scope.jeeves.view == 'weather'){
+			angular.forEach(results, function(result)) {
+				if($scope.jeeves.view == 'weather'){
 				$scope.speechWeather(result);
-    		}else if($scope.jeeves.view == 'news'){
-    			if (result == 'go to help'){
-    			$scope.changeView('help');
-    			$scope.$apply();
-	    		} else if(result.substring(0, 15) == 'Read Me section') {
-	    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
-	    			$scope.changeSection(result.substring(15, result.length));
+	    		}else if($scope.jeeves.view == 'news'){
+	    			if (result == 'go to help'){
+	    			$scope.changeView('help');
 	    			$scope.$apply();
-	    		}
-    		}else if($scope.jeeves.view == 'email'){
-    			if (result.match(/authorize/) != null) {
-    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
-    			} else if (result == "read my emails" || "read" || "start reading") {
-    				var content = document.getElementById('email-announcement').innerText;
-    				$scope.tts(content);
-    			}
-    		}else if($scope.jeeves.view == 'menu'){
-    			
-    		}else if($scope.jeeves.view == 'about'){
-    			if(result == 'read'){
-    			  //tts read abt page
-    			}
-    			//tell me about jeeves === global
-    		}else if($scope.jeeves.view == 'setting'){
-				$scope.speechWeather(result);
-    		}else if($scope.jeeves.view == 'contact' ){
-				   if(result == 'read' || result.match(/read/) != null){
-				   	 //read tts of contact
-				   }
-    		}else if($scope.jeeves.view == 'favorite' ){
-    			if(result ==  'read' || result.match(/read/) != null){
-				   	 //read tts of favs
-				   }
-    		}else if($scope.jeeves.view == 'help' ){
-    			if(result == 'read' || result.match(/read/) != null){
-				   	 //read tts of helpscreen
+		    		} else if(result.substring(0, 15) == 'Read Me section') {
+		    			alert(result + ': You said read me section '+result.substring(15, result.length)+'.');
+		    			$scope.changeSection(result.substring(15, result.length));
+		    			$scope.$apply();
+		    		}
+	    		}else if($scope.jeeves.view == 'email'){
+	    			if (result.match(/authorize/) != null) {
+	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
+	    			} else if (result == "read my emails" || "read" || "start reading") {
+	    				var content = document.getElementById('email-announcement').innerText;
+	    				$scope.tts(content);
+	    			}
+	    		}else if($scope.jeeves.view == 'menu'){
+	    			
+	    		}else if($scope.jeeves.view == 'about'){
+	    			if(result == 'read'){
+	    			  //tts read abt page
+	    			}
+	    			//tell me about jeeves === global
+	    		}else if($scope.jeeves.view == 'setting'){
+					$scope.speechWeather(result);
+	    		}else if($scope.jeeves.view == 'contact' ){
+					   if(result == 'read' || result.match(/read/) != null){
+					   	 //read tts of contact
+					   }
+	    		}else if($scope.jeeves.view == 'favorite' ){
+	    			if(result ==  'read' || result.match(/read/) != null){
+					   	 //read tts of favs
+					   }
+	    		}else if($scope.jeeves.view == 'help' ){
+	    			if(result == 'read' || result.match(/read/) != null){
+					   	 //read tts of helpscreen
+					}
+					if (result.lastIndexOf("help")==0){
+						 if (result.match(/cmd/)){
+						 	//do cmd help
+						 }
+						 else if (result.match(/change city to/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/read me/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/more articles/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/how many emails do i have/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/about/)){
+						 	//do cmd help
+						 }   								
+						 else if (result.match(/settings/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/menu/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/email/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/news/)){
+						 	//do cmd help
+						 }  
+						 else if (result.match(/weather/)){
+						 	//do cmd help
+						 }
+						 else if (result.match(/contact/)){
+						 	//do cmd help
+						 }   
+						 else if (result.match(/what can i say/)){
+						 	//do cmd help
+						 }  
+					} 
 				}
-				if (result.lastIndexOf("help")==0){
-					 if (result.match(/cmd/)){
-					 	//do cmd help
-					 }
-					 else if (result.match(/change city to/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/read me/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/more articles/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/how many emails do i have/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/about/)){
-					 	//do cmd help
-					 }   								
-					 else if (result.match(/settings/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/menu/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/email/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/news/)){
-					 	//do cmd help
-					 }  
-					 else if (result.match(/weather/)){
-					 	//do cmd help
-					 }
-					 else if (result.match(/contact/)){
-					 	//do cmd help
-					 }   
-					 else if (result.match(/what can i say/)){
-					 	//do cmd help
-					 }  
-				} 
 		   		$scope.$apply();
     		}
  		}
