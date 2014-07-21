@@ -139,7 +139,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	    				navigator.notification.alert("Now authorizing...", 'Jeeves', 'Continue');
 	    			} else if (result == "read my emails" || "read" || "start reading") {
 	    				var content = document.getElementById('email-announcement').innerText;
-	    				$scope.tts(content);
+	    				navigator.tts.speakZ(content);
 	    			}
 	    		}else if($scope.jeeves.view == 'menu'){
 	    			
@@ -208,6 +208,38 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
  		}
 
+ 		// There is a bug in this section.
+ 		
+ 		// function globalCmds(gResult){
+ 		// 	if (gResult.match(/How’s the weather/)){
+ 		// 		//How’s the weather?
+ 		// 	}else if (gResult.match(/Read me/)) { 
+ 				//news
+ 		// 		//nest ifs for sections
+ 		// 		//Read me <section>
+ 		// 		if (){
+
+ 		// 		}else if () {
+
+ 		// 		}else if () {
+
+ 		// 		}
+ 		// 	}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
+ 				
+ 		// 	}else if (gResult=="go to") {//menu
+ 		// 		//Go to <menu section>
+ 		// 		if (gResult.lastIndexOf())
+ 		// 	}else if () {//about
+ 		// 		//Tell me about Jeeves
+ 				
+ 		// 	}else if () {//help
+ 		// 		//What can I do/say on <section>?
+ 				
+ 		// 	}else if (gResult == "go to help") {// go to help
+
+ 		// 	}
+ 		// }
+
 		function failCallback(error){
 		    alert("Error: " + error);
 		}
@@ -244,19 +276,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		return stop;
 	}
 
-	$scope.tts = function(message) {
+	$scope.startTTS = function() {
 		navigator.tts.startup(success, fail);
-		function success() {
-			navigator.notification.beep(1);
-		    navigator.tts.speak(message, shutdown);
-		    }
 
-		function fail(result) {
-		    alert("Error = " + result);
+		function success () {
+			navigator.tts.speak("Hello! I am ready to begin reading.");
 		}
 
-		function shutdown() {
-			navigator.tts.shutdown();
+		function fail () {
+			navigator.notification.alert("Something went wrong with the TTS", 'Jeeves', 'Confirm');
 		}
 	}
 
