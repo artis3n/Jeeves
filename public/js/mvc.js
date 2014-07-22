@@ -68,10 +68,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			$scope.jeeves.view = back;
-		}else if (selected == 'news'){
+		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
+		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
+			$scope.changeView('back');
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
@@ -390,7 +392,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.tts.startup(success, fail);
 
 		function success () {
-			navigator.tts.speak("Hello! I am ready to begin reading.");
+			navigator.tts.speak("Hello! I am ready to begin listening.");
 		}
 
 		function fail () {
