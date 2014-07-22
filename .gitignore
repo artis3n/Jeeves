@@ -1,0 +1,3 @@
+platforms/*
+.cordova/*
+.DS_Store
