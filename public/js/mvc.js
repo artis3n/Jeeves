@@ -113,10 +113,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					break;
 				}
 				if($scope.jeeves.view == 'weather'){
-				$scope.weatherSpeech(result);
-				break;
+					$scope.weatherSpeech(result);
+					break;
 	    		}else if($scope.jeeves.view == 'news'){
-	    			if ($scope.newsSpeech(result))
+	    			if ($scope.newsSpeech(result)) {
 	    				break;
 	    			}
 	    		}else if($scope.jeeves.view == 'email'){
@@ -316,7 +316,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.newsSpeech = function(result){
 		var stop =false;  				
 		//reads a certain news section, e.g. read me news business.
-		else if(result.substring(0, 12) =='read me news') { 
+		if(result.substring(0, 12) =='read me news') { 
     		if(result.length>14){
     			alert("moving to section: "+ result.substring(13, result.length));
     			$scope.changeSection(result.substring(13, result.length));
