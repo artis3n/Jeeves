@@ -422,15 +422,87 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.getListArticle=function(){
+		// var x = $scope.jeeves.section;
+		// //$scope.jeeves.articles=$scope.jeeves.newsArticles.x;
+		// $scope.jeeves.newsViews=x;
+
+		// $http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		// 	$scope.jeeves.articles=data.response.results;
+		// 	var container = document.getElementById(x);
+		// 	container.innerHTML="";
+		// 	container.setAttribute('class', 'btn-group btn-block');
+
+		// 	for (i = 0; i < $scope.jeeves.showNumber; i++){
+		// 		var entry = $scope.jeeves.articles[i]; 
+		// 		var div = document.createElement("div"); 
+		// 		var button = document.createElement('input');
+		// 		button.setAttribute('type', 'button'); 
+		// 		button.setAttribute('class', 'btn btn-default btn-block'); 
+		// 		button.setAttribute('id', x+"_" +i);
+		// 		button.name=entry.webTitle; 
+		// 		button.setAttribute('value', entry.webTitle); 
+		// 		var divSub = document.createElement("div");
+		// 		divSub.setAttribute('id', x+"_" +i + "_div");
+		// 		button.onclick=function(){ 
+		// 			var container = document.getElementById(this.id+"_div");
+		// 			container.setAttribute('class', 'alert alert-success'); 
+		// 			if($scope.jeeves.showNumber <= 10){
+		// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
+		// 			}else{
+		// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
+		// 			}
+		// 		}
+		// 		button.ondblclick=function(){
+		// 			var containerContent = document.getElementById(this.id+"_div"); 
+		// 			containerContent.outerHTML="";
+		// 			$scope.getListArticle();
+		// 		}
+		// 		div.appendChild(button); 
+		// 		div.appendChild(divSub);
+		// 		container.appendChild(div);
+		// 	}
+
+		// 	if($scope.jeeves.showNumber<95){
+		// 		var buttonMore = document.createElement('input');
+		// 		buttonMore.setAttribute('type', 'button'); 
+		// 		buttonMore.setAttribute('class', 'btn btn-default btn-block');
+		// 		buttonMore.name="More"; 
+		// 		buttonMore.setAttribute('value', "More");
+		// 		buttonMore.addEventListener("click", $scope.updateShowAmount)
+		// 		container.appendChild(buttonMore);
+		// 	} 
+		// });
+
 		var x = $scope.jeeves.section;
+
+		if(x=='news'){
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
+		}
+		else if (x=='world') {
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.world;
+		}
+		else if (x=='sports') {
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.sports;
+		}
+		else if (x=='business') {
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.business;
+		}
+		else if (x=='tech') {
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.tech;
+		}
+		else if (x=='science') {
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.science;
+		}
+		else{
+			$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
+		};
+
 		$scope.jeeves.newsViews=x;
-
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.articles=data.response.results;
-			var container = document.getElementById(x);
-			container.innerHTML="";
-			container.setAttribute('class', 'btn-group btn-block');
-
+		var container = document.getElementById(x);
+		container.innerHTML="";
+		container.setAttribute('class', 'btn-group btn-block');
+	//	console.log("DISPLAYYY");
+	//	console.log($scope.jeeves.newsArticles.news);
 			for (i = 0; i < $scope.jeeves.showNumber; i++){
 				var entry = $scope.jeeves.articles[i]; 
 				var div = document.createElement("div"); 
@@ -470,7 +542,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				buttonMore.addEventListener("click", $scope.updateShowAmount)
 				container.appendChild(buttonMore);
 			} 
-		});
+
 	}
 
 	$scope.updateShowAmount=function(){
