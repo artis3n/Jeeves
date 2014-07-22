@@ -8,13 +8,12 @@ var model = {
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
-	emailLabels: ['INBOX'],
 	section: 'news',
 	articles: [],
 	weather: { temp: {}, clouds: -3 }
 };
 
-var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
+var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
 
 jeevesApp.run(function($http) {
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
@@ -107,7 +106,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.reco= function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
-
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
@@ -160,6 +158,30 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			} else if (result.match(/weather/)) {
 				navigator.tts.speak("Gotcha. Going to weather now.", function() {
 					$scope.changeView('weather')
+					$scope.$apply();
+				})
+				return true;
+			} else if (result.match(/settings/)) {
+				navigator.tts.speak("Gotcha. Going to settings now.", function() {
+					$scope.changeView('settings')
+					$scope.$apply();
+				})
+				return true;
+			} else if (result.match(/contact/)) {
+				navigator.tts.speak("Gotcha. Going to contact page now.", function() {
+					$scope.changeView('contact')
+					$scope.$apply();
+				})
+				return true;
+			} else if (result.match(/about/)) {
+				navigator.tts.speak("Gotcha. Going to about page now.", function() {
+					$scope.changeView('about')
+					$scope.$apply();
+				})
+				return true;
+			} else if (result.match(/help/)) {
+				navigator.tts.speak("Gotcha. Going to help page now.", function() {
+					$scope.changeView('help')
 					$scope.$apply();
 				})
 				return true;
