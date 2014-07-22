@@ -11,12 +11,12 @@ var model = {
 	section: 'news',
 	articles: [],
 	newsArticles: {
-		'news': [],
-		'world': [],
-		'sports': [],
-		'business': [],
-		'tech': [],
-		'science': []
+		news: [],
+		world: [],
+		sports: [],
+		business: [],
+		tech: [],
+		science: []
 	},
 	weather: { temp: {}, clouds: -3 }
 };
@@ -109,6 +109,42 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		document.getElementById($scope.jeeves.section).innerHTML="";
 		$scope.jeeves.section = selected;
 		$scope.jeeves.showNumber = 5;
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.news=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.news[i]=data.response.results[i];
+				}
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.world=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.world[i]=data.response.results[i];
+				}
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.sports=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.sports[i]=data.response.results[i];
+				}
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.business=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.business[i]=data.response.results[i];
+				}
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.tech=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.tech[i]=data.response.results[i];
+				}
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.science=data.response.results;
+				for(var i=0;i<$scope.jeeves.showNumber;i++){
+					$scope.jeeves.newsArticles.science[i]=data.response.results[i];
+				}
+			});
 		$scope.getListArticle();
 	}
 
