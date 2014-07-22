@@ -10,7 +10,7 @@ var monk = require('monk');
 var db = monk('129.64.238.118:27017/jeevesdb');
 
 // serve static content from the public folder 
-app.use("/", express.static(__dirname));
+app.use("/", express.static(__dirname + "/public"));
 
 
 // parse the bodies of all other queries as json
