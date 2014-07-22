@@ -16,6 +16,7 @@
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
 
 	<script src="js/mvc.js"></script>
 	
@@ -112,6 +113,24 @@
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
 			<div>
+				<script type="text/ng-template" id="weathermodal.html">
+					<div class="modal-header">
+						<h3 class="modal-title"></h3>
+					</div>
+					<div class="modal-body">
+						<ul>
+							<li ng-repeat="item in items">
+								<a ng-click="selected.item = item">{{item}}</a>
+							</li>
+						</ul>
+						Selected: <b>{{selected.item}}</b>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click-"$close()">Confirm</button>
+					</div>
+				</script>
+			</div>
+			<div>
 				<h2 class="text-center">Weather of {{jeeves.city}}</h2>
 			    <div align="center">
 				    <span>
@@ -197,6 +216,7 @@
 	document.addEventListener("deviceready", startTTS, false);
 	document.addEventListener("backbutton", goBack, false);
 	document.addEventListener("menubutton", openMenu, false);
+	document.addEventListener("shutdown", endTTS, false);
 
 	function startTTS() {
 		navigator.tts.startup(success, fail);
@@ -231,6 +251,10 @@
 		} catch (err) {
 			alert("Didn't work.");
 		}
+	}
+
+	function endTTS() {
+		navigator.tts.shutdown();
 	}
 	</script>
 </body>
