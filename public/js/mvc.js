@@ -145,46 +145,86 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
-				navigator.tts.speak("Gotcha. Going to news now.", function() {
-					$scope.changeView('news')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'news') {
+					navigator.tts.speak("Gotcha. Going to news now.", function() {
+						$scope.changeView('news')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
+				}
 				return true;
 			} else if (result.match(/email/)) {
-				navigator.tts.speak("Gotcha. Going to email now.", function() {
-					$scope.changeView('email')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'email') {
+					navigator.tts.speak("Gotcha. Going to email now.", function() {
+						$scope.changeView('email')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the email page. Would you like me to read your inbox messages?");
+				}
+				
 				return true;
 			} else if (result.match(/weather/)) {
-				navigator.tts.speak("Gotcha. Going to weather now.", function() {
-					$scope.changeView('weather')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'weather') {
+					navigator.tts.speak("Gotcha. Going to weather now.", function() {
+						$scope.changeView('weather')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the weather page. You can ask for the current weather, or ask if it will rain today.");
+				}
+				return true;
+			} else if (result.match(/menu/)) {
+				if ($scope.jeeves.view != 'menu') {
+					navigator.tts.speak("Gotcha. Going to menu now.", function() {
+						$scope.changeView('menu')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak('You are already on the menu. Would you like to check out the news or your email?');
+				}
+				
 				return true;
 			} else if (result.match(/settings/)) {
-				navigator.tts.speak("Gotcha. Going to settings now.", function() {
-					$scope.changeView('settings')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'settings') {
+					navigator.tts.speak("Gotcha. Going to settings now.", function() {
+						$scope.changeView('settings')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the settings page. You can ask for help, by saying 'help,' if you'd like assistance on any part of the app.");
+				}
 				return true;
 			} else if (result.match(/contact/)) {
-				navigator.tts.speak("Gotcha. Going to contact page now.", function() {
-					$scope.changeView('contact')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'contact') {
+					navigator.tts.speak("Gotcha. Going to contact page now.", function() {
+						$scope.changeView('contact')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!");
+				}
 				return true;
 			} else if (result.match(/about/)) {
-				navigator.tts.speak("Gotcha. Going to about page now.", function() {
-					$scope.changeView('about')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'about') {
+					navigator.tts.speak("Gotcha. Going to about page now.", function() {
+						$scope.changeView('about')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the about page. Let me introduce myself to you!");
+				}
 				return true;
 			} else if (result.match(/help/)) {
-				navigator.tts.speak("Gotcha. Going to help page now.", function() {
-					$scope.changeView('help')
-					$scope.$apply();
-				})
+				if ($scope.jeeves.view != 'help') {
+					navigator.tts.speak("Gotcha. Going to help page now.", function() {
+						$scope.changeView('help')
+						$scope.$apply();
+					})
+				} else {
+					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to prompty respond to you!");
+				}
 				return true;
 			}
 		}else if (result.match(/read me/)) {
@@ -386,18 +426,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 
 		return stop;
-	}
-
-	$scope.startTTS = function() {
-		navigator.tts.startup(success, fail);
-
-		function success () {
-			navigator.tts.speak("Hello! I am ready to begin listening.");
-		}
-
-		function fail () {
-			navigator.notification.alert("Something went wrong with the TTS", 'Jeeves', 'Confirm');
-		}
 	}
 
 	$scope.emailSpeech = function(result) {
