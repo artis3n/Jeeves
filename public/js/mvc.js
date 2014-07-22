@@ -379,6 +379,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		function fail () {
 			navigator.notification.alert("Something went wrong with the TTS", 'Jeeves', 'Confirm');
+		}
+	}
 
 	$scope.emailSpeech = function(result) {
 		if (result.match(/authorize/) != null) {
