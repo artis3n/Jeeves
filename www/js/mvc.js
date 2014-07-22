@@ -161,7 +161,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						$scope.$apply();
 					})
 				} else {
-					navigator.tts.speak("You're already on the email page. Would you like me to read your inbox messages?");
+					navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
 				}
 				
 				return true;
@@ -223,7 +223,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						$scope.$apply();
 					})
 				} else {
-					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to prompty respond to you!");
+					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
 				}
 				return true;
 			}
@@ -278,14 +278,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 					"\n- Change city to - city name." +
 					"\n- Change to - city name." +
 					"\n- Change weather to - city name." +
-					"\n- How's the weather?" +
-					"\n- Will it rain, snow, be cloudy, or be sunny today?", 'Jeeves', 'Weather Commands', 'Confirm'
+					"\n- How's the weather?", 'Jeeves', 'Weather Commands', 'Confirm'
 				)
 				navigator.tts.speak("you can say change city to, city name.");
 				navigator.tts.speak("or you can say change to, city name.");
 				navigator.tts.speak("or you can say change weather to, city name.");
 				navigator.tts.speak("or you can say, how's the weather?");
-				navigator.tts.speak("or you can say, will it rain, snowe , be cloudy, or be sunny today?");
 				return true;
 			}else if (help.match(/email/)) {
 				//5
