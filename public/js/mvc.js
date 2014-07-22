@@ -11,12 +11,12 @@ var model = {
 	section: 'news',
 	articles: [],
 	newsArticles: {
-		news: [],
-		world: [],
-		sports: [],
-		business: [],
-		tech: [],
-		science: []
+		'news': [],
+		'world': [],
+		'sports': [],
+		'business': [],
+		'tech': [],
+		'science': []
 	},
 	weather: { temp: {}, clouds: -3 }
 };
@@ -495,7 +495,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}
 		else{
 			$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
-		};
+		}
 
 		$scope.jeeves.newsViews=x;
 		var container = document.getElementById(x);
