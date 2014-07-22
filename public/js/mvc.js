@@ -18,7 +18,8 @@ var model = {
 		tech: [],
 		science: []
 	},
-	weather: { temp: {}, clouds: -3 }
+	weather: { temp: {}, clouds: -3, description: "" }
+
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
@@ -29,6 +30,7 @@ jeevesApp.run(function($http) {
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            model.weather.description = data.weather[0].description;
     });
 });
 
@@ -76,10 +78,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 			$scope.jeeves.view = back;
-		}else if (selected == 'news'){
+		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
+		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
+			$scope.changeView('back');
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
@@ -95,12 +99,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
 		}
 
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+		$http.jsonp('').success(function(data) {
             $scope.jeeves.weather.temp.current = data.main.temp;
             $scope.jeeves.weather.temp.min = data.main.temp_min;
             $scope.jeeves.weather.temp.max = data.main.temp_max;
             $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            $scope.jeeves.weather.description = data.weather[0].description;
     	});
+
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
 	}
@@ -151,17 +157,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.reco= function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
+			alert(results);
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
 				if ($scope.globalCommands(result)) {
 					break;
 				}
 				if($scope.jeeves.view == 'weather'){
-				$scope.weatherSpeech(result);
-				break;
+					$scope.weatherSpeech(result);
+					break;
 	    		}else if($scope.jeeves.view == 'news'){
-	    			var stop = $scope.speechNews(result);
-	    			if(stop){
+	    			if ($scope.newsSpeech(result)) {
 	    				break;
 	    			}
 	    		}else if($scope.jeeves.view == 'email'){
@@ -178,7 +184,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.globalCommands = function(result) {
-		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
+		if ((result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today") && $scope.jeeves.view != 'weather'){
 			$scope.changeView('weather');
 			$scope.$apply();
 			navigator.tts.speak("The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit.", function() {
@@ -234,8 +240,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			if (result.match(/news/)) {
 				$scope.changeView('news');
 				$scope.$apply();
-				// Start reading news category articles.
 				navigator.tts.speak("Now reading news articles.");
+				// Start reading news category articles.
 				return true;
 			} else if (result.match(/business/)) {
 				$scope.changeView('news');
@@ -341,10 +347,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else if (result.lastIndexOf("what's the weather of")==0){
 			city = result.slice(22);
 		}else if (result.lastIndexOf("how's the weather")==0){
-			var str = ""
-			alert("How's the weather?");
 			stop = true;
 			//TTS command to tell the weather
+			$scope.speakWeatherReport();
 		}else {
 			alert(result + " is an invalid command.");
 		}
@@ -353,20 +358,30 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 			$scope.changeWeather(null);
 			stop = true;
+
+			var changingCitySpeech = "Changing the city to " + $scope.jeeves.city;
+			navigator.tts.speak(changingCitySpeech)
+
+			$scope.speakWeatherReport();
 		}
 
 		return stop;
 	}
 
-	$scope.speechNews = function(result){
-		var stop =false;
-	    if (result == 'go to help'){
-	    	$scope.changeView('help');
-	    	$scope.$apply();
-	    	stop=true;
-		}     				
+	$scope.speakWeatherReport = function(){
+		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
+		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
+		var minimumTemperature = "The minimum temperature today is " + $scope.jeeves.weather.temp.min + " degrees fahrenheit. ";
+		var maximumTemperature = "The maximum temperature today is " + $scope.jeeves.weather.temp.max + " degrees fahrenheit. ";
+		var greeting  = "You have a good day!"
+		var all = general + currentTemperature + minimumTemperature + maximumTemperature + greeting;
+		navigator.tts.speak(all);
+	}
+
+	$scope.newsSpeech = function(result){
+		var stop =false;  				
 		//reads a certain news section, e.g. read me news business.
-		else if(result.substring(0, 12) =='read me news') { 
+		if(result.substring(0, 12) =='read me news') { 
     		if(result.length>14){
     			alert("moving to section: "+ result.substring(13, result.length));
     			$scope.changeSection(result.substring(13, result.length));
@@ -440,7 +455,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		navigator.tts.startup(success, fail);
 
 		function success () {
-			navigator.tts.speak("Hello! I am ready to begin reading.");
+			navigator.tts.speak("Hello! I am ready to begin listening.");
 		}
 
 		function fail () {
