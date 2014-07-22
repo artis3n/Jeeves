@@ -204,6 +204,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
  		}
 
+
+
  		function globalCmds(gResult){
  			if (gResult.match(/How’s the weather/)){
  				//How’s the weather?
@@ -221,6 +223,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
  				}else if(news.match(/science/)){
 
+ 				}else if(news.match(/world/)){
+ 					
  				}
  			}else if (gResult == "read my emails" || "read" || "start reading") {//Read me my emails
  				
@@ -269,38 +273,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 
 
- 			}else if (gResult.match(/about/)) {//about
- 				//Tell me about Jeeves
- 				if () {
-
- 				}else if ("change city to") {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}else if () {
-
- 				}
  			}else if (gResult.match(/go to/)) {//menu
- 				//What can I do/say on <section>?
- 				if () {
-
- 				}else if () {
-
- 				}else if () {};
- 			}else if (gResult == "go to help") {// go to help
-
+ 				//Tell me about Jeeves
+ 				if (gResult == "weather") {
+ 					changeView('weather')
+ 				}else if (gResult == "news") {
+ 					changeView('news')
+ 				}else if (gResult == "email") {
+ 					changeView('email')
+ 				}else if (gResult == "menu") {
+ 					changeView('menu')
+ 				}else if (gResult == "about") {
+ 					changeView('about')
+ 				}else if (gResult == "settings") {
+ 					changeView('settings')
+ 				}else if (gResult == "contact") {
+ 					changeView('contact')
+ 				}else if (gResult == "favorites") {
+ 					changeView('favorites')
+ 				}else if (gResult == "help") {
+ 					changeView('help')
+ 				}
  			}
  		}
 
