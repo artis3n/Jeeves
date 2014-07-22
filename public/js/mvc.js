@@ -116,8 +116,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				$scope.weatherSpeech(result);
 				break;
 	    		}else if($scope.jeeves.view == 'news'){
-	    			var stop = $scope.speechNews(result);
-	    			if(stop){
+	    			if ($scope.newsSpeech(result))
 	    				break;
 	    			}
 	    		}else if($scope.jeeves.view == 'email'){
@@ -134,7 +133,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.globalCommands = function(result) {
-		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
+		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today" && $scope.jeeves.view != 'weather'){
 			$scope.changeView('weather');
 			$scope.$apply();
 			navigator.tts.speak("The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit.", function() {
@@ -190,8 +189,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			if (result.match(/news/)) {
 				$scope.changeView('news');
 				$scope.$apply();
-				// Start reading news category articles.
 				navigator.tts.speak("Now reading news articles.");
+				// Start reading news category articles.
 				return true;
 			} else if (result.match(/business/)) {
 				$scope.changeView('news');
@@ -314,13 +313,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		return stop;
 	}
 
-	$scope.speechNews = function(result){
-		var stop =false;
-	    if (result == 'go to help'){
-	    	$scope.changeView('help');
-	    	$scope.$apply();
-	    	stop=true;
-		}     				
+	$scope.newsSpeech = function(result){
+		var stop =false;  				
 		//reads a certain news section, e.g. read me news business.
 		else if(result.substring(0, 12) =='read me news') { 
     		if(result.length>14){
