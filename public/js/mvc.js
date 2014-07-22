@@ -10,6 +10,14 @@ var model = {
 	country: 'us',
 	section: 'news',
 	articles: [],
+	newsArticles: {
+		news: [],
+		world: [],
+		sports: [],
+		business: [],
+		tech: [],
+		science: []
+	},
 	weather: { temp: {}, clouds: -3 }
 };
 
@@ -334,8 +342,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				var stop2=false;
 				for (var j = 0; j < $scope.jeeves.showNumber; j++) {
 					var entry = $scope.jeeves.articles[j];
-					alert("Article "+j+": "+entry.webTitle);
-
+					//alert("Article "+j+": "+entry.webTitle);
+					navigator.tts.speak(entry.webTitle);
 					//for user dialogue 
 					alert("Tell us if you like to 'move on next', 'read article', 'more articles', 'read me last article', 'read me news <section>', 'quit'.");
 					navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");

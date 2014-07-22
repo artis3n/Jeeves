@@ -199,6 +199,31 @@
 	document.addEventListener("backbutton", goBack, false);
 	document.addEventListener("menubutton", openMenu, false);
 	document.addEventListener("shutdown", endTTS, false);
+	document.addEventListener("deviceready", getNews, false);
+
+	function getNews(){
+
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.news=data.response.results;
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.world=data.response.results;
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.sports=data.response.results;
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.business=data.response.results;
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.tech=data.response.results;
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				$scope.jeeves.newsArticles.science=data.response.results;
+			});
+
+		
+	}
 
 	function startTTS() {
 		navigator.tts.startup(success, fail);
