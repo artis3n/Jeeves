@@ -1,0 +1,9 @@
+{
+    "lib": {
+        "www": {
+            "id": "com.phonegap.jeeves",
+            "version": "0.1.0",
+            "uri": "https://github.com/arikalfus/Jeeves"
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"SpeechRecognizer\"><param name=\"android-package\" value=\"com.manueldeveloper.SpeechRecognizer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"TTS\"><param name=\"android-package\" value=\"org.apache.cordova.plugin.TTS\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://oauth.io\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "com.manueldeveloper.speech-recognizer": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.plugin.tts": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "com.phonegap.plugins.oauthio": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        }
+    },
+    "dependent_plugins": {}
+}

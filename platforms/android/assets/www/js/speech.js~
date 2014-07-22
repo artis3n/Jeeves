@@ -1,0 +1,14 @@
+var sp = {
+
+	recognition: function() {
+		navigator.speechrecognizer.recognize(successCallback, failCallback, 5, "Jeeves Personal Assistant");
+
+		function successCallback(results){
+    		alert("Results: " + results);
+		}
+
+		function failCallback(error){
+    		alert("Error: " + error);
+		}
+	}
+}
