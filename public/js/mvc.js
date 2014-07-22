@@ -10,7 +10,7 @@ var model = {
 	country: 'us',
 	section: 'news',
 	articles: [],
-	weather: { temp: {}, clouds: -3 }
+	weather: { temp: {}, clouds: -3, description: "" }
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
@@ -21,6 +21,7 @@ jeevesApp.run(function($http) {
             model.weather.temp.min = data.main.temp_min;
             model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            model.weather.description = data.weather[0].description;
     });
 });
 
@@ -89,12 +90,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
 		}
 
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+		$http.jsonp('').success(function(data) {
             $scope.jeeves.weather.temp.current = data.main.temp;
             $scope.jeeves.weather.temp.min = data.main.temp_min;
             $scope.jeeves.weather.temp.max = data.main.temp_max;
             $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+            $scope.jeeves.weather.description = data.weather[0].description;
     	});
+
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
 	}
@@ -109,6 +112,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.reco= function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
+			alert(results);
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
 				if ($scope.globalCommands(result)) {
@@ -135,7 +139,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.globalCommands = function(result) {
-		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today" && $scope.jeeves.view != 'weather'){
+		if ((result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today") && $scope.jeeves.view != 'weather'){
 			$scope.changeView('weather');
 			$scope.$apply();
 			navigator.tts.speak("The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit.", function() {
@@ -298,10 +302,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else if (result.lastIndexOf("what's the weather of")==0){
 			city = result.slice(22);
 		}else if (result.lastIndexOf("how's the weather")==0){
-			var str = ""
-			alert("How's the weather?");
 			stop = true;
 			//TTS command to tell the weather
+			$scope.speakWeatherReport();
 		}else {
 			alert(result + " is an invalid command.");
 		}
@@ -310,9 +313,24 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 			$scope.changeWeather(null);
 			stop = true;
+
+			var changingCitySpeech = "Changing the city to " + $scope.jeeves.city;
+			navigator.tts.speak(changingCitySpeech)
+
+			$scope.speakWeatherReport();
 		}
 
 		return stop;
+	}
+
+	$scope.speakWeatherReport = function(){
+		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
+		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
+		var minimumTemperature = "The minimum temperature today is " + $scope.jeeves.weather.temp.min + " degrees fahrenheit. ";
+		var maximumTemperature = "The maximum temperature today is " + $scope.jeeves.weather.temp.max + " degrees fahrenheit. ";
+		var greeting  = "You have a good day!"
+		var all = general + currentTemperature + minimumTemperature + maximumTemperature + greeting;
+		navigator.tts.speak(all);
 	}
 
 	$scope.newsSpeech = function(result){
