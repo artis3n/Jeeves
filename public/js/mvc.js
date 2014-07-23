@@ -187,7 +187,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		$scope.getListArticle();
 	}
 
-	$scope.reco= function(){
+	$scope.reco = function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
@@ -521,9 +521,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.emailSpeech = function(result) {
-		if (result.match(/authorize/) != null) {
-			navigator.tts.speak("Now authorizing");
-		} else if (result == "read my emails" || "read" || "start reading") {
+		if (result == "read my emails" || "read" || "start reading") {
 			var content = document.getElementById('email-announcement').innerText;
 			navigator.tts.speak(content);
 		}
@@ -664,5 +662,111 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.capitaliseFirstLetter=function(string){
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	}
+
+	$scope.logged_in = false;
+
+	var googleapi = {
+		authorize: function(options) {
+			var deferred = $.Deferred();
+			var authUrl = "https://accounts.google.com/o/oauth2/auth?" + $.param({
+				client_id: options.client_id,
+				redirect_uri: options.redirect_url,
+				response_type: 'code',
+				scope: options.scope
+			});
+
+			var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
+			$(authWindow).on('loadstart', function(e) {
+				var url = e.originalEvent.url;
+				var code = /\?code=(.+)$/.exec(url);
+				var error = /\?error=(.+)$/.exec(url);
+
+				if (code || error) {
+					authWindow.close();
+				}
+
+				if (code) {
+					$http.post('https://accounts.google.com/o/oauth2/token', {
+						code: code[1],
+						client_id: options.client_id,
+						client_secret: options.client_secret,
+						redirect_uri: options.redirect_uri,
+						grant_type: 'authorization_code'
+					}).done(function(data) {
+						deferred.resolve(data);
+					}).fail(function(response) {
+						deferred.reject(response.responseJSON);
+					});
+				} else if (error) {
+					deferred.reject({
+						error: error[1]
+					});
+				}
+			})
+		}
+	};
+
+	$scope.call_google = function() {
+		$.getJSON("../client_secret_718585900559-24g02h03tqtiiui9cdnl80a1m3a82q2l.apps.googleusercontent.com.json", function(data) {
+			googleapi.authorize({
+				client_id: data.web.client_id,
+				client_secret: data.web.client_secret,
+				redirect_uri: 'http://localhost',
+				scope: "https://www.googleapis.com/auth/gmail.readonly"
+			}).done(function(authData) {
+				accessToken = authData.access_token;
+				alert(accessToken);
+				console.log(authData.access_token);
+				$scope.getDataProfile();
+			})
+		})
+	}
+
+	$scope.getDataProfile = function() {
+		var term = null;
+
+		$http({
+			url: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token='+accessToken,
+			type: 'GET',
+			data: term,
+			dataType: 'json',
+			error: function(err, text_status, strError) {},
+			success: function(data) {
+				var item;
+
+				console.log(JSON.stringify(data));
+				window.localStorage.gmailLogin = "true";
+				window.localStorage.gmailID = data.id;
+				window.localStorage.gmailEmail = data.email;
+				window.localStorage.gmailFirstName = data.given_name;
+				window.localStorage.gmailLastName = data.family_name;
+				window.localStorage.gmailProfilePicture = data.picture;
+				window.localStorage.gmailGender = data.gender;
+				window.localStorage.gmailName = data.name;
+				$scope.email = data.email;
+				$scope.name = data.name;
+			}
+		});
+	}
+
+	$scope.disconnectUser = function () {
+		var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token='+accessToken;
+
+		$http({
+			type: 'GET',
+			url: revokeUrl,
+			async: false,
+			contentType: "application/json",
+			dataType: 'jsonp',
+			success: function(nullResponse) {
+				accessToken = null;
+				console.log(JSON.stringify(nullResponse));
+				console.log("-------signed out!------" + accessToken);
+			},
+			error: function(e) {
+				console.log("Something went wrong disconnecting.");
+			}
+		})
 	}
 });

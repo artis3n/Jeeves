@@ -12,6 +12,7 @@
 	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css">
 	<script src="js/angular.min.js"></script>
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
@@ -23,11 +24,6 @@
 	<!-- Implement JQuery for Bootstrap animations. -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Implement scripts for Gmail API. -->
-	<script src="js/googleauthorize.js"></script>
-	<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
@@ -98,12 +94,7 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<!--Button for the user to click to initiate auth sequence -->
-						<button id="authorize-button" class="btn btn-default">Authorize</button>
-						<!-- Handle Google Authorization and pulling
-						email messages -->
-						<script src="js/googleauthorize.js"></script>
-						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+						<button ng-click="call_google()" class="btn btn-default">Authorize</button>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">
