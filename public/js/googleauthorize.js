@@ -1,12 +1,12 @@
 // Enter a client ID for a web application from the Google Developer Console.
 // In your Developer Console project, add a JavaScript origin that corresponds to the domain
 // where you will be running the script.
-var clientId = '718585900559-24g02h03tqtiiui9cdnl80a1m3a82q2l.apps.googleusercontent.com';
+var clientId = '718585900559-1fep4um93diqgmarq4v3qigppjj1ki79.apps.googleusercontent.com';
 
 // Enter the API key from the Google Develoepr Console - to handle any unauthenticated
 // requests in the code.
 // To use in your own application, replace this API key with your own.
-var apiKey = 'AIzaSyAOsjRfBxUE893UO243KmMe12Q5uMHlbKQ';
+var apiKey = 'AIzaSyCutPnrnQ3fPWwsM264FsgQb6BeARgdCAc';
 
 // To enter one or more authentication scopes, refer to the documentation for the API.
 var scopes = 'https://www.googleapis.com/auth/gmail.readonly';

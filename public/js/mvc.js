@@ -668,7 +668,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				scope: options.scope
 			});
 
-			var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
+			var authWindow = window.open(authUrl,'location=no,toolbar=no');
 			$(authWindow).on('loadstart', function(e) {
 				alert('Event collected');
 				var url = e.originalEvent.url;

@@ -94,7 +94,9 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button ng-click="call_google()" class="btn btn-default">Authorize</button>
+						<button id='authorize-button' class="btn btn-default">Authenticate</button>
+						<script type="text/javascript" src="js/googleauthorize.js"></script>
+						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">
