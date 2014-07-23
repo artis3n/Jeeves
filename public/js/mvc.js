@@ -31,37 +31,37 @@ jeevesApp.run(function($http) {
     });
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.news=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.news[i]=data.response.results[i];
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.world=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.world[i]=data.response.results[i];
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.sports=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.sports[i]=data.response.results[i];
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.business=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.business[i]=data.response.results[i];
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.tech=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.tech[i]=data.response.results[i];
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.science=data.response.results;
-				for(var i=0;i<$scope.jeeves.showNumber;i++){
+				for(var i=0;i<model.showNumber;i++){
 					model.newsArticles.science[i]=data.response.results[i];
 				}
 			});
