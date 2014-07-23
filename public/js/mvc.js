@@ -215,7 +215,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today" && $scope.jeeves.view != 'weather'){
 			$scope.changeView('weather');
 			$scope.$apply();
-			navigator.tts.speak("The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit.", function() {
+			$scope.speakWeatherReport(function() {
 				$scope.changeView('back');
 				$scope.$apply();
 			});
@@ -249,7 +249,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						$scope.$apply();
 					})
 				} else {
-					navigator.tts.speak("You're already on the weather page. You can ask for the current weather, or ask if it will rain today.");
+					navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
 				}
 				return true;
 			} else if (result.match(/menu/)) {
@@ -270,7 +270,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 						$scope.$apply();
 					})
 				} else {
-					navigator.tts.speak("You're already on the settings page. You can ask for help, by saying 'help,' if you'd like assistance on any part of the app.");
+					navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.");
 				}
 				return true;
 			} else if (result.match(/contact/)) {
@@ -412,12 +412,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		// 	city = result.slice(18);
 		}else if (result.lastIndexOf("what's the weather of")==0){
 			city = result.slice(22);
-		}else if (result.lastIndexOf("how's the weather")==0){
-			var str = ""
-			alert("How's the weather?");
-			stop = true;
-			//TTS command to tell the weather
-			$scope.speakWeatherReport();
 		}else {
 			alert(result + " is an invalid command.");
 		}
@@ -433,12 +427,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		return stop;
 	}
 
-	$scope.speakWeatherReport = function(){
+	$scope.speakWeatherReport = function(callback){
 		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
 		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		var greeting  = "You have a good day!"
-		var all = general + currentTemperature + minimumTemperature + maximumTemperature + greeting;
-		navigator.tts.speak(all);
+		var all = general + currentTemperature + minimumTemperature + maximumTemperature;
+		navigator.tts.speak(all, callback);
 	}
 
 	$scope.newsSpeech = function(result){
@@ -656,110 +649,5 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.capitaliseFirstLetter=function(string){
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	}
-
-	var googleapi = {
-		authorize: function(options) {
-			var deferred = $.Deferred();
-			var authUrl = "https://accounts.google.com/o/oauth2/auth?" + $.param({
-				client_id: options.client_id,
-				redirect_uri: options.redirect_uri,
-				response_type: 'code',
-				scope: options.scope
-			});
-
-			var authWindow = window.open(authUrl,'location=no,toolbar=no');
-			$(authWindow).on('loadstart', function(e) {
-				alert('Event collected');
-				var url = e.originalEvent.url;
-				var code = /\?code=(.+)$/.exec(url);
-				var error = /\?error=(.+)$/.exec(url);
-
-				if (code || error) {
-					authWindow.close();
-				}
-
-				if (code) {
-					$http.post('https://accounts.google.com/o/oauth2/token', {
-						code: code[1],
-						client_id: options.client_id,
-						client_secret: options.client_secret,
-						redirect_uri: options.redirect_uri,
-						grant_type: 'authorization_code'
-					}).done(function(data) {
-						deferred.resolve(data);
-					}).fail(function(response) {
-						deferred.reject(response.responseJSON);
-					});
-				} else if (error) {
-					deferred.reject({
-						error: error[1]
-					});
-				}
-			})
-		}
-	};
-
-	$scope.call_google = function() {
-		$.getJSON("../client_secret_android.json", function(data) {
-			googleapi.authorize({
-				client_id: data.installed.client_id,
-				client_secret: data.installed.client_secret,
-				redirect_uri: "urn:ietf:wg:oauth:2.0:oob:auto",
-				scope: "https://www.googleapis.com/auth/gmail.readonly"
-			}).done(function(authData) {
-				accessToken = authData.access_token;
-				alert(accessToken);
-				console.log(authData.access_token);
-				$scope.getDataProfile();
-			})
-		})
-	}
-
-	$scope.getDataProfile = function() {
-		var term = null;
-
-		$http({
-			url: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token='+accessToken,
-			type: 'GET',
-			data: term,
-			dataType: 'json',
-			error: function(err, text_status, strError) {},
-			success: function(data) {
-				var item;
-
-				console.log(JSON.stringify(data));
-				window.localStorage.gmailLogin = "true";
-				window.localStorage.gmailID = data.id;
-				window.localStorage.gmailEmail = data.email;
-				window.localStorage.gmailFirstName = data.given_name;
-				window.localStorage.gmailLastName = data.family_name;
-				window.localStorage.gmailProfilePicture = data.picture;
-				window.localStorage.gmailGender = data.gender;
-				window.localStorage.gmailName = data.name;
-				$scope.email = data.email;
-				$scope.name = data.name;
-			}
-		});
-	}
-
-	$scope.disconnectUser = function () {
-		var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token='+accessToken;
-
-		$http({
-			type: 'GET',
-			url: revokeUrl,
-			async: false,
-			contentType: "application/json",
-			dataType: 'jsonp',
-			success: function(nullResponse) {
-				accessToken = null;
-				console.log(JSON.stringify(nullResponse));
-				console.log("-------signed out!------" + accessToken);
-			},
-			error: function(e) {
-				console.log("Something went wrong disconnecting.");
-			}
-		})
 	}
 });
