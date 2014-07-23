@@ -664,8 +664,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 
-	$scope.logged_in = false;
-
 	var googleapi = {
 		authorize: function(options) {
 			var deferred = $.Deferred();
@@ -678,6 +676,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 			var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
 			$(authWindow).on('loadstart', function(e) {
+				alert('Event collected');
 				var url = e.originalEvent.url;
 				var code = /\?code=(.+)$/.exec(url);
 				var error = /\?error=(.+)$/.exec(url);
