@@ -153,42 +153,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		document.getElementById($scope.jeeves.section).innerHTML="";
 		$scope.jeeves.section = selected;
 		$scope.jeeves.showNumber = 5;
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.news=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.news[i]=data.response.results[i];
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.world=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.world[i]=data.response.results[i];
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.sports=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.sports[i]=data.response.results[i];
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.business=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.business[i]=data.response.results[i];
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.tech=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.tech[i]=data.response.results[i];
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			$scope.jeeves.newsArticles.science=data.response.results;
-			for(var i=0;i<$scope.jeeves.showNumber;i++){
-				$scope.jeeves.newsArticles.science[i]=data.response.results[i];
-			}
-		});
 		$scope.getListArticle();
 	}
 
@@ -197,16 +161,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
-				if ($scope.globalCommands(result)) {
-					break;
-				}
+				 if ($scope.globalCommands(result)) {                              //MAKE SURE TO UNCOMMENT THE GLOBAL COMMANDS
+				 	break;
+				 }
 				if($scope.jeeves.view == 'weather'){
 					$scope.weatherSpeech(result);
 					break;
 	    		}else if($scope.jeeves.view == 'news'){
-	    			if ($scope.newsSpeech(result)) {
-	    				break;
-	    			}
+	    			$scope.newsSpeech(result);
+	    			break;
+	    		
 	    		}else if($scope.jeeves.view == 'email'){
 	    			$scope.emailSpeech(result);
 	    			break;
@@ -318,44 +282,42 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			if (result.match(/news/)) {
 				$scope.changeView('news');
 				$scope.$apply();
-				navigator.tts.speak("Now reading news articles.");
-				newsSpeech(result);
+				navigator.tts.speak("Now reading news articles.", $scope.newsSpeech(result));
 				// Start reading news category articles.
 				return true;
 			} else if (result.match(/business/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading business news articles.
-				navigator.tts.speak("Now reading business articles.");
-				newsSpeech(result);
+				navigator.tts.speak("Now reading business articles.", $scope.newsSpeech(result));
 				return true;
 			} else if (result.match(/world/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading world news articles.
 				navigator.tts.speak("Now reading world articles.");
-				newsSpeech(result);
+				$scope.newsSpeech(result);
 				return true;
 			} else if (result.match(/sports/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading sports news articles.
 				navigator.tts.speak("Now reading sports articles.");
-				newsSpeech(result);
+				$scope.newsSpeech(result);
 				return true;
 			} else if (result.match(/tech/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading tech news articles.
 				navigator.tts.speak("Now reading technology articles.");
-				newsSpeech(result);
+				$scope.newsSpeech(result);
 				return true;
 			} else if (result.match(/science/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading science news articles.
 				navigator.tts.speak("Now reading science articles.");
-				newsSpeech(result);
+				$scope.newsSpeech(result);
 				return true;
 			} else if (result.match(/emails/)) {
 				$scope.changeView('email');
@@ -533,37 +495,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	//////////////////////////
 
 //navigator.tts.speak("say read me, or read me section");
-		if (result.match(/read me/) != null || result.match(/readme/)!=null){
+		alert("Entering News Speech");
+		if (result.match(/read me/)){
 			if (result.length>7){
 				alert("result > 7 & "+result)
-				var section = (result.match(/read me/) ) ? result.substring(result.lastIndexOf("read me ")) : result.substring(result.lastIndexOf("readme "));
-				alert("read me:"+result.lastIndexOf("read me"))
-				alert("readme:"+result.lastIndexOf("readme"))
+				var section=result.substring(8);
 				alert("section: " + section);
-				$scope.changeView(section);
+				$scope.changeSection(section);   //CHANGE WORLD TO SECTION
 				$scope.newsPosition.section=section;
 				$scope.newsPosition.articleIndex = 0;
 			}
 			else{
-				$scope.changeView('news');
+				alert("entered else of read me <section>");
+				$scope.changeSection('news');
 				$scope.newsPosition.section=section;
 			}
 			sayWebTitle($scope.newsPosition.section);
 
 		}else if (result.match(/next article/) != null || result.match(/continue/) != null) {
 			sayWebTitle($scope.newsPosition.section);
-		}
-
-		
+		}	
 		$scope.$apply();
-
-
 	}
-
-	
-
-	
-
 
 	$scope.sayWebTitle = function(section){
 		if ($scope.newsPosition.section == "news"){
