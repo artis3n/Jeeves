@@ -282,14 +282,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			if (result.match(/news/)) {
 				$scope.changeView('news');
 				$scope.$apply();
-				navigator.tts.speak("Now reading news articles.", $scope.newsSpeech(result));
+				navigator.tts.speak("Now reading news articles.");
+				$scope.newsSpeech(result);
 				// Start reading news category articles.
 				return true;
 			} else if (result.match(/business/)) {
 				$scope.changeView('news');
 				$scope.$apply();
 				// Start reading business news articles.
-				navigator.tts.speak("Now reading business articles.", $scope.newsSpeech(result));
+				navigator.tts.speak("Now reading business articles.");
+				$scope.newsSpeech(result);
 				return true;
 			} else if (result.match(/world/)) {
 				$scope.changeView('news');
@@ -496,11 +498,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 //navigator.tts.speak("say read me, or read me section");
 		alert("Entering News Speech");
+		alert("current result> "+result);
 		if (result.match(/read me/)){
 			if (result.length>7){
 				alert("result > 7 & "+result)
 				var section=result.substring(8);
-				alert("section: " + section);
+				alert("section:" + section);
 				$scope.changeSection(section);   //CHANGE WORLD TO SECTION
 				$scope.newsPosition.section=section;
 				$scope.newsPosition.articleIndex = 0;
@@ -510,10 +513,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				$scope.changeSection('news');
 				$scope.newsPosition.section=section;
 			}
-			sayWebTitle($scope.newsPosition.section);
+			$scope.sayWebTitle($scope.newsPosition.section);
 
 		}else if (result.match(/next article/) != null || result.match(/continue/) != null) {
-			sayWebTitle($scope.newsPosition.section);
+			$scope.sayWebTitle($scope.newsPosition.section);
 		}	
 		$scope.$apply();
 	}
