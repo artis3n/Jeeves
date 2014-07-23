@@ -436,8 +436,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.speakWeatherReport = function(){
 		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
 		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		var minimumTemperature = "The minimum temperature today is " + $scope.jeeves.weather.temp.min + " degrees fahrenheit. ";
-		var maximumTemperature = "The maximum temperature today is " + $scope.jeeves.weather.temp.max + " degrees fahrenheit. ";
 		var greeting  = "You have a good day!"
 		var all = general + currentTemperature + minimumTemperature + maximumTemperature + greeting;
 		navigator.tts.speak(all);
