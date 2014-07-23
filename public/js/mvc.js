@@ -671,7 +671,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			var deferred = $.Deferred();
 			var authUrl = "https://accounts.google.com/o/oauth2/auth?" + $.param({
 				client_id: options.client_id,
-				redirect_uri: options.redirect_url,
+				redirect_uri: options.redirect_uri,
 				response_type: 'code',
 				scope: options.scope
 			});
@@ -708,11 +708,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	};
 
 	$scope.call_google = function() {
-		$.getJSON("../client_secret_718585900559-24g02h03tqtiiui9cdnl80a1m3a82q2l.apps.googleusercontent.com.json", function(data) {
+		$.getJSON("../client_secret_android.json", function(data) {
 			googleapi.authorize({
-				client_id: data.web.client_id,
-				client_secret: data.web.client_secret,
-				redirect_uri: 'http://localhost',
+				client_id: data.installed.client_id,
+				client_secret: data.installed.client_secret,
+				redirect_uri: "urn:ietf:wg:oauth:2.0:oob:auto",
 				scope: "https://www.googleapis.com/auth/gmail.readonly"
 			}).done(function(authData) {
 				accessToken = authData.access_token;
