@@ -26,8 +26,6 @@ var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
 jeevesApp.run(function($http) {
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
-            model.weather.temp.min = data.main.temp_min;
-            model.weather.temp.max = data.main.temp_max;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
             model.weather.description = data.weather[0].description;
     });
@@ -136,8 +134,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             $scope.jeeves.weather.temp.current = data.main.temp;
-            $scope.jeeves.weather.temp.min = data.main.temp_min;
-            $scope.jeeves.weather.temp.max = data.main.temp_max;
             $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
     	});
     	document.getElementById("weather_city").value = "";
@@ -440,8 +436,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.speakWeatherReport = function(){
 		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
 		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		var minimumTemperature = "The minimum temperature today is " + $scope.jeeves.weather.temp.min + " degrees fahrenheit. ";
-		var maximumTemperature = "The maximum temperature today is " + $scope.jeeves.weather.temp.max + " degrees fahrenheit. ";
 		var greeting  = "You have a good day!"
 		var all = general + currentTemperature + minimumTemperature + maximumTemperature + greeting;
 		navigator.tts.speak(all);
