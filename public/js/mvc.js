@@ -541,13 +541,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		if ($scope.jeeves.newsPosition.section == "news"){
 		//	navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			alert("PASSED speak");
+			$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-1;
 			alert($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].fields.body);
 			var gotResult = $scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			alert("body :"+ div1.innerHTML);
 			var finalResult="";
-			 for (var i = 0; i >= gotResult.length; i++) {
+			 for (var i = 0; i <= gotResult.length; i++) {
 			 	var h2 = div1.getElementsByTagName('p')[i];
 				if(div1.getElementsByTagName('p')[i+1]==null){
 			 		break;
@@ -555,8 +556,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			 	var text = h2.innerHTML;
 			 	finalResult=finalResult+text;
 			 };
-			 alert(finalResult);
-			//navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].fields.body);
+			// alert(finalResult);
+			navigator.tts.speak(finalResult);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
@@ -607,6 +608,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			navigator.tts.speak(content);
 		}
 	}
+
+	//pass in result as empty string
+	// $scope.recursiveParser = function(pars, result, endCounter){
+	// 	endCounter=endCounter+1;
+	// 	if(pars==null){
+	// 		return result;
+	// 	}
+	// 	else if(pars.getElementsByTagName('p')!=null){
+	// 		var div2=document.createElement('div');
+	// 		div2.innerHTML=pars.getElementsByTagName('p');
+	// 		$scope.recursiveParser(div2, result);
+	// 	}
+	// 	else if(pars.getElementsByTagName('a')!=null){
+	// 		var div2=document.createElement('div');
+	// 		div2.innerHTML=pars.getElementsByTagName('a');
+	// 		$scope.recursiveParser(div2, result);
+	// 	}
+	// 	else{
+	// 		result=result+pars;
+	// 	}
+	// }
 
 	$scope.getListArticle=function(){
 		// var x = $scope.jeeves.section;
