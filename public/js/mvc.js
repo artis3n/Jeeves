@@ -122,7 +122,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 	$scope.jeeves = model;
 
 	$scope.imgurl = function() {

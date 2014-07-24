@@ -33,7 +33,7 @@
 
 </head>
 
-<body ng-controller="jeevesCtrl">
+<body id="body-controller-element" ng-controller="jeevesCtrl">
 	<div class="container">
 		<div class="page-header">
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.0</span></small></h1>
@@ -206,11 +206,11 @@
 	}
 
 	function goBack() {
-		navigator.tts.speak("Going to previous view.");
 		try {
-			$.getScript("js/mvc.js", function() {
-				//call changeView('back')
-			})
+			var $element = $('#body-controller-element');
+			var scope = angular.element($element).scope();
+			scope.changeView('back');
+			scope.$apply();
 		} catch (err) {
 			alert("Didn't work.");
 		}
@@ -218,11 +218,11 @@
 	}
 
 	function openMenu() {
-		navigator.tts.speak("Opening menu.");
 		try {
-			$.getScript("js/mvc.js", function() {
-				//call changeView('menu')
-			})
+			var $element = $('#body-controller-element');
+			var scope = angular.element($element).scope();
+			scope.changeView('menu');
+			scope.$apply();
 		} catch (err) {
 			alert("Didn't work.");
 		}
