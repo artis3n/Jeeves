@@ -148,12 +148,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					}
 				}
 				$scope.jeeves.view = back;
+				$scope.$close();
 			}
 			
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
+			$scope.$close();
 		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
 			$scope.changeView('back');
 		} else if (selected == 'menu') {
@@ -163,6 +165,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
+			$scope.$close();
 		}
 	};
 
