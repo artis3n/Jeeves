@@ -19,7 +19,8 @@
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
 
-
+	<script src="https://apis.google.com/js/client.js"></script>
+	<script src="js/googleauthorize.js"></script>
 	<script src="js/mvc.js"></script>
 	
 	<!-- Implement JQuery for Bootstrap animations. -->
@@ -143,9 +144,7 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button id='authorize-button' class="btn btn-default">Authenticate</button>
-						<script type="text/javascript" src="js/googleauthorize.js"></script>
-						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">
