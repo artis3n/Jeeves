@@ -183,8 +183,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	$scope.globalCommands = function(result) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
 			$scope.changeView('weather');
+			$scope.speakWeatherReport();
 			$scope.$apply();
-			$scope.speakWeatherReport($scope.changeView);
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
@@ -270,8 +270,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				}
 				return true;
 			}
-		}else if (result.match(/read me/) || result.match(/readme/)) {
-			if (result.match(/emails/)) {
+		}else if (result.match(/read/)) {
+			if (result.match(/email/)) {
 				$scope.changeView('email');
 				$scope.$apply();
 				// Start reading emails.
@@ -279,6 +279,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				return true;
 			} else {
 				$scope.newsSpeech(result);
+				return true;
 			}
 			// else if (result.match(/news/)) {
 			// 	$scope.changeView('news');
@@ -402,18 +403,20 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		return stop;
 	}
 
-	$scope.speakWeatherReport = function(callback){
-		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
-		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		var all = general + currentTemperature + minimumTemperature + maximumTemperature;
-		if (callback != null) {
-			navigator.tts.speak(all, callback('back'));
-		} else {
-			navigator.tts.speak(all);
+	$scope.speakWeatherReport = function(){
+		var currentTemperature = "The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
+		navigator.speak(currentTemperature + $scope.jeeves.weather.description);
+		if ($scope.jeeves.previousView[$scope.jeeves.previousView.length - 2] != 'weather') {
+			$scope.changeView('back');
+			$scope.$apply();
 		}
 	}
 
 	$scope.newsSpeech = function(result){
+		if ($scope.jeeves.view != 'news') {
+			$scope.changeView('news');
+			$scope.$apply();
+		}
 		if (result.match(/read me/) || result.match(/readme/)){
 			if (result.length>7){
 				var section1;
@@ -432,7 +435,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			}
 			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 			$scope.$apply();
-
 		}else if (result.match(/next article/) || result.match(/continue/)) {
 			navigator.tts.speak("Going to next article");
 			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
@@ -444,7 +446,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 			}
 			else{
-				navigator.tts.speak("Their is no previos articles");
+				navigator.tts.speak("There are no previous articles.");
 			}
 		}	
 		$scope.$apply();
@@ -457,42 +459,42 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
+			}, 12000);
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
+			}, 12000);
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
+			}, 12000);
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
-		}else if ($scope.jeeves.newsPosition.section == "tech"){
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "technology"){
 			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
+			}, 12000);
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
 			setTimeout(function(){
 				$scope.reco();
 				$scope.jeeves.newsPosition.articleIndex++;
-			}, 14000);
+			}, 12000);
 		}
 		$scope.$apply();
 	}
@@ -639,6 +641,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.capitaliseFirstLetter=function(string){
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	}
+
+	$scope.oauthlogin = function() {
+		OAuth.initialize("AIzaSyCutPnrnQ3fPWwsM264FsgQb6BeARgdCAc");
+		OAuth.popup('google', {cache: true})
+		.done(function(result) {
+			result.get('/me')
+			.done(function(response) {
+				alert(response.name);
+			})
+		})
 	}
 
 	// var googleapi = {
