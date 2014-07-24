@@ -138,9 +138,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 
 	$scope.changeView = function(selected) {
 		if(selected == 'back'){
-			$scope.jeeves.previousView.pop();
-			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-			$scope.jeeves.view = back;
+			if ($scope.jeeves.previousView.length > 1) {
+				$scope.jeeves.previousView.pop();
+				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
+				if (back == 'menu') {
+					if ($scope.jeeves.previousView.length > 1) {
+						$scope.jeeves.previousView.pop();
+						back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
+					}
+				}
+				$scope.jeeves.view = back;
+			}
+			
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
