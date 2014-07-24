@@ -52,7 +52,7 @@
 
 		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
 			<script type="text/ng-template" id="menuContent.html">
-			<div>
+			<div ng-controller="jeevesCtrl">
 				<h2 class="text-center">Menu</h2>
 				<button ng-click="changeView('weather')" class="btn btn-primary btn-block">Weather</button>
 				<button ng-click="changeView('news')" class="btn btn-primary btn-block">News </button>
