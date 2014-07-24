@@ -75,7 +75,7 @@
   				<div id="sport" ng-hide="jeeves.newsViews!='sport'"></div>
   				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('business')" ng-dblclick="collapse()">Business</button>
   				<div id="business" ng-hide="jeeves.newsViews!='business'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('technology')" ng-dblclick="collapse()">Tech</button>
+  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('technology')" ng-dblclick="collapse()">Technology</button>
   				<div id="technology" ng-hide="jeeves.newsViews!='technology'"></div>
   				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('science')" ng-dblclick="collapse()">Science</button>
   				<div id="science" ng-hide="jeeves.newsViews!='science'"></div>
@@ -94,7 +94,7 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button id='authorize-button' class="btn btn-default">Authenticate</button>
+						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
 						<script type="text/javascript" src="js/googleauthorize.js"></script>
 						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 					</div>
@@ -209,7 +209,7 @@
 		navigator.tts.speak("Going to previous view.");
 		try {
 			$.getScript("js/mvc.js", function() {
-				jeevesApp.$scope.changeView('back');
+				//call changeView('back')
 			})
 		} catch (err) {
 			alert("Didn't work.");
@@ -221,7 +221,7 @@
 		navigator.tts.speak("Opening menu.");
 		try {
 			$.getScript("js/mvc.js", function() {
-				jeevesApp.$scope.changeView('menu');
+				//call changeView('menu')
 			})
 		} catch (err) {
 			alert("Didn't work.");
