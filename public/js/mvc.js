@@ -111,7 +111,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
                 }
     };
 
-	$scope.changeView = function(selected, callback) {
+	$scope.changeView = function(selected) {
 		if(selected == 'back'){
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
@@ -125,10 +125,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-		}
-		$scope.$apply();
-		if (callback != null) {
-			callback();
 		}
 	};
 
@@ -185,11 +181,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.globalCommands = function(result) {
-		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today" && $scope.jeeves.view != 'weather'){
-			$scope.changeView('weather', $scope.speakWeatherReport(function() {
-				$scope.changeView('back');
-			}));
-			$scope.speakWeatherReport($scope.changeView('back'));
+		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
+			$scope.changeView('weather');
+			$scope.$apply();
+			$scope.speakWeatherReport($scope.changeView);
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
@@ -275,56 +270,59 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 				}
 				return true;
 			}
-		}else if (result.match(/read me/)) {
-			if (result.match(/news/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				navigator.tts.speak("Now reading news articles.");
-				$scope.newsSpeech(result);
-				// Start reading news category articles.
-				return true;
-			} else if (result.match(/business/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				// Start reading business news articles.
-				navigator.tts.speak("Now reading business articles.");
-				$scope.newsSpeech(result);
-				return true;
-			} else if (result.match(/world/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				// Start reading world news articles.
-				navigator.tts.speak("Now reading world articles.");
-				$scope.newsSpeech(result);
-				return true;
-			} else if (result.match(/sports/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				// Start reading sports news articles.
-				navigator.tts.speak("Now reading sports articles.");
-				$scope.newsSpeech(result);
-				return true;
-			} else if (result.match(/tech/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				// Start reading tech news articles.
-				navigator.tts.speak("Now reading technology articles.");
-				$scope.newsSpeech(result);
-				return true;
-			} else if (result.match(/science/)) {
-				$scope.changeView('news');
-				$scope.$apply();
-				// Start reading science news articles.
-				navigator.tts.speak("Now reading science articles.");
-				$scope.newsSpeech(result);
-				return true;
-			} else if (result.match(/emails/)) {
+		}else if (result.match(/read me/) || result.match(/readme/)) {
+			if (result.match(/emails/)) {
 				$scope.changeView('email');
 				$scope.$apply();
 				// Start reading emails.
 				navigator.tts.speak("Now reading emails.");
 				return true;
+			} else {
+				$scope.newsSpeech(result);
 			}
+			// else if (result.match(/news/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	navigator.tts.speak("Now reading news articles.");
+			// 	$scope.newsSpeech(result);
+			// 	// Start reading news category articles.
+			// 	return true;
+			// } else if (result.match(/business/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	// Start reading business news articles.
+			// 	navigator.tts.speak("Now reading business articles.");
+			// 	$scope.newsSpeech(result);
+			// 	return true;
+			// } else if (result.match(/world/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	// Start reading world news articles.
+			// 	navigator.tts.speak("Now reading world articles.");
+			// 	$scope.newsSpeech(result);
+			// 	return true;
+			// } else if (result.match(/sports/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	// Start reading sports news articles.
+			// 	navigator.tts.speak("Now reading sports articles.");
+			// 	$scope.newsSpeech(result);
+			// 	return true;
+			// } else if (result.match(/tech/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	// Start reading tech news articles.
+			// 	navigator.tts.speak("Now reading technology articles.");
+			// 	$scope.newsSpeech(result);
+			// 	return true;
+			// } else if (result.match(/science/)) {
+			// 	$scope.changeView('news');
+			// 	$scope.$apply();
+			// 	// Start reading science news articles.
+			// 	navigator.tts.speak("Now reading science articles.");
+			// 	$scope.newsSpeech(result);
+			// 	return true;
+			// }
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
 				navigator.notification.alert(
@@ -409,17 +407,21 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
 		var all = general + currentTemperature + minimumTemperature + maximumTemperature;
 		if (callback != null) {
-			navigator.tts.speak(all, callback);
+			navigator.tts.speak(all, callback('back'));
 		} else {
 			navigator.tts.speak(all);
 		}
-		
 	}
 
 	$scope.newsSpeech = function(result){
-		if (result.match(/read me/)){
+		if (result.match(/read me/) || result.match(/readme/)){
 			if (result.length>7){
-				var section1=result.substring(8);
+				var section1;
+				if (result.match(/readme/)) {
+					section1 = result.substring(7);
+				} else {
+					section1 = result.substring(8);
+				}
 				$scope.jeeves.newsPosition.section=section1;
 				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.changeSection(section1);
