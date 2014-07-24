@@ -14,11 +14,13 @@
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css">
 	<script src="js/angular.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
-	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
 
+	<script src="https://apis.google.com/js/client.js"></script>
+	<script src="js/googleauthorize.js"></script>
 	<script src="js/mvc.js"></script>
 	
 	<!-- Implement JQuery for Bootstrap animations. -->
@@ -49,8 +51,9 @@
 			<br>
 		</div>
 
-		<div id="menu" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
-			<div>
+		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
+			<script type="text/ng-template" id="menuContent.html">
+			<div ng-controller="jeevesCtrl">
 				<h2 class="text-center">Menu</h2>
 				<button ng-click="changeView('weather')" class="btn btn-primary btn-block">Weather</button>
 				<button ng-click="changeView('news')" class="btn btn-primary btn-block">News </button>
@@ -60,6 +63,7 @@
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
 			</div>
+			</script>
 		</div>
 
 		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
@@ -67,6 +71,52 @@
 				<h2 class="text-center">News</h2>
 			</div>
 			<div align = "center">
+				<accordion close-others="true">
+					<accordion-group heading="News">
+						<button id="news1" class="btn btn-warning btn-block" ng-click="news1isCollapsed = !news1isCollapsed"><span id="news1title">Article title goes here</span></button>
+						<div collapse="!news1isCollapsed">
+							<div class="well well-lg" id="news1content" >Article content goes here.</div>
+						</div>
+						<button id="news2" class="btn btn-warning btn-block" ng-click="news2isCollapsed = !news2isCollapsed"><span id="news2title">Article title goes here</span></button>
+						<div collapse="!news2isCollapsed">
+							<div class="well well-lg" id="news2content" >Article content goes here.</div>
+						</div>
+						<button id="news3" class="btn btn-warning btn-block" ng-click="news3isCollapsed = !news3isCollapsed"><span id="news3title">Article title goes here</span></button>
+						<div collapse="!news3isCollapsed">
+							<div class="well well-lg" id="news3content" >Article content goes here.</div>
+						</div>
+						<button id="news4" class="btn btn-warning btn-block" ng-click="news4isCollapsed = !news4isCollapsed"><span id="news4title">Article title goes here</span></button>
+						<div collapse="!news4isCollapsed">
+							<div class="well well-lg" id="news4content" >Article content goes here.</div>
+						</div>
+						<button id="news5" class="btn btn-warning btn-block" ng-click="news5isCollapsed = !news5isCollapsed"><span id="news5title">Article title goes here</span></button>
+						<div collapse="!news5isCollapsed">
+							<div class="well well-lg" id="news5content" >Article content goes here.</div>
+						</div>
+					</accordion-group>
+					<accordion-group heading="World">
+						<button id="world1" class="btn btn-warning btn-block" ng-click="world1isCollapsed = !world1isCollapsed"><span id="world1title">Article title goes here</span></button>
+						<div collapse="!world1isCollapsed">
+							<div class="well well-lg" id="world1content" >Article content goes here.</div>
+						</div>
+						<button id="world2" class="btn btn-warning btn-block" ng-click="world2isCollapsed = !world2isCollapsed"><span id="world2title">Article title goes here</span></button>
+						<div collapse="!world2isCollapsed">
+							<div class="well well-lg" id="world2content" >Article content goes here.</div>
+						</div>
+						<button id="world3" class="btn btn-warning btn-block" ng-click="world3isCollapsed = !world3isCollapsed"><span id="world3title">Article title goes here</span></button>
+						<div collapse="!world3isCollapsed">
+							<div class="well well-lg" id="world3content" >Article content goes here.</div>
+						</div>
+						<button id="world4" class="btn btn-warning btn-block" ng-click="world4isCollapsed = !world4isCollapsed"><span id="world4title">Article title goes here</span></button>
+						<div collapse="!world4isCollapsed">
+							<div class="well well-lg" id="world4content" >Article content goes here.</div>
+						</div>
+						<button id="world5" class="btn btn-warning btn-block" ng-click="world5isCollapsed = !world5isCollapsed"><span id="world5title">Article title goes here</span></button>
+						<div collapse="!world5isCollapsed">
+							<div class="well well-lg" id="world5content" >Article content goes here.</div>
+						</div>
+					</accordion-group>
+				</accordion>
   				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('news')" ng-dblclick="collapse()">News</button>
   				<div id="news" ng-hide="jeeves.newsViews!= 'news'"></div>
   				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('world')" ng-dblclick="collapse()">World</button>
@@ -95,8 +145,6 @@
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
 						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
-						<script type="text/javascript" src="js/googleauthorize.js"></script>
-						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">

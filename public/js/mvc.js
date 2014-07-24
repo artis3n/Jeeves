@@ -27,7 +27,7 @@ var model = {
 
 };
 
-var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
+var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
 
 jeevesApp.run(function($http) {
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
@@ -123,7 +123,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
 	$scope.imgurl = function() {
@@ -138,28 +138,29 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
     };
 
 	$scope.changeView = function(selected) {
-		if(selected == 'back'){
+		if (selected == 'back'){
 			if ($scope.jeeves.previousView.length > 1) {
 				$scope.jeeves.previousView.pop();
 				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-				if (back == 'menu') {
-					if ($scope.jeeves.previousView.length > 1) {
-						$scope.jeeves.previousView.pop();
-						back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-					}
-				}
 				$scope.jeeves.view = back;
+				$scope.$close();
 			}
 			
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
+			$scope.$close();
 		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
 			$scope.changeView('back');
-		}else{
+		} else if (selected == 'menu') {
+			var modalInstance = $modal.open({
+				templateUrl: 'menuContent.html'
+			})
+		} else {
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
+			$scope.$close();
 		}
 	};
 
@@ -217,16 +218,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 
 	$scope.globalCommands = function(result) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
-			$scope.changeView('weather');
-			$scope.speakWeatherReport();
-			$scope.$apply();
+			$scope.$apply(function() {
+				$scope.changeView('weather');
+				$scope.speakWeatherReport();
+			});
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
 				if ($scope.jeeves.view != 'news') {
 					navigator.tts.speak("Gotcha. Going to the news page now.", function() {
-						$scope.changeView('news')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('news');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
@@ -235,8 +238,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 			} else if (result.match(/email/)) {
 				if ($scope.jeeves.view != 'email') {
 					navigator.tts.speak("Gotcha. Going to the email page now.", function() {
-						$scope.changeView('email')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('email');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
@@ -246,7 +250,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 			} else if (result.match(/weather/)) {
 				if ($scope.jeeves.view != 'weather') {
 					navigator.tts.speak("Gotcha. Going to weather now.", function() {
-						$scope.changeView('weather')
+						$scope.changeView('weather');
 						$scope.$apply();
 					})
 				} else {
@@ -316,49 +320,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 				$scope.newsSpeech(result);
 				return true;
 			}
-			// else if (result.match(/news/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	navigator.tts.speak("Now reading news articles.");
-			// 	$scope.newsSpeech(result);
-			// 	// Start reading news category articles.
-			// 	return true;
-			// } else if (result.match(/business/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading business news articles.
-			// 	navigator.tts.speak("Now reading business articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/world/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading world news articles.
-			// 	navigator.tts.speak("Now reading world articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/sports/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading sports news articles.
-			// 	navigator.tts.speak("Now reading sports articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/tech/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading tech news articles.
-			// 	navigator.tts.speak("Now reading technology articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/science/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading science news articles.
-			// 	navigator.tts.speak("Now reading science articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// }
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
 				navigator.notification.alert(
@@ -756,118 +717,63 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 	}
 
 	$scope.oauthlogin = function() {
-		OAuth.initialize("AIzaSyCutPnrnQ3fPWwsM264FsgQb6BeARgdCAc");
+		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google', {cache: true})
 		.done(function(result) {
-			result.get('/me')
-			.done(function(response) {
-				alert(response.name);
+			result.me().done(function(data) {
+				// alert(JSON.stringify(data));
+				gapi.client.load('gmail', 'v1', function() {
+				    var request = gapi.client.gmail.users.messages.list({
+				      labelIds: ['INBOX', 'UNREAD']
+				    });
+				    request.execute(function(resp) {
+				      document.getElementById('email-announcement').innerHTML = '<i>Hello, ' + data.firstname + '! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
+				      var content = document.getElementById("message-list");
+				      if (resp.messages == null) {
+				        content.innerHTML = "<b>Your inbox is empty.</b>";
+				      } else {
+				        var encodings = 0;
+				        content.innerHTML = "";
+				        angular.forEach(resp.messages, function(message) {
+				          var email = gapi.client.gmail.users.messages.get({
+				          'id': message.id
+				          });
+				          email.execute(function(stuff) {
+				            if (stuff.payload == null) {
+				              console.log("Payload null: " + message.id);
+				            }
+				            var header = document.createElement('div');
+				            var sender = document.createElement('div');
+				            angular.forEach(stuff.payload.headers, function(item) {
+				              if (item.name == "Subject") {
+				                header.setAttribute('id', 'email-header');
+				                header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
+				              }
+				              if (item.name == "From") {
+				                sender.setAttribute('id', 'email-sender');
+				                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
+				              }
+				            })
+				            try {
+				              content.appendChild(header);
+				              content.appendChild(sender);
+				              var contents = document.createElement('div');
+				              contents.setAttribute('id', 'email-content');
+				              if (stuff.payload.parts == null) {
+				                contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
+				              } else {
+				                contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
+				              }
+				              content.appendChild(contents);
+				            } catch (err) {
+				              console.log("Encoding error: " + encodings++);
+				            }
+				          })
+				        })
+				      }
+				    });
+				  });
 			})
 		})
 	}
-
-	// var googleapi = {
-	// 	authorize: function(options) {
-	// 		var deferred = $.Deferred();
-	// 		var authUrl = "https://accounts.google.com/o/oauth2/auth?" + $.param({
-	// 			client_id: options.client_id,
-	// 			redirect_uri: options.redirect_uri,
-	// 			response_type: 'code',
-	// 			scope: options.scope
-	// 		});
-
-	// 		var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
-	// 		$(authWindow).on('loadstart', function(e) {
-	// 			alert('Event collected');
-	// 			var url = e.originalEvent.url;
-	// 			var code = /\?code=(.+)$/.exec(url);
-	// 			var error = /\?error=(.+)$/.exec(url);
-
-	// 			if (code || error) {
-	// 				authWindow.close();
-	// 			}
-
-	// 			if (code) {
-	// 				$http.post('https://accounts.google.com/o/oauth2/token', {
-	// 					code: code[1],
-	// 					client_id: options.client_id,
-	// 					client_secret: options.client_secret,
-	// 					redirect_uri: options.redirect_uri,
-	// 					grant_type: 'authorization_code'
-	// 				}).done(function(data) {
-	// 					deferred.resolve(data);
-	// 				}).fail(function(response) {
-	// 					deferred.reject(response.responseJSON);
-	// 				});
-	// 			} else if (error) {
-	// 				deferred.reject({
-	// 					error: error[1]
-	// 				});
-	// 			}
-	// 		})
-	// 	}
-	// };
-
-	// $scope.call_google = function() {
-	// 	$.getJSON("../client_secret_android.json", function(data) {
-	// 		googleapi.authorize({
-	// 			client_id: data.installed.client_id,
-	// 			client_secret: data.installed.client_secret,
-	// 			redirect_uri: "urn:ietf:wg:oauth:2.0:oob:auto",
-	// 			scope: "https://www.googleapis.com/auth/gmail.readonly"
-	// 		}).done(function(authData) {
-	// 			accessToken = authData.access_token;
-	// 			alert(accessToken);
-	// 			console.log(authData.access_token);
-	// 			$scope.getDataProfile();
-	// 		})
-	// 	})
-	// }
-
-	// $scope.getDataProfile = function() {
-	// 	var term = null;
-
-	// 	$http({
-	// 		url: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token='+accessToken,
-	// 		type: 'GET',
-	// 		data: term,
-	// 		dataType: 'json',
-	// 		error: function(err, text_status, strError) {},
-	// 		success: function(data) {
-	// 			var item;
-
-	// 			console.log(JSON.stringify(data));
-	// 			window.localStorage.gmailLogin = "true";
-	// 			window.localStorage.gmailID = data.id;
-	// 			window.localStorage.gmailEmail = data.email;
-	// 			window.localStorage.gmailFirstName = data.given_name;
-	// 			window.localStorage.gmailLastName = data.family_name;
-	// 			window.localStorage.gmailProfilePicture = data.picture;
-	// 			window.localStorage.gmailGender = data.gender;
-	// 			window.localStorage.gmailName = data.name;
-	// 			$scope.email = data.email;
-	// 			$scope.name = data.name;
-	// 		}
-	// 	});
-	// }
-
-	// $scope.disconnectUser = function () {
-	// 	var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token='+accessToken;
-
-	// 	$http({
-	// 		type: 'GET',
-	// 		url: revokeUrl,
-	// 		async: false,
-	// 		contentType: "application/json",
-	// 		dataType: 'jsonp',
-	// 		success: function(nullResponse) {
-	// 			accessToken = null;
-	// 			console.log(JSON.stringify(nullResponse));
-	// 			console.log("-------signed out!------" + accessToken);
-	// 		},
-	// 		error: function(e) {
-	// 			console.log("Something went wrong disconnecting.");
-	// 		}
-	// 	})
-	// }
 });
