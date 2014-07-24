@@ -111,7 +111,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
                 }
     };
 
-	$scope.changeView = function(selected) {
+	$scope.changeView = function(selected, callback) {
 		if(selected == 'back'){
 			$scope.jeeves.previousView.pop();
 			var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
@@ -125,6 +125,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
+		}
+		$scope.$apply();
+		if (callback != null) {
+			callback();
 		}
 	};
 
@@ -157,7 +161,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
-				 if ($scope.globalCommands(result)) {                              //MAKE SURE TO UNCOMMENT THE GLOBAL COMMANDS
+				 if ($scope.globalCommands(result)) {
 				 	break;
 				 }
 				if($scope.jeeves.view == 'weather'){
@@ -182,12 +186,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 
 	$scope.globalCommands = function(result) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today" && $scope.jeeves.view != 'weather'){
-			$scope.changeView('weather');
-			$scope.$apply();
-			$scope.speakWeatherReport(function() {
+			$scope.changeView('weather', $scope.speakWeatherReport(function() {
 				$scope.changeView('back');
-				$scope.$apply();
-			});
+			}));
+			$scope.speakWeatherReport($scope.changeView('back'));
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
@@ -406,7 +408,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 		var general = $scope.jeeves.weather.description + " in " + $scope.jeeves.city + " today. ";
 		var currentTemperature = "The current temperature is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
 		var all = general + currentTemperature + minimumTemperature + maximumTemperature;
-		navigator.tts.speak(all, callback);
+		if (callback != null) {
+			navigator.tts.speak(all, callback);
+		} else {
+			navigator.tts.speak(all);
+		}
+		
 	}
 
 	$scope.newsSpeech = function(result){
