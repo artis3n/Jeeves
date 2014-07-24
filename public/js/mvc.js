@@ -410,123 +410,69 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http) {
 	}
 
 	$scope.newsSpeech = function(result){
-		// var stop =false;  				
-		// //reads a certain news section, e.g. read me news business.
-		// if(result.substring(0, 12) =='read me news') { 
-  //   		if(result.length>14){
-  //   			alert("moving to section: "+ result.substring(13, result.length));
-  //   			$scope.changeSection(result.substring(13, result.length));
-  //   		}
-  //   		x=$scope.jeeves.section;
-		// 	$scope.jeeves.showNumber = 5;
-		// 	$http.get('http://beta.content.guardianapis.com/search?q=US&section='+x+'&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		// 		$scope.jeeves.articles=data.response.results;
-		// 		var stop2=false;
-		// 		for (var j = 0; j < $scope.jeeves.showNumber; j++) {
-		// 			var entry = $scope.jeeves.articles[j];
-		// 			alert("Article "+j+": "+entry.webTitle);
-
-		// 			//for user dialogue 
-		// 			alert("Tell us if you like to 'move on next', 'read article', 'more articles', 'read me last article', 'read me news <section>', 'quit'.");
-		// 			navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
-		// 			function successCallback(results){
-		// 				for (var i = 0; i < results.length; i++) {
-		// 					var result = results[i].toLowerCase();
-		// 					alert("dialogue response: "+result);
-		// 					if(result.substring(0, 12) =='read me news'){
-		// 						stop2=true;
-		// 						$scope.speechNews(result);
-		// 						break;
-		// 					}
-		// 					else if(result=='read article'){
-		// 						alert("Article Content: "+ entry.fields.body.textContent);
-		// 						break;
-		// 					}
-		// 					else if(result=='more articles'){
-		// 						$scope.updateShowAmount();
-		// 						break;
-		// 					}
-		// 					else if(result=='read me last article'){
-		// 						j=j-2;
-		// 						break;
-		// 					}
-		// 					else if(result=='move on next'){
-		// 						break;
-		// 					}
-		// 					else if(result=='quit'){	
-		// 						stop2=true;
-		// 						break;
-		// 					}
-		// 					else{
-		// 						alert("unrecognized command, moving on...");
-		// 						break;
-		// 					}
-		// 					//dont forget to break the loop
-		// 				}
-
-		// 			}
-		// 			function failCallback(error){
-		//    				 alert("Error: " + error);
-		// 			}
-		// 			if(stop2){
-		// 				break;
-		// 			}
-		// 			//navigator.tts.speak(entry.webTitle);
-		// 		};
-		// 	}); 
-
-  //   		$scope.$apply();
-  //   		stop=true;
-		// }
-
-		// return stop;
-	//////////////////////////
-
-//navigator.tts.speak("say read me, or read me section");
-		alert("Entering News Speech");
-		alert("current result> "+result);
 		if (result.match(/read me/)){
 			if (result.length>7){
-				alert("result > 7 & "+result)
-				var section=result.substring(8);
-				alert("section:" + section);
-				$scope.changeSection(section);   //CHANGE WORLD TO SECTION
-				$scope.newsPosition.section=section;
-				$scope.newsPosition.articleIndex = 0;
+				var section1=result.substring(8);
+				$scope.jeeves.newsPosition.section=section1;
+				$scope.jeeves.newsPosition.articleIndex = 0;
+				$scope.changeSection(section1);
 			}
 			else{
-				alert("entered else of read me <section>");
+				$scope.jeeves.newsPosition.section=section;
 				$scope.changeSection('news');
-				$scope.newsPosition.section=section;
 			}
-			$scope.sayWebTitle($scope.newsPosition.section);
+			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+			$scope.$apply();
 
-		}else if (result.match(/next article/) != null || result.match(/continue/) != null) {
-			$scope.sayWebTitle($scope.newsPosition.section);
+		}else if (result.match(/next article/) || result.match(/continue/)) {
+			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 		}	
 		$scope.$apply();
 	}
 
 	$scope.sayWebTitle = function(section){
-		if ($scope.newsPosition.section == "news"){
-			alert("success");
-			navigator.tts.speak($scope.newsArticles.news[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
-		}else if ($scope.newsPosition.section == "world"){
-			navigator.tts.speak($scope.newsArticles.world[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
-		}else if ($scope.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.newsArticles.sports[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
-		}else if ($scope.newsPosition.section == "business"){
-			navigator.tts.speak($scope.newsArticles.business[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
-		}else if ($scope.newsPosition.section == "tech"){
-			navigator.tts.speak($scope.newsArticles.tech[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
-		}else if ($scope.newsPosition.section == "science"){
-			navigator.tts.speak($scope.newsArticles.science[$scope.newsPosition.articleIndex].webTitle)
-			$scope.newsPosition.articleIndex++;
+		if ($scope.jeeves.newsPosition.section == "news"){
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "world"){
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "sports"){
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "business"){
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "tech"){
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
+		}else if ($scope.jeeves.newsPosition.section == "science"){
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle);
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section");
+			setTimeout(function(){
+				$scope.reco();
+				$scope.jeeves.newsPosition.articleIndex++;
+			}, 12000);
 		}
 		$scope.$apply();
 	}
