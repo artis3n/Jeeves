@@ -12,6 +12,7 @@
 	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+	<script src="ui-bootstrap-tpls-0.11.0.min.js"></script>
 	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css">
 	<script src="js/angular.min.js"></script>
 	<!-- Add AngularJS modules -->
@@ -49,7 +50,8 @@
 			<br>
 		</div>
 
-		<div id="menu" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
+		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
+			<script type="text/ng-template" id="menuContent.html">
 			<div>
 				<h2 class="text-center">Menu</h2>
 				<button ng-click="changeView('weather')" class="btn btn-primary btn-block">Weather</button>
@@ -60,6 +62,7 @@
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
 			</div>
+			</script>
 		</div>
 
 		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
@@ -94,7 +97,7 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
+						<button id='authorize-button' class="btn btn-default">Authenticate</button>
 						<script type="text/javascript" src="js/googleauthorize.js"></script>
 						<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 					</div>

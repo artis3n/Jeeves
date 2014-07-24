@@ -26,7 +26,7 @@ var model = {
 
 };
 
-var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap', 'ngTouch']);
+var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
 
 jeevesApp.run(function($http) {
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
@@ -122,7 +122,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
 	$scope.imgurl = function() {
@@ -156,6 +156,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 			$scope.getListArticle();
 		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
 			$scope.changeView('back');
+		} else if (selected == 'menu') {
+			var modalInstance = $modal.open({
+				templateUrl: 'menuContent.html'
+			})
 		}else{
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
@@ -315,49 +319,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $rootScope, $q) {
 				$scope.newsSpeech(result);
 				return true;
 			}
-			// else if (result.match(/news/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	navigator.tts.speak("Now reading news articles.");
-			// 	$scope.newsSpeech(result);
-			// 	// Start reading news category articles.
-			// 	return true;
-			// } else if (result.match(/business/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading business news articles.
-			// 	navigator.tts.speak("Now reading business articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/world/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading world news articles.
-			// 	navigator.tts.speak("Now reading world articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/sports/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading sports news articles.
-			// 	navigator.tts.speak("Now reading sports articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/tech/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading tech news articles.
-			// 	navigator.tts.speak("Now reading technology articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// } else if (result.match(/science/)) {
-			// 	$scope.changeView('news');
-			// 	$scope.$apply();
-			// 	// Start reading science news articles.
-			// 	navigator.tts.speak("Now reading science articles.");
-			// 	$scope.newsSpeech(result);
-			// 	return true;
-			// }
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
 				navigator.notification.alert(
