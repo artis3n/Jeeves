@@ -428,11 +428,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		if (result.match(/read/)){
 			 if(result.match(/article/)){
 				$scope.readArticle();
-				navigator.tts.speak("Finished reading article, either switch section or continue to next article.");
-				setTimeout(function(){
+				navigator.tts.speak("Finished reading article, either switch section or continue to next article.", function(){
+					$scope.apply(function(){alert("inside scope.apply");});
 					$scope.reco();
 					$scope.jeeves.newsPosition.articleIndex++;
-				}, 200000);
+				});
+				// setTimeout(function(){
+				// 	$scope.reco();
+				// 	$scope.jeeves.newsPosition.articleIndex++;
+				// }, 200000);
 			}
 			else{
 				if (result.length>4){
