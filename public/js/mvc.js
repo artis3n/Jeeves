@@ -23,7 +23,8 @@ var model = {
 		section: 'news',
 		articleIndex: 0
 	},
-	menuModal: {}
+	menuModal: {},
+	isMenuOpen: false
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -149,28 +150,48 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.changeView = function(selected) {
 		if (selected == 'back'){
-			if ($scope.jeeves.previousView.length > 1) {
-				$scope.jeeves.previousView.pop();
-				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-				$scope.jeeves.view = back;
+			alert($scope.jeeves.isMenuOpen);
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			} else {
+				if ($scope.jeeves.previousView.length > 1) {
+					$scope.jeeves.previousView.pop();
+					var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
+					$scope.jeeves.view = back;
+					$scope.closeMenu();
+				}
 			}
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			$scope.getListArticle();
-			$scope.$close();
+			$scope.closeMenu();
 		} else if (selected == 'menu') {
-			$scope.jeeves.menuModal = $modal.open({
-				templateUrl: 'menuContent.html'
-			})
+			if (!$scope.jeeves.isMenuOpen) {
+				$scope.openMenu();
+			}
 		} else {
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.$close();
+			$scope.closeMenu();
 		}
 
 		console.log($scope.jeeves.previousView);
 	};
+
+	$scope.openMenu = function() {
+		alert("Menu opened");
+		$scope.jeeves.menuModal = $modal.open({
+			templateUrl: 'menuContent.html'
+		})
+		$scope.jeeves.isMenuOpen = true;
+	}
+
+	$scope.closeMenu = function() {
+		alert("Menu closed");
+		$scope.jeeves.menuModal.close();
+		$scope.jeeves.isMenuOpen = false;
+	}
 
 	$scope.changeWeather = function(setting) {
 		if(setting !== null){
