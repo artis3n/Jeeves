@@ -669,62 +669,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
-		OAuth.popup('google', {cache: true})
+		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
+			alert(JSON.stringify(result));
 			result.me().done(function(data) {
-				// alert(JSON.stringify(data));
-				gapi.client.load('gmail', 'v1', function() {
-				    var request = gapi.client.gmail.users.messages.list({
-				      labelIds: ['INBOX', 'UNREAD']
-				    });
-				    request.execute(function(resp) {
-				      document.getElementById('email-announcement').innerHTML = '<i>Hello, ' + data.firstname + '! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
-				      var content = document.getElementById("message-list");
-				      if (resp.messages == null) {
-				        content.innerHTML = "<b>Your inbox is empty.</b>";
-				      } else {
-				        var encodings = 0;
-				        content.innerHTML = "";
-				        angular.forEach(resp.messages, function(message) {
-				          var email = gapi.client.gmail.users.messages.get({
-				          'id': message.id
-				          });
-				          email.execute(function(stuff) {
-				            if (stuff.payload == null) {
-				              console.log("Payload null: " + message.id);
-				            }
-				            var header = document.createElement('div');
-				            var sender = document.createElement('div');
-				            angular.forEach(stuff.payload.headers, function(item) {
-				              if (item.name == "Subject") {
-				                header.setAttribute('id', 'email-header');
-				                header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
-				              }
-				              if (item.name == "From") {
-				                sender.setAttribute('id', 'email-sender');
-				                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
-				              }
-				            })
-				            try {
-				              content.appendChild(header);
-				              content.appendChild(sender);
-				              var contents = document.createElement('div');
-				              contents.setAttribute('id', 'email-content');
-				              if (stuff.payload.parts == null) {
-				                contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
-				              } else {
-				                contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
-				              }
-				              content.appendChild(contents);
-				            } catch (err) {
-				              console.log("Encoding error: " + encodings++);
-				            }
-				          })
-				        })
-				      }
-				    });
-				  });
-			})
+				alert(JSON.stringify(data));
+				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=['INBOX']")
+				.done(function(email) {
+					alert(JSON.stringify(email));
+				})
+			});
 		})
 	}
 });
