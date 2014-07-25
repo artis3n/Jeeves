@@ -674,9 +674,53 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			alert(JSON.stringify(result));
 			result.me().done(function(data) {
 				alert(JSON.stringify(data));
-				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=['INBOX']")
-				.done(function(email) {
-					alert(JSON.stringify(email));
+				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
+				.done(function(list) {
+					document.getElementById('authorize-button').style.visibility = 'hidden';
+					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
+					alert(JSON.stringify(list));
+					var content = document.getElementById("message-list");
+					if (list.messages == null) {
+				        content.innerHTML = "<b>Your inbox is empty.</b>";
+				      } else {
+				      	var encodings = 0;
+				        content.innerHTML = "";
+				        angular.forEach(list.messages, function(message) {
+				        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
+				        	.done(function(email) {
+				        		alert(JSON.stringify(email));
+				        		if (email.payload == null) {
+				        			console.log("Payload null: " + message.id);
+				        			var header = document.createElement('div');
+				            		var sender = document.createElement('div');
+				            		angular.forEach(email.payload.headers, function(item) {
+				            			if (item.name == 'Subject') {
+				            				header.setAttribute('id', 'email-header');
+				            				header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
+				              			}
+				              			if (item.name == "From") {
+							                sender.setAttribute('id', 'email-sender');
+							                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
+							            }
+				            		})
+				            		try {
+						              content.appendChild(header);
+						              content.appendChild(sender);
+						              var contents = document.createElement('div');
+						              contents.setAttribute('id', 'email-content');
+						              if (stuff.payload.parts == null) {
+						                contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
+						              } else {
+						                contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
+						              }
+						              content.appendChild(contents);
+						            } catch (err) {
+						              console.log("Encoding error: " + encodings++);
+						            }
+				        		}
+				        	})
+				        })
+				    }
 				})
 			});
 		})
