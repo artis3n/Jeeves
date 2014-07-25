@@ -71,69 +71,67 @@
 			</div>
 			<div align = "center">
 				<accordion close-others="true">
-					<accordion-group heading="News">
-						<button id="news1" class="btn btn-warning btn-block" on-click="news1isCollapsed = !news1isCollapsed"><span id="news1title">Article title goes here</span></button>
-						<div collapse="!news1isCollapsed">
-							<div class="well well-lg" id="news1content" >Article content goes here.</div>
+					<accordion-group heading="News" is-open="status.isFirstOpen">
+						<div ng-repeat="entry in jeeves.newsArticles.news">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
 						</div>
-						<button id="news2" class="btn btn-warning btn-block" ng-click="news2isCollapsed = !news2isCollapsed"><span id="news2title">Article title goes here</span></button>
-						<div collapse="!news2isCollapsed">
-							<div class="well well-lg" id="news2content" >Article content goes here.</div>
-						</div>
-						<button id="news3" class="btn btn-warning btn-block" ng-click="news3isCollapsed = !news3isCollapsed"><span id="news3title">Article title goes here</span></button>
-						<div collapse="!news3isCollapsed">
-							<div class="well well-lg" id="news3content" >Article content goes here.</div>
-						</div>
-						<button id="news4" class="btn btn-warning btn-block" ng-click="news4isCollapsed = !news4isCollapsed"><span id="news4title">Article title goes here</span></button>
-						<div collapse="!news4isCollapsed">
-							<div class="well well-lg" id="news4content" >Article content goes here.</div>
-						</div>
-						<button id="news5" class="btn btn-warning btn-block" ng-click="news5isCollapsed = !news5isCollapsed"><span id="news5title">Article title goes here</span></button>
-						<div collapse="!news5isCollapsed">
-							<div class="well well-lg" id="news5content" >Article content goes here.</div>
 						</div>
 					</accordion-group>
 					<accordion-group heading="World">
-						<button id="world1" class="btn btn-warning btn-block" ng-click="world1isCollapsed = !world1isCollapsed"><span id="world1title">Article title goes here</span></button>
-						<div collapse="!world1isCollapsed">
-							<div class="well well-lg" id="world1content" >Article content goes here.</div>
+						<div ng-repeat="entry in jeeves.newsArticles.world">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
 						</div>
-						<button id="world2" class="btn btn-warning btn-block" ng-click="world2isCollapsed = !world2isCollapsed"><span id="world2title">Article title goes here</span></button>
-						<div collapse="!world2isCollapsed">
-							<div class="well well-lg" id="world2content" >Article content goes here.</div>
 						</div>
-						<button id="world3" class="btn btn-warning btn-block" ng-click="world3isCollapsed = !world3isCollapsed"><span id="world3title">Article title goes here</span></button>
-						<div collapse="!world3isCollapsed">
-							<div class="well well-lg" id="world3content" >Article content goes here.</div>
+					</accordion-group>
+					<accordion-group heading="Sports">
+						<div ng-repeat="entry in jeeves.newsArticles.sports">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
 						</div>
-						<button id="world4" class="btn btn-warning btn-block" ng-click="world4isCollapsed = !world4isCollapsed"><span id="world4title">Article title goes here</span></button>
-						<div collapse="!world4isCollapsed">
-							<div class="well well-lg" id="world4content" >Article content goes here.</div>
 						</div>
-						<button id="world5" class="btn btn-warning btn-block" ng-click="world5isCollapsed = !world5isCollapsed"><span id="world5title">Article title goes here</span></button>
-						<div collapse="!world5isCollapsed">
-							<div class="well well-lg" id="world5content" >Article content goes here.</div>
+					</accordion-group>
+					<accordion-group heading="Business">
+						<div ng-repeat="entry in jeeves.newsArticles.business">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						</div>
+						</div>
+					</accordion-group>
+					<accordion-group heading="Technology">
+						<div ng-repeat="entry in jeeves.newsArticles.tech">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						</div>
+						</div>
+					</accordion-group>
+					<accordion-group heading="Science">
+						<div ng-repeat="entry in jeeves.newsArticles.science">
+						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+							<span>{{entry.webTitle}}</span>
+						</button>
+						<div collapse="!collapsed">
+							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						</div>
 						</div>
 					</accordion-group>
 				</accordion>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('news')" ng-dblclick="collapse()">News</button>
-  				<div id="news" ng-hide="jeeves.newsViews!= 'news'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('world')" ng-dblclick="collapse()">World</button>
-  				<div id="world" ng-hide="jeeves.newsViews!='world'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('sport')" ng-dblclick="collapse()">Sports</button>
-  				<div id="sport" ng-hide="jeeves.newsViews!='sport'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('business')" ng-dblclick="collapse()">Business</button>
-  				<div id="business" ng-hide="jeeves.newsViews!='business'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('technology')" ng-dblclick="collapse()">Technology</button>
-  				<div id="technology" ng-hide="jeeves.newsViews!='technology'"></div>
-  				<button type="button" class="btn btn-warning btn-block" sglclick="changeSection('science')" ng-dblclick="collapse()">Science</button>
-  				<div id="science" ng-hide="jeeves.newsViews!='science'"></div>
-			</div>
-			<br>
-			<div align = "center">
-				<span>
-					<div id="feed1"><br></div>
-				</span>
 			</div>
 		</div>
 

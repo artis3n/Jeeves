@@ -55,12 +55,13 @@ jeevesApp.run(function($http) {
 					}
 				}
 			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.sports=data.response.results;
 				for(var i=0;i<model.showNumber;i++){
 					if(data.response.results[i]!=null){
 						if(data.response.results[i].fields!=undefined){
 							model.newsArticles.sports[i]=data.response.results[i];
+							console.log()
 						}
 					}
 				}
@@ -75,7 +76,7 @@ jeevesApp.run(function($http) {
 					}
 				}
 			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 				model.newsArticles.tech=data.response.results;
 				for(var i=0;i<model.showNumber;i++){
 					if(data.response.results[i]!=null){
@@ -143,11 +144,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 				$scope.jeeves.view = back;
 			}
-			
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.getListArticle();
 			$scope.$close();
 		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
 			$scope.changeView('back');
@@ -582,78 +581,78 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
-	$scope.getListArticle=function(){
-		var x = $scope.jeeves.section;
+	// $scope.getListArticle=function(){
+	// 	var x = $scope.jeeves.section;
 
-		if(x=='news'){
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
-		}
-		else if (x=='world') {
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.world;
-		}
-		else if (x=='sports') {
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.sports;
-		}
-		else if (x=='business') {
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.business;
-		}
-		else if (x=='tech') {
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.tech;
-		}
-		else if (x=='science') {
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.science;
-		}
-		else{
-			$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
-		}
+	// 	if(x=='news'){
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
+	// 	}
+	// 	else if (x=='world') {
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.world;
+	// 	}
+	// 	else if (x=='sports') {
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.sports;
+	// 	}
+	// 	else if (x=='business') {
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.business;
+	// 	}
+	// 	else if (x=='tech') {
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.tech;
+	// 	}
+	// 	else if (x=='science') {
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.science;
+	// 	}
+	// 	else{
+	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
+	// 	}
 
-		$scope.jeeves.newsViews=x;
-		var container = document.getElementById(x);
-		container.innerHTML="";
-		container.setAttribute('class', 'btn-group btn-block');
-	//	console.log("DISPLAYYY");
-	//	console.log($scope.jeeves.newsArticles.news);
-		for (i = 0; i < $scope.jeeves.showNumber; i++){
-			var entry = $scope.jeeves.articles[i]; 
-			var div = document.createElement("div"); 
-			var button = document.createElement('input');
-			button.setAttribute('type', 'button'); 
-			button.setAttribute('class', 'btn btn-default btn-block'); 
-			button.setAttribute('id', x+"_" +i);
-			button.name=entry.webTitle; 
-			button.setAttribute('value', entry.webTitle); 
-			var divSub = document.createElement("div");
-			divSub.setAttribute('id', x+"_" +i + "_div");
-			button.onclick=function(){ 
-				var container = document.getElementById(this.id+"_div");
-				container.setAttribute('class', 'alert alert-success'); 
-				if($scope.jeeves.showNumber <= 10){
-					container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
-				}else{
-					container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
-				}
-			}
-			button.ondblclick=function(){
-				var containerContent = document.getElementById(this.id+"_div"); 
-				containerContent.outerHTML="";
-				$scope.getListArticle();
-			}
-			div.appendChild(button); 
-			div.appendChild(divSub);
-			container.appendChild(div);
-		}
+	// 	$scope.jeeves.newsViews=x;
+	// 	var container = document.getElementById(x);
+	// 	container.innerHTML="";
+	// 	container.setAttribute('class', 'btn-group btn-block');
+	// //	console.log("DISPLAYYY");
+	// //	console.log($scope.jeeves.newsArticles.news);
+	// 	for (i = 0; i < $scope.jeeves.showNumber; i++){
+	// 		var entry = $scope.jeeves.articles[i]; 
+	// 		var div = document.createElement("div"); 
+	// 		var button = document.createElement('input');
+	// 		button.setAttribute('type', 'button'); 
+	// 		button.setAttribute('class', 'btn btn-default btn-block'); 
+	// 		button.setAttribute('id', x+"_" +i);
+	// 		button.name=entry.webTitle; 
+	// 		button.setAttribute('value', entry.webTitle); 
+	// 		var divSub = document.createElement("div");
+	// 		divSub.setAttribute('id', x+"_" +i + "_div");
+	// 		button.onclick=function(){ 
+	// 			var container = document.getElementById(this.id+"_div");
+	// 			container.setAttribute('class', 'alert alert-success'); 
+	// 			if($scope.jeeves.showNumber <= 10){
+	// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
+	// 			}else{
+	// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
+	// 			}
+	// 		}
+	// 		button.ondblclick=function(){
+	// 			var containerContent = document.getElementById(this.id+"_div"); 
+	// 			containerContent.outerHTML="";
+	// 			$scope.getListArticle();
+	// 		}
+	// 		div.appendChild(button); 
+	// 		div.appendChild(divSub);
+	// 		container.appendChild(div);
+	// 	}
 
-		if($scope.jeeves.showNumber<95){
-			var buttonMore = document.createElement('input');
-			buttonMore.setAttribute('type', 'button'); 
-			buttonMore.setAttribute('class', 'btn btn-default btn-block');
-			buttonMore.name="More"; 
-			buttonMore.setAttribute('value', "More");
-			buttonMore.addEventListener("click", $scope.updateShowAmount)
-			container.appendChild(buttonMore);
-		} 
+	// 	if($scope.jeeves.showNumber<95){
+	// 		var buttonMore = document.createElement('input');
+	// 		buttonMore.setAttribute('type', 'button'); 
+	// 		buttonMore.setAttribute('class', 'btn btn-default btn-block');
+	// 		buttonMore.name="More"; 
+	// 		buttonMore.setAttribute('value', "More");
+	// 		buttonMore.addEventListener("click", $scope.updateShowAmount)
+	// 		container.appendChild(buttonMore);
+	// 	} 
 
-	}
+	// }
 
 	$scope.updateShowAmount=function(){
 		$scope.jeeves.showNumber = $scope.jeeves.showNumber +5;
@@ -668,6 +667,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 
+	$scope.setInnerHTML = function(entry){
+		document.getElementById(entry.webTitle).innerHTML=entry.fields.body;
+	}
+
+	$scope.status = {
+	    isFirstOpen: true,
+	  };
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
