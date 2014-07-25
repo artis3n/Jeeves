@@ -256,10 +256,11 @@
 		try {
 			var $element = $('#body-controller-element');
 			var scope = angular.element($element).scope();
-			scope.changeView('back');
-			scope.$apply();
+			scope.$apply(function() {
+				scope.changeView('back');
+			});
 		} catch (err) {
-			alert("Didn't work.");
+			alert(err);
 		}
 		
 	}
@@ -268,8 +269,9 @@
 		try {
 			var $element = $('#body-controller-element');
 			var scope = angular.element($element).scope();
-			scope.changeView('menu');
-			scope.$apply();
+			scope.$apply(function() {
+				scope.changeView('menu');	
+			});
 		} catch (err) {
 			alert("Didn't work.");
 		}
