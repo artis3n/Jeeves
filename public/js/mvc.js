@@ -29,73 +29,77 @@ var model = {
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
 
 jeevesApp.run(function($http) {
+
+	// Weather Info
 	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
             model.weather.description = data.weather[0].description;
     });
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.news=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-				//	if(data.response.results[i].hasOwnProperty('fields')){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.news[i]=data.response.results[i];
-						}
-					}
+
+    // News Info
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.news=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+		//	if(data.response.results[i].hasOwnProperty('fields')){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.news[i]=data.response.results[i];
 				}
-			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.world=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.world[i]=data.response.results[i];
-						}
-					}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.world=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.world[i]=data.response.results[i];
 				}
-			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.sports=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.sports[i]=data.response.results[i];
-							console.log()
-						}
-					}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.sports=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.sports[i]=data.response.results[i];
+					console.log()
 				}
-			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.business=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.business[i]=data.response.results[i];
-						}
-					}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.business=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.business[i]=data.response.results[i];
 				}
-			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.tech=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.tech[i]=data.response.results[i];
-						}
-					}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.tech=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.tech[i]=data.response.results[i];
 				}
-			});
-			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.science=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
-						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.science[i]=data.response.results[i];
-						}
-					}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		model.newsArticles.science=data.response.results;
+		for(var i=0;i<model.showNumber;i++){
+			if(data.response.results[i]!=null){
+				if(data.response.results[i].fields!=undefined){
+					model.newsArticles.science[i]=data.response.results[i];
 				}
-			});
+			}
+		}
+	});
 });
 
 // Create a sglclick action to avoid the ng-click conflict with ng-dblclick
@@ -194,6 +198,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				var result = results[i].toLowerCase();
 				 if ($scope.globalCommands(result)) {
 				 	break;
+				 // The break is not right since the loop will never go to the second.
+
+
+
 				 }
 				if($scope.jeeves.view == 'weather'){
 					$scope.weatherSpeech(result);
@@ -671,9 +679,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		document.getElementById(entry.webTitle).innerHTML=entry.fields.body;
 	}
 
+	// For the use of first showing up "News" Section
 	$scope.status = {
 	    isFirstOpen: true,
 	  };
+
+
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
