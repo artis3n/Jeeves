@@ -722,7 +722,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			alert(JSON.stringify(result));
 			result.me().done(function(data) {
 				alert(JSON.stringify(data));
-				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds:['INBOX']")
+				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=['INBOX']")
 				.done(function(email) {
 					alert(JSON.stringify(email));
 				})
