@@ -35,64 +35,75 @@ jeevesApp.run(function($http) {
             model.weather.description = data.weather[0].description;
     });
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.news=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-				//	if(data.response.results[i].hasOwnProperty('fields')){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.news[i]=data.response.results[i];
+							model.newsArticles.news[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.world=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.world[i]=data.response.results[i];
+							model.newsArticles.world[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.sports=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.sports[i]=data.response.results[i];
+							model.newsArticles.sports[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.business=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.business[i]=data.response.results[i];
+							model.newsArticles.business[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.tech=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.tech[i]=data.response.results[i];
+							model.newsArticles.tech[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-				model.newsArticles.science=data.response.results;
-				for(var i=0;i<model.showNumber;i++){
-					if(data.response.results[i]!=null){
+				var count=0;
+				for(var i=0;i<200;i++){
 						if(data.response.results[i].fields!=undefined){
-							model.newsArticles.science[i]=data.response.results[i];
+							model.newsArticles.science[count]=data.response.results[i];
+							count=count+1;
 						}
-					}
+						if(count>100){
+							break;
+						}
 				}
 			});
 });
