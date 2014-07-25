@@ -20,7 +20,9 @@ var model = {
 	},
 	newsPosition: {
 		section: 'news',
-		articleIndex: 0
+		articleIndex: 0,
+		pause:false,
+		pausePosition:0
 	},
 	menuModal: {},
 	isMenuOpen: false
@@ -36,71 +38,91 @@ jeevesApp.run(function($http) {
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
             model.weather.description = data.weather[0].description;
     });
-
-    // News Info
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.news=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-		//	if(data.response.results[i].hasOwnProperty('fields')){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.news[i]=data.response.results[i];
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+					if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.news[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
-	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.world=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.world[i]=data.response.results[i];
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+					if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.world[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
-	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.sports=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.sports[i]=data.response.results[i];
-					console.log()
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+					if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.sports[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
-	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.business=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.business[i]=data.response.results[i];
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+					if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.business[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
-	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.tech=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.tech[i]=data.response.results[i];
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+					if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.tech[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
-	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.science=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.science[i]=data.response.results[i];
+			});
+			$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+				var count=0;
+				for(var i=0;i<200;i++){
+						if(data.response.results[i]!=undefined){
+						if(data.response.results[i].hasOwnProperty('fields')){
+							model.newsArticles.science[count]=data.response.results[i];
+							count=count+1;
+						}
+						if(count>100){
+							break;
+						}
+					}
 				}
-			}
-		}
+			});
 	});
-});
 
 // Create a sglclick action to avoid the ng-click conflict with ng-dblclick
 jeevesApp.directive('sglclick', ['$parse', function($parse) {
@@ -449,9 +471,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			 if(result.match(/article/)){
 				$scope.readArticle();
 				navigator.tts.speak("Finished reading article, either switch section or continue to next article.");
+				$scope.jeeves.newsPosition.pause=false;
+				$scope.jeeves.newsPosition.pausePosition=0;
 				setTimeout(function(){
 					$scope.reco();
-					$scope.jeeves.newsPosition.articleIndex++;
+				//	$scope.jeeves.newsPosition.articleIndex++;
 				}, 200000);
 			}
 			else{
@@ -537,7 +561,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -549,7 +573,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -561,7 +585,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -573,7 +597,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -585,7 +609,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -597,7 +621,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -606,6 +630,36 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 		$scope.$apply();
 	}
+
+	$scope.recursiveArticleChunk = function(chunkArray, position){
+		output = chunkArray[position];
+		if($scope.jeeves.newsPosition.pause==true){
+			$scope.jeeves.newsPosition.pausePosition=position;
+		}
+		else if(position>=chunkArray.length){
+			//end
+		}
+		else{
+			navigator.tts.speak(output);
+			setTimeout(function(){                                              //This set time out is important for the pause and play but it is ideal to have it as callback to tts
+				$scope.recursiveArticleChunk(chunkArray, (position+1));
+			}, 7000);
+	
+		}
+	}
+
+	$scope.pauseAndPlay = function(){
+		if($scope.jeeves.newsPosition.pause==false){
+			alert("click pause true");
+			$scope.jeeves.newsPosition.pause=true;
+		}
+		else{
+			alert("click pause false");
+			$scope.jeeves.newsPosition.pause=false;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+		}
+	}
+
 
 	$scope.emailSpeech = function(result) {
 		if (result == "read my emails" || "read" || "start reading") {
