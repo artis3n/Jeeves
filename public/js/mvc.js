@@ -142,7 +142,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				$scope.jeeves.previousView.pop();
 				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 				$scope.jeeves.view = back;
-				$scope.$close();
 			}
 			
 		} else if (selected == 'news'){
@@ -161,6 +160,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.view = selected;
 			$scope.$close();
 		}
+
+		console.log($scope.jeeves.previousView);
 	};
 
 	$scope.changeWeather = function(setting) {
