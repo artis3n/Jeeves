@@ -72,7 +72,7 @@
 			<div align = "center">
 				<accordion close-others="true">
 					<accordion-group heading="News">
-						<button id="news1" class="btn btn-warning btn-block" ng-click="news1isCollapsed = !news1isCollapsed"><span id="news1title">Article title goes here</span></button>
+						<button id="news1" class="btn btn-warning btn-block" on-click="news1isCollapsed = !news1isCollapsed"><span id="news1title">Article title goes here</span></button>
 						<div collapse="!news1isCollapsed">
 							<div class="well well-lg" id="news1content" >Article content goes here.</div>
 						</div>
@@ -229,7 +229,7 @@
 			<br>
 			<br>
 			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-			<button ng-click="changeView('help')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+			<button ng-click="changeView('back')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
 			<br>
 			<br>	
 		</div>
