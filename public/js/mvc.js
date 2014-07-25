@@ -4,7 +4,6 @@ var model = {
 	name: "Jeeves",
 	view: "weather",
 	newsViews:"news",
-	showNumber: 5,
 	previousView: ["weather"],
 	city: 'Waltham',
 	country: 'us',
@@ -22,8 +21,9 @@ var model = {
 	newsPosition: {
 		section: 'news',
 		articleIndex: 0
-	}
-
+	},
+	menuModal: {},
+	isMenuOpen: false
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -143,29 +143,47 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.changeView = function(selected) {
 		if (selected == 'back'){
-			if ($scope.jeeves.previousView.length > 1) {
-				$scope.jeeves.previousView.pop();
-				var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
-				$scope.jeeves.view = back;
+			alert($scope.jeeves.isMenuOpen);
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			} else {
+				if ($scope.jeeves.previousView.length > 1) {
+					$scope.jeeves.previousView.pop();
+					var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
+					$scope.jeeves.view = back;
+					$scope.closeMenu();
+				}
 			}
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.$close();
-		} else if (selected == 'menu' && $scope.jeeves.view == 'menu') {
-			$scope.changeView('back');
+			$scope.closeMenu();
 		} else if (selected == 'menu') {
-			var modalInstance = $modal.open({
-				templateUrl: 'menuContent.html'
-			})
+			if (!$scope.jeeves.isMenuOpen) {
+				$scope.openMenu();
+			}
 		} else {
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.$close();
+			$scope.closeMenu();
 		}
 
 		console.log($scope.jeeves.previousView);
 	};
+
+	$scope.openMenu = function() {
+		alert("Menu opened");
+		$scope.jeeves.menuModal = $modal.open({
+			templateUrl: 'menuContent.html'
+		})
+		$scope.jeeves.isMenuOpen = true;
+	}
+
+	$scope.closeMenu = function() {
+		alert("Menu closed");
+		$scope.jeeves.menuModal.close();
+		$scope.jeeves.isMenuOpen = false;
+	}
 
 	$scope.changeWeather = function(setting) {
 		if(setting !== null){
@@ -187,8 +205,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.changeSection=function(selected){
 		document.getElementById($scope.jeeves.section).innerHTML="";
 		$scope.jeeves.section = selected;
-		$scope.jeeves.showNumber = 5;
-		$scope.getListArticle();
 	}
 
 	$scope.reco = function(){
@@ -227,8 +243,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
 			$scope.$apply(function() {
 				$scope.changeView('weather');
-				$scope.speakWeatherReport();
 			});
+			$scope.speakWeatherReport();
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
@@ -257,8 +273,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/weather/)) {
 				if ($scope.jeeves.view != 'weather') {
 					navigator.tts.speak("Gotcha. Going to weather now.", function() {
-						$scope.changeView('weather');
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('weather');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
@@ -267,8 +284,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/menu/)) {
 				if ($scope.jeeves.view != 'menu') {
 					navigator.tts.speak("Gotcha. Going to menu now.", function() {
-						$scope.changeView('menu')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('menu');
+						});
 					})
 				} else {
 					navigator.tts.speak('You are already on the menu. Would you like to check out the news or your email?');
@@ -278,8 +296,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/settings/)) {
 				if ($scope.jeeves.view != 'settings') {
 					navigator.tts.speak("Gotcha. Going to settings now.", function() {
-						$scope.changeView('settings')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('settings');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.");
@@ -288,8 +307,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/contact/)) {
 				if ($scope.jeeves.view != 'contact') {
 					navigator.tts.speak("Gotcha. Going to contact page now.", function() {
-						$scope.changeView('contact')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('contact');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!");
@@ -298,8 +318,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/about/)) {
 				if ($scope.jeeves.view != 'about') {
 					navigator.tts.speak("Gotcha. Going to about page now.", function() {
-						$scope.changeView('about')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('about');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the about page. Let me introduce myself to you!");
@@ -308,8 +329,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else if (result.match(/help/)) {
 				if ($scope.jeeves.view != 'help') {
 					navigator.tts.speak("Gotcha. Going to help page now.", function() {
-						$scope.changeView('help')
-						$scope.$apply();
+						$scope.$apply(function() {
+							$scope.changeView('help');
+						});
 					})
 				} else {
 					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
@@ -318,10 +340,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}else if (result.match(/read/)) {
 			if (result.match(/email/)) {
-				$scope.changeView('email');
-				$scope.$apply();
-				// Start reading emails.
-				navigator.tts.speak("Now reading emails.");
+				navigator.tts.speak("No problem! Let's pull up your emails.", function () {
+					$scope.$apply(function() {
+						$scope.changeView('email');
+					});
+					// Start reading emails.
+				});
 				return true;
 			} else {
 				$scope.newsSpeech(result);
@@ -410,8 +434,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		var currentTemperature = "The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
 		navigator.speak(currentTemperature + $scope.jeeves.weather.description);
 		if ($scope.jeeves.previousView[$scope.jeeves.previousView.length - 2] != 'weather') {
-			$scope.changeView('back');
-			$scope.$apply();
+			$scope.$apply(function() {
+				$scope.changeView('back');
+			});
 		}
 	}
 
@@ -587,84 +612,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			var content = document.getElementById('email-announcement').innerText;
 			navigator.tts.speak(content);
 		}
-	}
-
-	// $scope.getListArticle=function(){
-	// 	var x = $scope.jeeves.section;
-
-	// 	if(x=='news'){
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
-	// 	}
-	// 	else if (x=='world') {
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.world;
-	// 	}
-	// 	else if (x=='sports') {
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.sports;
-	// 	}
-	// 	else if (x=='business') {
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.business;
-	// 	}
-	// 	else if (x=='tech') {
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.tech;
-	// 	}
-	// 	else if (x=='science') {
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.science;
-	// 	}
-	// 	else{
-	// 		$scope.jeeves.articles=$scope.jeeves.newsArticles.news;
-	// 	}
-
-	// 	$scope.jeeves.newsViews=x;
-	// 	var container = document.getElementById(x);
-	// 	container.innerHTML="";
-	// 	container.setAttribute('class', 'btn-group btn-block');
-	// //	console.log("DISPLAYYY");
-	// //	console.log($scope.jeeves.newsArticles.news);
-	// 	for (i = 0; i < $scope.jeeves.showNumber; i++){
-	// 		var entry = $scope.jeeves.articles[i]; 
-	// 		var div = document.createElement("div"); 
-	// 		var button = document.createElement('input');
-	// 		button.setAttribute('type', 'button'); 
-	// 		button.setAttribute('class', 'btn btn-default btn-block'); 
-	// 		button.setAttribute('id', x+"_" +i);
-	// 		button.name=entry.webTitle; 
-	// 		button.setAttribute('value', entry.webTitle); 
-	// 		var divSub = document.createElement("div");
-	// 		divSub.setAttribute('id', x+"_" +i + "_div");
-	// 		button.onclick=function(){ 
-	// 			var container = document.getElementById(this.id+"_div");
-	// 			container.setAttribute('class', 'alert alert-success'); 
-	// 			if($scope.jeeves.showNumber <= 10){
-	// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-1))].fields.body;
-	// 			}else{
-	// 				container.innerHTML=$scope.jeeves.articles[Number(this.id.slice(-2))].fields.body;
-	// 			}
-	// 		}
-	// 		button.ondblclick=function(){
-	// 			var containerContent = document.getElementById(this.id+"_div"); 
-	// 			containerContent.outerHTML="";
-	// 			$scope.getListArticle();
-	// 		}
-	// 		div.appendChild(button); 
-	// 		div.appendChild(divSub);
-	// 		container.appendChild(div);
-	// 	}
-
-	// 	if($scope.jeeves.showNumber<95){
-	// 		var buttonMore = document.createElement('input');
-	// 		buttonMore.setAttribute('type', 'button'); 
-	// 		buttonMore.setAttribute('class', 'btn btn-default btn-block');
-	// 		buttonMore.name="More"; 
-	// 		buttonMore.setAttribute('value', "More");
-	// 		buttonMore.addEventListener("click", $scope.updateShowAmount)
-	// 		container.appendChild(buttonMore);
-	// 	} 
-
-	// }
-
-	$scope.updateShowAmount=function(){
-		$scope.jeeves.showNumber = $scope.jeeves.showNumber +5;
-		$scope.getListArticle();
 	}
 
 	$scope.collapse=function(){
