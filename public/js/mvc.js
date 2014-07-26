@@ -22,7 +22,8 @@ var model = {
 		section: 'news',
 		articleIndex: 0,
 		pause:false,
-		pausePosition:0
+		pausePosition:0,
+		contArticleContent:''
 	},
 	menuModal: {},
 	isMenuOpen: false
@@ -462,6 +463,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
+	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(result){
 		if ($scope.jeeves.view != 'news') {
 			$scope.changeView('news');
@@ -470,32 +472,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		if (result.match(/read/)){
 			 if(result.match(/article/)){
 				$scope.readArticle();
-				navigator.tts.speak("Finished reading article, either switch section or continue to next article.");
 				$scope.jeeves.newsPosition.pause=false;
 				$scope.jeeves.newsPosition.pausePosition=0;
-				setTimeout(function(){
-					$scope.reco();
-				//	$scope.jeeves.newsPosition.articleIndex++;
-				}, 200000);
+				$scope.jeeves.newsPosition.contArticleContent="";
 			}
 			else{
 				if (result.length>4){
 					var section1=result.substring(5);
 					$scope.jeeves.newsPosition.section=section1;
 					$scope.jeeves.newsPosition.articleIndex = 0;
-					$scope.changeSection(section1);
+					//$scope.changeSection(section1);
 				}
 				else{
 					$scope.jeeves.newsPosition.section=section;
-					$scope.changeSection('news');
+					//$scope.changeSection('news');
 				}
 				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 				$scope.$apply();
 			}
 		}else if (result.match(/next article/) || result.match(/continue/)) {
 			navigator.tts.speak("Going to next article");
-			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 			$scope.jeeves.newsPosition.articleIndex++;
+			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 		}
 		else if (result.match(/previous/)){
 			if($scope.jeeves.newsPosition.articleIndex>1){
@@ -508,6 +506,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}
 		else if(result.match(/more articles/)){
+			//We have to remove if were changing the style of news, maybe?
 			$scope.updateShowAmount();
 		}	
 		$scope.$apply();
@@ -561,6 +560,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -573,6 +573,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -585,6 +586,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -597,6 +599,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -609,6 +612,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -621,6 +625,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
@@ -641,9 +646,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 		else{
 			navigator.tts.speak(output);
-			setTimeout(function(){                                              //This set time out is important for the pause and play but it is ideal to have it as callback to tts
+			setTimeout(function(){    //This set time out is important for the pause and play but it is ideal to have it as callback to tts
 				$scope.recursiveArticleChunk(chunkArray, (position+1));
-			}, 7000);
+			}, (output.length*250));
 	
 		}
 	}
@@ -656,7 +661,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		else{
 			alert("click pause false");
 			$scope.jeeves.newsPosition.pause=false;
-			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+			var cont=$scope.jeeves.newsPosition.contArticleContent;
+			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 		}
 	}
 
