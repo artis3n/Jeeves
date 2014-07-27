@@ -12,7 +12,8 @@
 	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css">
+	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css" />
+	<link rel="stylesheet" type="text/css" href="index.css" />
 	<script src="js/angular.min.js"></script>
 	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
 	<!-- Add AngularJS modules -->
@@ -31,12 +32,6 @@
 
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
-
-	<style type="text/css">
-	#menu-title {
-		cursor: pointer;
-	}
-	</style>
 
 </head>
 
@@ -179,6 +174,20 @@
 		    		<font size="1">Powered by OpenWeatherMap.org</font>
 	        	</div>
 	      	</div>
+	      	<script type="text/ng-template" id="weather-help.html">
+			<div ng-controller="jeevesCtrl">
+				<div class="text-center"><h3>Weather Commands</h3></div>
+				<hr>
+				<div>
+					<b id="help-text" >You can say:</b>
+					<ul>
+						<li>Change city to **city name**</li>
+						<li>Change weather to **city name**</li>
+						<li>How&#8217s the weather?</li>
+					</ul>
+				</div>
+			</div>
+			</script>
 	    </div>
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>

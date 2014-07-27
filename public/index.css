@@ -1,0 +1,12 @@
+#menu-title {
+	cursor: pointer;
+}
+
+.help-window {
+	position: absolute;
+	top: 150px;
+}
+
+#help-text {
+	margin-left: 15px;
+}

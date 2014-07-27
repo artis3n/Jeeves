@@ -233,21 +233,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
-				 if ($scope.globalCommands(result)) {
-				 	break;
-				 // The break is not right since the loop will never go to the second.
-
-
-
-				 }
-				if($scope.jeeves.view == 'weather'){
+				if ($scope.globalCommands(result)) {
+					break;
+				} else if($scope.jeeves.view == 'weather'){
 					$scope.weatherSpeech(result);
 					break;
-	    		}else if($scope.jeeves.view == 'news'){
+	    		} else if($scope.jeeves.view == 'news'){
 	    			$scope.newsSpeech(result);
 	    			break;
 	    		
-	    		}else if($scope.jeeves.view == 'email'){
+	    		} else if($scope.jeeves.view == 'email'){
 	    			$scope.emailSpeech(result);
 	    			break;
 	    		}
@@ -374,17 +369,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
-				navigator.notification.alert(
-					"You can say:" +
-					"\n- Change city to - city name." +
-					"\n- Change to - city name." +
-					"\n- Change weather to - city name." +
-					"\n- How's the weather?", 'Jeeves', 'Weather Commands', 'Confirm'
-				)
-				navigator.tts.speak("you can say change city to, city name.");
-				navigator.tts.speak("or you can say change to, city name.");
-				navigator.tts.speak("or you can say change weather to, city name.");
-				navigator.tts.speak("or you can say, how's the weather?");
+				$modal.open({
+					templateUrl:"weather-help.html",
+					windowClass: 'help-window'
+				})
+				navigator.tts.speak("I welcome natural language! But if you need a hint, you can ask 'How's the weather?' or 'Change city to, city name.'");
 				return true;
 			}else if (help.match(/email/)) {
 				//5
