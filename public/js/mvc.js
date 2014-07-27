@@ -258,14 +258,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.globalCommands = function(result) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
 			$scope.$apply(function() {
-				$scope.changeView('weather');
-			});
-			$scope.speakWeatherReport();
+				$scope.changeView("weather");
+			})
+			navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
+				$scope.$apply(function() {
+					$scope.changeView('back');
+				})
+			})
 			return true;
 		} else if (result.match(/go to/)) {
 			if (result.match(/news/)) {
 				if ($scope.jeeves.view != 'news') {
-					navigator.tts.speak("Gotcha. Going to the news page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('news');
 						});
@@ -276,7 +280,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/email/)) {
 				if ($scope.jeeves.view != 'email') {
-					navigator.tts.speak("Gotcha. Going to the email page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('email');
 						});
@@ -288,7 +292,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/weather/)) {
 				if ($scope.jeeves.view != 'weather') {
-					navigator.tts.speak("Gotcha. Going to weather now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('weather');
 						});
@@ -299,7 +303,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/menu/)) {
 				if ($scope.jeeves.view != 'menu') {
-					navigator.tts.speak("Gotcha. Going to menu now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('menu');
 						});
@@ -311,7 +315,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/settings/)) {
 				if ($scope.jeeves.view != 'settings') {
-					navigator.tts.speak("Gotcha. Going to settings now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('settings');
 						});
@@ -322,7 +326,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/contact/)) {
 				if ($scope.jeeves.view != 'contact') {
-					navigator.tts.speak("Gotcha. Going to contact page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('contact');
 						});
@@ -333,7 +337,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/about/)) {
 				if ($scope.jeeves.view != 'about') {
-					navigator.tts.speak("Gotcha. Going to about page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('about');
 						});
@@ -344,7 +348,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/help/)) {
 				if ($scope.jeeves.view != 'help') {
-					navigator.tts.speak("Gotcha. Going to help page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('help');
 						});
@@ -369,11 +373,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
-				$modal.open({
+				$scope.jeeves.weatherhelp = $modal.open({
 					templateUrl:"weather-help.html",
 					windowClass: 'help-window'
 				})
-				navigator.tts.speak("I welcome natural language! But if you need a hint, you can ask 'How's the weather?' or 'Change city to, city name.'");
+				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
+					$scope.jeeves.weatherhelp.close();
+				});
 				return true;
 			}else if (help.match(/email/)) {
 				//5
@@ -438,16 +444,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 
 		return stop;
-	}
-
-	$scope.speakWeatherReport = function(){
-		var currentTemperature = "The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		navigator.speak(currentTemperature + $scope.jeeves.weather.description);
-		if ($scope.jeeves.previousView[$scope.jeeves.previousView.length - 2] != 'weather') {
-			$scope.$apply(function() {
-				$scope.changeView('back');
-			});
-		}
 	}
 
 	//Commands are: read, read <section>, read article, continue, previous, more articles
