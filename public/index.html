@@ -32,6 +32,12 @@
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
 
+	<style type="text/css">
+	#menu-title {
+		cursor: pointer;
+	}
+	</style>
+
 </head>
 
 <body id="body-controller-element" ng-controller="jeevesCtrl">
@@ -53,7 +59,7 @@
 		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
 			<script type="text/ng-template" id="menuContent.html">
 			<div ng-controller="jeevesCtrl">
-				<h2 class="text-center">Menu</h2>
+				<h2 class="text-center" ><span id="menu-title" ng-click="changeView('back')">Menu</h2>
 				<button ng-click="changeView('weather')" class="btn btn-primary btn-block">Weather</button>
 				<button ng-click="changeView('news')" class="btn btn-primary btn-block">News </button>
 				<button ng-click="changeView('email')" class="btn btn-primary btn-block">Email</button>
