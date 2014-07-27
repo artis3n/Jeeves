@@ -150,6 +150,19 @@
 					<div id="message-list"></div>
 				</div>
 			</div>
+			<script type="text/ng-template" id="email-help.html">
+			<div ng-controller="jeevesCtrl">
+				<div class="text-center"><h3>Email Commands</h3></div>
+				<hr>
+				<div>
+					<b id="help-text" >You can say:</b>
+					<ul>
+						<li>Read me emails</li>
+						<li>Log in</li>
+					</ul>
+				</div>
+			</div>
+			</script>
 		</div>
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak ng-swipe-left="handleSwipe('right-to-left')">
@@ -239,9 +252,7 @@
 			</div>
 		</div>
 
-		<div id="bottom-button" class="view" >
-			<br>
-			<br>
+		<div id="bottom-buttons" class="view" >
 			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
 			<button ng-click="changeView('back')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
 			<br>

@@ -266,7 +266,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				})
 			})
 			return true;
-		} else if (result.match(/go to/)) {
+		} else if (result.match(/go to/) || result.match(/open/)) {
 			if (result.match(/news/)) {
 				if ($scope.jeeves.view != 'news') {
 					navigator.tts.speak("On it.", function() {
@@ -368,27 +368,29 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				});
 				return true;
 			} else {
+				//Begin news speech recognition.
 				$scope.newsSpeech(result);
 				return true;
 			}
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
-				$scope.jeeves.weatherhelp = $modal.open({
-					templateUrl:"weather-help.html",
+				$scope.jeeves.weathermodalhelp = $modal.open({
+					templateUrl: "weather-help.html",
 					windowClass: 'help-window'
 				})
 				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
-					$scope.jeeves.weatherhelp.close();
+					$scope.jeeves.weathermodalhelp.close();
 				});
 				return true;
-			}else if (help.match(/email/)) {
-				//5
-				//read
-				navigator.tts.speak("you can say read me my emails");
-				navigator.tts.speak("or you can say read");
-				navigator.tts.speak("or you can say read me - subject title");
-				navigator.tts.speak("or you can say read me email by - insert name");
-				navigator.tts.speak("or you can say how many emails do i have");
+			}else if ($scope.jeeves.view == 'email') {
+				$scope.jeeves.emailmodalhelp = $modal.open({
+					templateUrl: "email-help.html",
+					windowClass: "help-window"
+				})
+				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+					$scope.jeeves.emailmodalhelp.close();
+				});
+				return true;
 			}else if (help.match(/favorites/)) {
 				//1
 				navigator.tts.speak("you can say read");
