@@ -195,15 +195,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	};
 
 	$scope.openMenu = function() {
-		alert("Menu opened");
 		$scope.jeeves.menuModal = $modal.open({
-			templateUrl: 'menuContent.html'
+			templateUrl: 'menuContent.html',
+			backdrop: 'static'
 		})
 		$scope.jeeves.isMenuOpen = true;
 	}
 
 	$scope.closeMenu = function() {
-		alert("Menu closed");
 		$scope.jeeves.menuModal.close();
 		$scope.jeeves.isMenuOpen = false;
 	}
