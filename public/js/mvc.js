@@ -173,13 +173,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.jeeves.previousView.pop();
 					var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 					$scope.jeeves.view = back;
-					$scope.closeMenu();
+				} else {
+					navigator.app.exitApp();
 				}
 			}
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.closeMenu();
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			}
 		} else if (selected == 'menu') {
 			if (!$scope.jeeves.isMenuOpen) {
 				$scope.openMenu();
@@ -187,7 +190,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		} else {
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.closeMenu();
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			}
 		}
 
 		console.log($scope.jeeves.previousView);

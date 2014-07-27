@@ -16,6 +16,8 @@
 	<link rel="stylesheet" type="text/css" href="index.css" />
 	<script src="js/angular.min.js"></script>
 	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
@@ -23,15 +25,15 @@
 	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="js/mvc.js"></script>
 	
-	<!-- Implement JQuery for Bootstrap animations. -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
 
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
+
+	<script type="text/javascript">
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	</script>
 
 </head>
 
@@ -41,11 +43,11 @@
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.3</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
-			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">
-				<span class="glyphicon glyphicon-home"></span>
-				</button>
-			<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">
+			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled data-toggle="tooltip" data-placement="top" title="Currently unavailable. We're working on it!">
 				<span class="glyphicon glyphicon-star"></span>
+			</button>
+			<button ng-click="changeView('menu')" class="btn btn-primary pull-right" style="width: 150px;">
+				<span class="glyphicon glyphicon-home"></span>
 			</button>
 			<br>
 			<br>
@@ -60,6 +62,7 @@
 				<button ng-click="changeView('email')" class="btn btn-primary btn-block">Email</button>
 				<hr>
 				<button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
+				<button ng-click="changeView('favorites')" class="btn btn-default btn-block" disabled>Favorites - Work in progess!</button>
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
 			</div>
@@ -237,7 +240,7 @@
 			</div>
 		 </div>
 
-		<div id="favorites" class = "view" ng-hide="jeeves.view != 'favorites'" ng-cloak>
+		<div id="favorites" class="view" ng-hide="jeeves.view != 'favorites'" ng-cloak>
 			<div>
 				<h2>Favorites</h2>
 				Favorites will go here<br>
@@ -253,8 +256,10 @@
 		</div>
 
 		<div id="bottom-buttons" class="view" >
-			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-			<button ng-click="changeView('back')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+			<br>
+			<br>
+			<button ng-click="reco()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
+			<button ng-click="changeView('back')" class="btn btn-primary pull-right" style="width: 150px;">Help </button>
 			<br>
 			<br>	
 		</div>
