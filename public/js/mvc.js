@@ -18,6 +18,20 @@ var model = {
 		tech: [],
 		science: []
 	},
+	displayNews: {
+		news: [],
+		world: [],
+		sports: [],
+		business: [],
+		tech: [],
+		science: [],
+		newsCount: 0,
+		worldCount: 0,
+		sportsCount: 0,
+		businessCount: 0,
+		techCount: 0,
+		scienceCount:0
+	},
 	newsPosition: {
 		section: 'news',
 		articleIndex: 0
@@ -130,6 +144,11 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
 jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
+	// For the use of first showing up "News" Section
+	$scope.status = {
+	    isFirstOpen: true,
+	};
+
 	$scope.imgurl = function() {
                 var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
                 if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
@@ -157,6 +176,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
+			$scope.cutNews();
 			$scope.closeMenu();
 		} else if (selected == 'menu') {
 			if (!$scope.jeeves.isMenuOpen) {
@@ -614,22 +634,48 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
-	$scope.collapse=function(){
-		$scope.jeeves.newsViews='';
-	}
-
 	$scope.capitaliseFirstLetter=function(string){
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	}
+	};
 
 	$scope.setInnerHTML = function(entry){
 		document.getElementById(entry.webTitle).innerHTML=entry.fields.body;
+	};
+
+	$scope.differentFive = function(selected, increment){
+		var change = 5;
+
+		if(!increment){
+			change = -5;
+		}
+
+		if(selected=="news"){
+			$scope.jeeves.displayNews.newsCount += change;
+		}else if (selected=="world"){
+			$scope.jeeves.displayNews.worldCount += change;
+		}else if (selected=="sports"){
+			$scope.jeeves.displayNews.sportsCount += change;
+		}else if (selected=="business"){
+			$scope.jeeves.displayNews.businessCount += change;
+		}else if (selected=="tech"){
+			$scope.jeeves.displayNews.techCount += change;
+		}else if (selected=="science"){
+			$scope.jeeves.displayNews.scienceCount += change;
+		}else{
+			console.log("Something wrong with the cutting");
+		}
+
+		$scope.cutNews();
 	}
 
-	// For the use of first showing up "News" Section
-	$scope.status = {
-	    isFirstOpen: true,
-	  };
+	$scope.cutNews = function(){
+		$scope.jeeves.displayNews.news = $scope.jeeves.newsArticles.news.slice($scope.jeeves.displayNews.newsCount, $scope.jeeves.displayNews.newsCount+5);
+		$scope.jeeves.displayNews.world = $scope.jeeves.newsArticles.world.slice($scope.jeeves.displayNews.worldCount, $scope.jeeves.displayNews.worldCount+5);
+		$scope.jeeves.displayNews.sports = $scope.jeeves.newsArticles.sports.slice($scope.jeeves.displayNews.sportsCount, $scope.jeeves.displayNews.sportsCount+5);
+		$scope.jeeves.displayNews.business = $scope.jeeves.newsArticles.business.slice($scope.jeeves.displayNews.businessCount, $scope.jeeves.displayNews.businessCount+5);
+		$scope.jeeves.displayNews.tech = $scope.jeeves.newsArticles.tech.slice($scope.jeeves.displayNews.techCount, $scope.jeeves.displayNews.techCount+5);
+		$scope.jeeves.displayNews.science = $scope.jeeves.newsArticles.science.slice($scope.jeeves.displayNews.scienceCount, $scope.jeeves.displayNews.scienceCount+5);
+	}
 
 
 	$scope.oauthlogin = function() {

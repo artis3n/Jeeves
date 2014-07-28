@@ -72,7 +72,7 @@
 			<div align = "center">
 				<accordion close-others="true">
 					<accordion-group heading="News" is-open="status.isFirstOpen">
-						<div ng-repeat="entry in jeeves.newsArticles.news">
+						<div ng-repeat="entry in jeeves.displayNews.news">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -82,7 +82,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="World">
-						<div ng-repeat="entry in jeeves.newsArticles.world">
+						<div ng-repeat="entry in jeeves.displayNews.world">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -92,7 +92,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Sports">
-						<div ng-repeat="entry in jeeves.newsArticles.sports">
+						<div ng-repeat="entry in jeeves.displayNews.sports">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -102,7 +102,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Business">
-						<div ng-repeat="entry in jeeves.newsArticles.business">
+						<div ng-repeat="entry in jeeves.displayNews.business">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -112,7 +112,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Technology">
-						<div ng-repeat="entry in jeeves.newsArticles.tech">
+						<div ng-repeat="entry in jeeves.displayNews.tech">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -122,7 +122,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Science">
-						<div ng-repeat="entry in jeeves.newsArticles.science">
+						<div ng-repeat="entry in jeeves.displayNews.science">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
