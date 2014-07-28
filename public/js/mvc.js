@@ -37,7 +37,7 @@ var model = {
 		articleIndex: 0,
 		pause:false,
 		pausePosition:0,
-		contArticleContent:''
+		contArticleContent:""
 	},
 	menuModal: {},
 	isMenuOpen: false
@@ -506,15 +506,21 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				$scope.$apply();
 			}
 		}else if (result.match(/next article/) || result.match(/continue/)) {
-			navigator.tts.speak("Going to next article");
-			$scope.jeeves.newsPosition.articleIndex++;
-			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+			navigator.tts.speak("Going to next article", function(){
+				$scope.$apply(function(){
+					$scope.jeeves.newsPosition.articleIndex++;
+					$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+				});
+			});
 		}
 		else if (result.match(/previous/)){
 			if($scope.jeeves.newsPosition.articleIndex>1){
-				navigator.tts.speak("Going to previous article");
-				$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-2;
-				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+				navigator.tts.speak("Going to previous article", function(){
+					$scope.$apply(function(){
+						$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-2;
+						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+					});
+				});
 			}
 			else{
 				navigator.tts.speak("There are no previous articles.");
@@ -574,9 +580,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
@@ -667,6 +673,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			alert("click pause false");
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
+			alert("cont: "+cont);
+			alert("pause position: "+$scope.jeeves.newsPosition.pausePosition);
 			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 		}
 	}
