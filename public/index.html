@@ -12,25 +12,30 @@
 	<!-- Implement Bootstrap and AngularJS. -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css">
+	<link rel="stylesheet" href="//rawgithub.com/mgcrea/bootstrap-additions/master/dist/bootstrap-additions.min.css" />
+	<link rel="stylesheet" type="text/css" href="index.css" />
 	<script src="js/angular.min.js"></script>
 	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
 
+	<!-- base64 decoding algorithm -->
+	<script src="js/base64.js"></script>
+
 	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="js/mvc.js"></script>
 	
-	<!-- Implement JQuery for Bootstrap animations. -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
 
-	<!-- base64 decoding algorithm -->
-	<script src="js/base64.js"></script>
+	
+
+	<script type="text/javascript">
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	</script>
 
 </head>
 
@@ -40,11 +45,11 @@
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.3</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
-			<button ng-click="changeView('menu')" class="btn btn-primary" style="float: right; width: 150px;">
-				<span class="glyphicon glyphicon-home"></span>
-				</button>
-			<button ng-click="changeView('favorites')" class="btn btn-primary" style="float: left; width: 150px;">
+			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled>
 				<span class="glyphicon glyphicon-star"></span>
+			</button>
+			<button ng-click="changeView('menu')" class="btn btn-primary pull-right" style="width: 150px;">
+				<span class="glyphicon glyphicon-home"></span>
 			</button>
 			<br>
 			<br>
@@ -53,12 +58,13 @@
 		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
 			<script type="text/ng-template" id="menuContent.html">
 			<div ng-controller="jeevesCtrl">
-				<h2 class="text-center">Menu</h2>
+				<h2 class="text-center" ><span id="menu-title" ng-click="changeView('back')">Menu</h2>
 				<button ng-click="changeView('weather')" class="btn btn-primary btn-block">Weather</button>
 				<button ng-click="changeView('news')" class="btn btn-primary btn-block">News </button>
 				<button ng-click="changeView('email')" class="btn btn-primary btn-block">Email</button>
 				<hr>
 				<button ng-click="changeView('settings')" class="btn btn-default btn-block">Settings</button>
+				<button ng-click="changeView('favorites')" class="btn btn-default btn-block" disabled>Favorites - Work in progess!</button>
 				<button ng-click="changeView('contact')" class="btn btn-default btn-block">Contact</button>
 				<button ng-click="changeView('about')" class="btn btn-default btn-block">About</button>
 			</div>
@@ -68,21 +74,26 @@
 		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
 			<div>
 				<h2 class="text-center">News</h2>
+				<button id="pause" class="btn btn-warning btn-block" ng-click="pauseAndPlay()"><span id="news1stitle">Pause/Play</span></button>
 			</div>
 			<div align = "center">
 				<accordion close-others="true">
 					<accordion-group heading="News" is-open="status.isFirstOpen">
-						<div ng-repeat="entry in jeeves.newsArticles.news">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						<div ng-repeat="entry in jeeves.displayNews.news">
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button tyep="button" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
+							<button type="button" class="btn btn-default" ng-click="differentFive('news',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="World">
-						<div ng-repeat="entry in jeeves.newsArticles.world">
+						<div ng-repeat="entry in jeeves.displayNews.world">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -92,7 +103,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Sports">
-						<div ng-repeat="entry in jeeves.newsArticles.sports">
+						<div ng-repeat="entry in jeeves.displayNews.sports">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -102,7 +113,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Business">
-						<div ng-repeat="entry in jeeves.newsArticles.business">
+						<div ng-repeat="entry in jeeves.displayNews.business">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -112,7 +123,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Technology">
-						<div ng-repeat="entry in jeeves.newsArticles.tech">
+						<div ng-repeat="entry in jeeves.displayNews.tech">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -122,7 +133,7 @@
 						</div>
 					</accordion-group>
 					<accordion-group heading="Science">
-						<div ng-repeat="entry in jeeves.newsArticles.science">
+						<div ng-repeat="entry in jeeves.displayNews.science">
 						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
 							<span>{{entry.webTitle}}</span>
 						</button>
@@ -141,13 +152,26 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
+						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default" style="visibility:hidden">Refresh</button>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">
 					<div id="message-list"></div>
 				</div>
 			</div>
+			<script type="text/ng-template" id="email-help.html">
+			<div ng-controller="jeevesCtrl">
+				<div class="text-center"><h3>Email Commands</h3></div>
+				<hr>
+				<div>
+					<b id="help-text" >You can say:</b>
+					<ul>
+						<li>Read me emails</li>
+						<li>Log in</li>
+					</ul>
+				</div>
+			</div>
+			</script>
 		</div>
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak ng-swipe-left="handleSwipe('right-to-left')">
@@ -172,6 +196,20 @@
 		    		<font size="1">Powered by OpenWeatherMap.org</font>
 	        	</div>
 	      	</div>
+	      	<script type="text/ng-template" id="weather-help.html">
+			<div ng-controller="jeevesCtrl">
+				<div class="text-center"><h3>Weather Commands</h3></div>
+				<hr>
+				<div>
+					<b id="help-text" >You can say:</b>
+					<ul>
+						<li>Change city to **city name**</li>
+						<li>Change weather to **city name**</li>
+						<li>How&#8217s the weather?</li>
+					</ul>
+				</div>
+			</div>
+			</script>
 	    </div>
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
@@ -208,7 +246,7 @@
 			</div>
 		 </div>
 
-		<div id="favorites" class = "view" ng-hide="jeeves.view != 'favorites'" ng-cloak>
+		<div id="favorites" class="view" ng-hide="jeeves.view != 'favorites'" ng-cloak>
 			<div>
 				<h2>Favorites</h2>
 				Favorites will go here<br>
@@ -223,11 +261,12 @@
 			</div>
 		</div>
 
-		<div id="bottom-button" class="view" >
+		<div id="bottom-buttons" class="view" >
 			<br>
 			<br>
-			<button ng-click="reco()" class="btn btn-primary" style="float: left; width: 150px;">Speech </button>
-			<button ng-click="changeView('back')" class="btn btn-primary" style="float: right; width: 150px;">Help </button>
+			<button ng-click="reco()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
+			<!-- Help button change to "GO back button for now to debug" -->
+			<button ng-click="changeView('back')" class="btn btn-primary pull-right" style="width: 150px;">Help </button>
 			<br>
 			<br>	
 		</div>

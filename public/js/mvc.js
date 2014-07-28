@@ -19,9 +19,26 @@ var model = {
 		tech: [],
 		science: []
 	},
+	displayNews: {
+		news: [],
+		world: [],
+		sports: [],
+		business: [],
+		tech: [],
+		science: [],
+		newsCount: 0,
+		worldCount: 0,
+		sportsCount: 0,
+		businessCount: 0,
+		techCount: 0,
+		scienceCount:0
+	},
 	newsPosition: {
 		section: 'news',
-		articleIndex: 0
+		articleIndex: 0,
+		pause:false,
+		pausePosition:0,
+		contArticleContent:''
 	},
 	menuModal: {},
 	isMenuOpen: false
@@ -32,71 +49,93 @@ var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
 jeevesApp.run(function($http) {
 
 	// Weather Info
-	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK&APPID=32472867a57a09c1e174daf4fddb70d5').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
             model.weather.description = data.weather[0].description;
     });
 
-    // News Info
+	// DO NOT DELETE. Loading News and this is the correct API url. DO NOT DELETE
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.news=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-		//	if(data.response.results[i].hasOwnProperty('fields')){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.news[i]=data.response.results[i];
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.news[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
 	});
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.world=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.world[i]=data.response.results[i];
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.world[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
 	});
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.sports=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.sports[i]=data.response.results[i];
-					console.log()
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.sports[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
 	});
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.business=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.business[i]=data.response.results[i];
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.business[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
 	});
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.tech=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.tech[i]=data.response.results[i];
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.tech[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
 	});
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-		model.newsArticles.science=data.response.results;
-		for(var i=0;i<model.showNumber;i++){
-			if(data.response.results[i]!=null){
-				if(data.response.results[i].fields!=undefined){
-					model.newsArticles.science[i]=data.response.results[i];
+		var count=0;
+		for(var i=0;i<200;i++){
+				if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.science[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
 		}
@@ -131,6 +170,11 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
 jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
+	// For the use of first showing up "News" Section
+	$scope.status = {
+	    isFirstOpen: true,
+	};
+
 	$scope.imgurl = function() {
                 var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
                 if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
@@ -144,7 +188,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.changeView = function(selected) {
 		if (selected == 'back'){
-			alert($scope.jeeves.isMenuOpen);
 			if ($scope.jeeves.isMenuOpen) {
 				$scope.closeMenu();
 			} else {
@@ -152,36 +195,46 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.jeeves.previousView.pop();
 					var back = $scope.jeeves.previousView[$scope.jeeves.previousView.length - 1];
 					$scope.jeeves.view = back;
-					$scope.closeMenu();
+				} else {
+					navigator.app.exitApp();
 				}
 			}
 		} else if (selected == 'news'){
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
+			$scope.cutNews();
 			$scope.closeMenu();
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			}
 		} else if (selected == 'menu') {
 			if (!$scope.jeeves.isMenuOpen) {
 				$scope.openMenu();
 			}
 		} else {
+			if (selected == 'email') {
+				$scope.oauthlogin();
+				navigator.tts.speak("Please wait while I grab your emails.");
+			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
-			$scope.closeMenu();
+			if ($scope.jeeves.isMenuOpen) {
+				$scope.closeMenu();
+			}
 		}
 
 		console.log($scope.jeeves.previousView);
 	};
 
 	$scope.openMenu = function() {
-		alert("Menu opened");
 		$scope.jeeves.menuModal = $modal.open({
-			templateUrl: 'menuContent.html'
+			templateUrl: 'menuContent.html',
+			backdrop: 'static'
 		})
 		$scope.jeeves.isMenuOpen = true;
 	}
 
 	$scope.closeMenu = function() {
-		alert("Menu closed");
 		$scope.jeeves.menuModal.close();
 		$scope.jeeves.isMenuOpen = false;
 	}
@@ -213,21 +266,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
-				 if ($scope.globalCommands(result)) {
-				 	break;
-				 // The break is not right since the loop will never go to the second.
-
-
-
-				 }
-				if($scope.jeeves.view == 'weather'){
+				if ($scope.globalCommands(result)) {
+					break;
+				} else if($scope.jeeves.view == 'weather'){
 					$scope.weatherSpeech(result);
 					break;
-	    		}else if($scope.jeeves.view == 'news'){
+	    		} else if($scope.jeeves.view == 'news'){
 	    			$scope.newsSpeech(result);
 	    			break;
 	    		
-	    		}else if($scope.jeeves.view == 'email'){
+	    		} else if($scope.jeeves.view == 'email'){
 	    			$scope.emailSpeech(result);
 	    			break;
 	    		}
@@ -243,14 +291,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.globalCommands = function(result) {
 		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
 			$scope.$apply(function() {
-				$scope.changeView('weather');
-			});
-			$scope.speakWeatherReport();
+				$scope.changeView("weather");
+			})
+			navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
+				$scope.$apply(function() {
+					$scope.changeView('back');
+				})
+			})
 			return true;
-		} else if (result.match(/go to/)) {
+		} else if (result.match(/go to/) || result.match(/open/)) {
 			if (result.match(/news/)) {
 				if ($scope.jeeves.view != 'news') {
-					navigator.tts.speak("Gotcha. Going to the news page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('news');
 						});
@@ -261,7 +313,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/email/)) {
 				if ($scope.jeeves.view != 'email') {
-					navigator.tts.speak("Gotcha. Going to the email page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('email');
 						});
@@ -273,7 +325,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/weather/)) {
 				if ($scope.jeeves.view != 'weather') {
-					navigator.tts.speak("Gotcha. Going to weather now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('weather');
 						});
@@ -284,7 +336,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/menu/)) {
 				if ($scope.jeeves.view != 'menu') {
-					navigator.tts.speak("Gotcha. Going to menu now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('menu');
 						});
@@ -296,7 +348,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/settings/)) {
 				if ($scope.jeeves.view != 'settings') {
-					navigator.tts.speak("Gotcha. Going to settings now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('settings');
 						});
@@ -307,7 +359,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/contact/)) {
 				if ($scope.jeeves.view != 'contact') {
-					navigator.tts.speak("Gotcha. Going to contact page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('contact');
 						});
@@ -318,7 +370,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/about/)) {
 				if ($scope.jeeves.view != 'about') {
-					navigator.tts.speak("Gotcha. Going to about page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('about');
 						});
@@ -329,7 +381,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} else if (result.match(/help/)) {
 				if ($scope.jeeves.view != 'help') {
-					navigator.tts.speak("Gotcha. Going to help page now.", function() {
+					navigator.tts.speak("On it.", function() {
 						$scope.$apply(function() {
 							$scope.changeView('help');
 						});
@@ -349,31 +401,29 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				});
 				return true;
 			} else {
+				//Begin news speech recognition.
 				$scope.newsSpeech(result);
 				return true;
 			}
 		}else if (result == "help") {
 			if ($scope.jeeves.view == 'weather') {
-				navigator.notification.alert(
-					"You can say:" +
-					"\n- Change city to - city name." +
-					"\n- Change to - city name." +
-					"\n- Change weather to - city name." +
-					"\n- How's the weather?", 'Jeeves', 'Weather Commands', 'Confirm'
-				)
-				navigator.tts.speak("you can say change city to, city name.");
-				navigator.tts.speak("or you can say change to, city name.");
-				navigator.tts.speak("or you can say change weather to, city name.");
-				navigator.tts.speak("or you can say, how's the weather?");
+				$scope.jeeves.weathermodalhelp = $modal.open({
+					templateUrl: "weather-help.html",
+					windowClass: 'help-window'
+				})
+				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
+					$scope.jeeves.weathermodalhelp.close();
+				});
 				return true;
-			}else if (help.match(/email/)) {
-				//5
-				//read
-				navigator.tts.speak("you can say read me my emails");
-				navigator.tts.speak("or you can say read");
-				navigator.tts.speak("or you can say read me - subject title");
-				navigator.tts.speak("or you can say read me email by - insert name");
-				navigator.tts.speak("or you can say how many emails do i have");
+			}else if ($scope.jeeves.view == 'email') {
+				$scope.jeeves.emailmodalhelp = $modal.open({
+					templateUrl: "email-help.html",
+					windowClass: "help-window"
+				})
+				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+					$scope.jeeves.emailmodalhelp.close();
+				});
+				return true;
 			}else if (help.match(/favorites/)) {
 				//1
 				navigator.tts.speak("you can say read");
@@ -431,16 +481,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		return stop;
 	}
 
-	$scope.speakWeatherReport = function(){
-		var currentTemperature = "The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. ";
-		navigator.speak(currentTemperature + $scope.jeeves.weather.description);
-		if ($scope.jeeves.previousView[$scope.jeeves.previousView.length - 2] != 'weather') {
-			$scope.$apply(function() {
-				$scope.changeView('back');
-			});
-		}
-	}
-
+	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(result){
 		if ($scope.jeeves.view != 'news') {
 			$scope.changeView('news');
@@ -449,30 +490,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		if (result.match(/read/)){
 			 if(result.match(/article/)){
 				$scope.readArticle();
-				navigator.tts.speak("Finished reading article, either switch section or continue to next article.");
-				setTimeout(function(){
-					$scope.reco();
-					$scope.jeeves.newsPosition.articleIndex++;
-				}, 200000);
+				$scope.jeeves.newsPosition.pause=false;
+				$scope.jeeves.newsPosition.pausePosition=0;
+				$scope.jeeves.newsPosition.contArticleContent="";
 			}
 			else{
 				if (result.length>4){
 					var section1=result.substring(5);
 					$scope.jeeves.newsPosition.section=section1;
 					$scope.jeeves.newsPosition.articleIndex = 0;
-					$scope.changeSection(section1);
+					//$scope.changeSection(section1);
 				}
 				else{
 					$scope.jeeves.newsPosition.section=section;
-					$scope.changeSection('news');
+					//$scope.changeSection('news');
 				}
 				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 				$scope.$apply();
 			}
 		}else if (result.match(/next article/) || result.match(/continue/)) {
 			navigator.tts.speak("Going to next article");
-			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 			$scope.jeeves.newsPosition.articleIndex++;
+			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 		}
 		else if (result.match(/previous/)){
 			if($scope.jeeves.newsPosition.articleIndex>1){
@@ -485,6 +524,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}
 		else if(result.match(/more articles/)){
+			//We have to remove if were changing the style of news, maybe?
 			$scope.updateShowAmount();
 		}	
 		$scope.$apply();
@@ -538,7 +578,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -550,7 +591,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -562,7 +604,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -574,7 +617,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -586,7 +630,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -598,7 +643,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			navigator.tts.speak(finalResult);
+			$scope.jeeves.newsPosition.contArticleContent=finalResult;
+			$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
@@ -608,6 +654,37 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		$scope.$apply();
 	}
 
+	$scope.recursiveArticleChunk = function(chunkArray, position){
+		output = chunkArray[position];
+		if($scope.jeeves.newsPosition.pause==true){
+			$scope.jeeves.newsPosition.pausePosition=position;
+		}
+		else if(position>=chunkArray.length){
+			//end
+		}
+		else{
+			navigator.tts.speak(output);
+			setTimeout(function(){    //This set time out is important for the pause and play but it is ideal to have it as callback to tts
+				$scope.recursiveArticleChunk(chunkArray, (position+1));
+			}, (output.length*250));
+	
+		}
+	}
+
+	$scope.pauseAndPlay = function(){
+		if($scope.jeeves.newsPosition.pause==false){
+			alert("click pause true");
+			$scope.jeeves.newsPosition.pause=true;
+		}
+		else{
+			alert("click pause false");
+			$scope.jeeves.newsPosition.pause=false;
+			var cont=$scope.jeeves.newsPosition.contArticleContent;
+			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+		}
+	}
+
+
 	$scope.emailSpeech = function(result) {
 		if (result == "read my emails" || "read" || "start reading") {
 			var content = document.getElementById('email-announcement').innerText;
@@ -615,75 +692,100 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
-	$scope.collapse=function(){
-		$scope.jeeves.newsViews='';
-	}
-
 	$scope.capitaliseFirstLetter=function(string){
     	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	}
+	};
 
 	$scope.setInnerHTML = function(entry){
 		document.getElementById(entry.webTitle).innerHTML=entry.fields.body;
+	};
+
+	$scope.differentFive = function(selected, increment){
+		var change = 5;
+
+		if(!increment){
+			change = -5;
+		}
+
+		if(selected=="news"){
+			$scope.jeeves.displayNews.newsCount += change;
+		}else if (selected=="world"){
+			$scope.jeeves.displayNews.worldCount += change;
+		}else if (selected=="sports"){
+			$scope.jeeves.displayNews.sportsCount += change;
+		}else if (selected=="business"){
+			$scope.jeeves.displayNews.businessCount += change;
+		}else if (selected=="tech"){
+			$scope.jeeves.displayNews.techCount += change;
+		}else if (selected=="science"){
+			$scope.jeeves.displayNews.scienceCount += change;
+		}else{
+			console.log("Something wrong with the cutting");
+		}
+
+		$scope.cutNews();
 	}
 
-	// For the use of first showing up "News" Section
-	$scope.status = {
-	    isFirstOpen: true,
-	  };
+	$scope.cutNews = function(){
+		$scope.jeeves.displayNews.news = $scope.jeeves.newsArticles.news.slice($scope.jeeves.displayNews.newsCount, $scope.jeeves.displayNews.newsCount+5);
+		$scope.jeeves.displayNews.world = $scope.jeeves.newsArticles.world.slice($scope.jeeves.displayNews.worldCount, $scope.jeeves.displayNews.worldCount+5);
+		$scope.jeeves.displayNews.sports = $scope.jeeves.newsArticles.sports.slice($scope.jeeves.displayNews.sportsCount, $scope.jeeves.displayNews.sportsCount+5);
+		$scope.jeeves.displayNews.business = $scope.jeeves.newsArticles.business.slice($scope.jeeves.displayNews.businessCount, $scope.jeeves.displayNews.businessCount+5);
+		$scope.jeeves.displayNews.tech = $scope.jeeves.newsArticles.tech.slice($scope.jeeves.displayNews.techCount, $scope.jeeves.displayNews.techCount+5);
+		$scope.jeeves.displayNews.science = $scope.jeeves.newsArticles.science.slice($scope.jeeves.displayNews.scienceCount, $scope.jeeves.displayNews.scienceCount+5);
+	}
 
 
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
-			alert(JSON.stringify(result));
 			result.me().done(function(data) {
-				alert(JSON.stringify(data));
 				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
 				.done(function(list) {
-					document.getElementById('authorize-button').style.visibility = 'hidden';
-					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
-					alert(JSON.stringify(list));
+					document.getElementById('authorize-button').style.visibility = '';
+					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>';
 					var content = document.getElementById("message-list");
 					if (list.messages == null) {
 				        content.innerHTML = "<b>Your inbox is empty.</b>";
 				      } else {
-				      	var encodings = 0;
-				        content.innerHTML = "";
+				        content.innerHTML = "------<br>";
 				        angular.forEach(list.messages, function(message) {
 				        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
 				        	.done(function(email) {
-				        		alert(JSON.stringify(email));
-				        		if (email.payload == null) {
-				        			console.log("Payload null: " + message.id);
-				        			var header = document.createElement('div');
-				            		var sender = document.createElement('div');
-				            		angular.forEach(email.payload.headers, function(item) {
-				            			if (item.name == 'Subject') {
-				            				header.setAttribute('id', 'email-header');
-				            				header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
-				              			}
-				              			if (item.name == "From") {
-							                sender.setAttribute('id', 'email-sender');
-							                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
-							            }
-				            		})
-				            		try {
-						              content.appendChild(header);
-						              content.appendChild(sender);
-						              var contents = document.createElement('div');
-						              contents.setAttribute('id', 'email-content');
-						              if (stuff.payload.parts == null) {
-						                contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
-						              } else {
-						                contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
-						              }
-						              content.appendChild(contents);
-						            } catch (err) {
-						              console.log("Encoding error: " + encodings++);
+				        		// if (email.payload == null) {
+				        		// 	console.log("Payload null: " + message.id);
+				        		// }
+			        			var header = document.createElement('div');
+			            		var sender = document.createElement('div');
+			            		angular.forEach(email.payload.headers, function(item) {
+			            			if (item.name == 'Subject') {
+			            				header.setAttribute('id', 'email-header');
+			            				header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
+			              			}
+			              			if (item.name == "From") {
+						                sender.setAttribute('id', 'email-sender');
+						                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
 						            }
-				        		}
+			            		})
+				              	content.appendChild(header);
+				              	content.appendChild(sender);
+				              	var contents = document.createElement('div');
+				              	contents.setAttribute('id', 'email-content');
+				              	if (stuff.payload.parts == null) {
+				              		try {
+				              			contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
+				              		} catch (err) {
+				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
+				              		}
+				              	} else {
+				              		try {
+				              			contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
+				              		} catch (err) {
+				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
+				              		}
+				              	}
+				              	content.appendChild(contents);
 				        	})
 				        })
 				    }
