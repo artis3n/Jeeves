@@ -26,13 +26,13 @@ app.use(function(req, res, next) {
 });
 
 // Send email data to be decoded and return decoded data.
-app.post('/decode', function(req, res) {
+app.post('/decode/', function(req, res) {
     console.log("Post activated.");
     var decoded = mimelib.decodeMimeWord(req.body);
     console.log(decoded);
     console.log("Decoded successfully.");
     res.json(200, {'content': decoded});
-})
+});
 
 // // get a particular item from the model
 // app.get('/model/:collection/:id', function(req, res) {

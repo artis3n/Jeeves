@@ -167,7 +167,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	$scope.jeeves = model;
 
 	// For the use of first showing up "News" Section
@@ -265,9 +265,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
-				var result = results[i].toLowerCase();
+				results[i] = results[i].toLowerCase();
 			}
-				return results;
+				$scope.speechresults = results;
  		}
 
  		function failCallback(error){
@@ -276,18 +276,20 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 $scope.dialogMan = function(){
-		var results = $scope.reco();
-		if ($scope.globalCommands(results)){
+		var promise = $scope.reco();
+		promise.then(function() {
+			if ($scope.globalCommands($scope.speechresults)){
 			return;
-		}else if ($scope.weatherSpeech(results))	{ //view == * do
-			return;
-		}
-		else if ($scope.newsSpeech(results)) {
-			return;
-		}
-		else if ($scope.emailSpeech(results)){
-			return;
-		}
+			}else if ($scope.weatherSpeech($scope.speechresults))	{ //view == * do
+				return;
+			}
+			else if ($scope.newsSpeech($scope.speechresults)) {
+				return;
+			}
+			else if ($scope.emailSpeech($scope.speechresults)){
+				return;
+			}
+		})
 	}
 
 
