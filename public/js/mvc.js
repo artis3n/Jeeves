@@ -396,7 +396,7 @@ $scope.dialogMan = function(){
 					}
 					return true;
 				}
-			}else if (results[i].match(/read/)) {
+			} else if (results[i].match(/read/)) {
 				if (results[i].match(/email/)) {
 					navigator.tts.speak("No problem! Let's pull up your emails.", function () {
 						$scope.$apply(function() {
@@ -429,70 +429,70 @@ $scope.dialogMan = function(){
 					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
 				}
 				return true;
-			}
-		}else if (results[i].match(/read/)) {
-			if (results[i].match(/email/)) {
-				navigator.tts.speak("Let's pull up your emails.", function () {
-					$scope.$apply(function() {
-						$scope.changeView('email');
+			}else if (results[i].match(/read/)) {
+				if (results[i].match(/email/)) {
+					navigator.tts.speak("Let's pull up your emails.", function () {
+						$scope.$apply(function() {
+							$scope.changeView('email');
+						});
+						// Start reading emails.
 					});
-					// Start reading emails.
-				});
-				return true;
-			} else {
-				//Begin news speech recognition.
-				$scope.newsSpeech(result);
-				return true;
-			}
-		}else if (results[i] == "help") {
-			if ($scope.jeeves.view == 'weather') {
-				$scope.jeeves.weathermodalhelp = $modal.open({
-					templateUrl: "weather-help.html",
-					windowClass: 'help-window'
-				})
-				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
-					$scope.jeeves.weathermodalhelp.close();
-				});
-				return true;
-			}else if ($scope.jeeves.view == 'email') {
-				$scope.jeeves.emailmodalhelp = $modal.open({
-					templateUrl: "email-help.html",
-					windowClass: "help-window"
-				})
-				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
-					$scope.jeeves.emailmodalhelp.close();
-				});
-				return true;
-			// }else if (help.match(/favorites/)) {
-				//Favorites is currently disabled.
-			}else if (results[i].match(/menu/)) {
-				// Don't open a new modal, menu is already a modal.
-				navigator.tts.speak("Let me know where you'd like to go! Can I grab your emails or check the latest news?", function() {
-					$scope.reco();
-				});
-			}else if (results[i].match(/about/)) {
-				navigator.tts.speak("Nothing to do on this page! Can I take you back to the menu?", function() {
-					var resps = $scope.reco();
-					var confirmed = $scope.confirmSpeech(resps, "go to menu");
-					if (!confirmed) {
-						navigator.tts.speak("Not the menu? That's ok. Maybe you'd prefer to go to news or email?")
-					}
-				});
-			}else if (results[i].match(/settings/)) {
-				navigator.tts.speak("you can say change city to insert city"); 
-			}else if (results[i].match(/contact/)) {
-				navigator.tts.speak("you can say read");
-			}else if (results[i].match(/news/)) {
-				navigator.tts.speak("you can say read me - insert section");
-				navigator.tts.speak("you can say read me next article");
-				navigator.tts.speak("you can say read me article - insert title");
-				navigator.tts.speak("you can say more articles");
-				navigator.tts.speak("you can say read me last or previous article");
-			}
+					return true;
+				} else {
+					//Begin news speech recognition.
+					$scope.newsSpeech(result);
+					return true;
+				}
+			}else if (results[i] == "help") {
+				if ($scope.jeeves.view == 'weather') {
+					$scope.jeeves.weathermodalhelp = $modal.open({
+						templateUrl: "weather-help.html",
+						windowClass: 'help-window'
+					})
+					navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
+						$scope.jeeves.weathermodalhelp.close();
+					});
+					return true;
+				}else if ($scope.jeeves.view == 'email') {
+					$scope.jeeves.emailmodalhelp = $modal.open({
+						templateUrl: "email-help.html",
+						windowClass: "help-window"
+					})
+					navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+						$scope.jeeves.emailmodalhelp.close();
+					});
+					return true;
+				// }else if (help.match(/favorites/)) {
+					//Favorites is currently disabled.
+				}else if (results[i].match(/menu/)) {
+					// Don't open a new modal, menu is already a modal.
+					navigator.tts.speak("Let me know where you'd like to go! Can I grab your emails or check the latest news?", function() {
+						$scope.reco();
+					});
+				}else if (results[i].match(/about/)) {
+					navigator.tts.speak("Nothing to do on this page! Can I take you back to the menu?", function() {
+						var resps = $scope.reco();
+						var confirmed = $scope.confirmSpeech(resps, "go to menu");
+						if (!confirmed) {
+							navigator.tts.speak("Not the menu? That's ok. Maybe you'd prefer to go to news or email?")
+						}
+					});
+				}else if (results[i].match(/settings/)) {
+					navigator.tts.speak("you can say change city to insert city"); 
+				}else if (results[i].match(/contact/)) {
+					navigator.tts.speak("you can say read");
+				}else if (results[i].match(/news/)) {
+					navigator.tts.speak("you can say read me - insert section");
+					navigator.tts.speak("you can say read me next article");
+					navigator.tts.speak("you can say read me article - insert title");
+					navigator.tts.speak("you can say more articles");
+					navigator.tts.speak("you can say read me last or previous article");
+				}
 
 			}
 		}
 	}
+	
 	$scope.confirmSpeech = function(resps, command) {
 		for (var i = 0; i < resps.length; i++) {
 			if (resps[i].match(/yes/)) {
