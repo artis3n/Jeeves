@@ -48,97 +48,98 @@ var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
 jeevesApp.run(function($http) {
 
 	// Weather Info
-	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+	$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+model.city+','+model.country+ '&units=imperial&callback=JSON_CALLBACK&APPID=32472867a57a09c1e174daf4fddb70d5').success(function(data) {
             model.weather.temp.current = data.main.temp;
             model.weather.clouds = data.clouds ? data.clouds.all : undefined;
             model.weather.description = data.weather[0].description;
     });
 
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-				if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.news[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
+	// DO NOT DELETE. Loading News and this is the correct API url. DO NOT DELETE
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.news[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
 				}
 			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-				if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.world[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
-				}
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-				if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.sports[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
-				}
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-				if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.business[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
-				}
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-				if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.tech[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
-				}
-			}
-		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
-			var count=0;
-			for(var i=0;i<200;i++){
-					if(data.response.results[i]!=undefined){
-					if(data.response.results[i].hasOwnProperty('fields')){
-						model.newsArticles.science[count]=data.response.results[i];
-						count=count+1;
-					}
-					if(count>100){
-						break;
-					}
-				}
-			}
-		});
+		}
 	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.world[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
+				}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.sports[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
+				}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.business[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
+				}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+			if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.tech[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
+				}
+			}
+		}
+	});
+	$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		var count=0;
+		for(var i=0;i<200;i++){
+				if(data.response.results[i]!=undefined){
+				if(data.response.results[i].hasOwnProperty('fields')){
+					model.newsArticles.science[count]=data.response.results[i];
+					count=count+1;
+				}
+				if(count>100){
+					break;
+				}
+			}
+		}
+	});
+});
 
 // Create a sglclick action to avoid the ng-click conflict with ng-dblclick
 jeevesApp.directive('sglclick', ['$parse', function($parse) {
