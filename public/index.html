@@ -88,58 +88,78 @@
 							</div>
 						</div>
 						<div class="btn-group btn-block">
-							<button tyep="button" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
-							<button type="button" class="btn btn-default" ng-click="differentFive('news',true)">More </button>
+							<button id="newsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="World">
 						<div ng-repeat="entry in jeeves.displayNews.world">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button id="worldBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="Sports">
 						<div ng-repeat="entry in jeeves.displayNews.sports">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button id="sportsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="Business">
 						<div ng-repeat="entry in jeeves.displayNews.business">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button id="businessBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="Technology">
 						<div ng-repeat="entry in jeeves.displayNews.tech">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button id="techBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="Science">
 						<div ng-repeat="entry in jeeves.displayNews.science">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button id="scienceBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',false)">Go Back</button>
+							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',true)">More </button>
 						</div>
 					</accordion-group>
 				</accordion>
@@ -267,7 +287,7 @@
 		<div id="bottom-buttons" class="view" >
 			<br>
 			<br>
-			<button ng-click="reco()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
+			<button ng-click="dialogMan()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
 			<!-- Help button change to "GO back button for now to debug" -->
 			<button ng-click="changeView('back')" class="btn btn-primary pull-right" style="width: 150px;">Help </button>
 			<br>
