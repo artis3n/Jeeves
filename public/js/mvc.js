@@ -517,7 +517,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if($scope.jeeves.newsPosition.articleIndex>1){
 				navigator.tts.speak("Going to previous article", function(){
 					$scope.$apply(function(){
-						$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-2;
+						$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-1;
 						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 					});
 				});
@@ -528,7 +528,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 		else if(result.match(/more articles/)){
 			//We have to remove if were changing the style of news, maybe?
-			$scope.differentFive('news',true);
+			$scope.differentFive($scope.jeeves.newsPosition.section,true);
+		}
+		else if(result.match(/previous five/)){
+			$scope.differentFive($scope.jeeves.newsPosition.section,false);
 		}	
 		$scope.$apply();
 	}
