@@ -82,7 +82,7 @@ jeevesApp.run(function($http) {
 				}
 			}
 		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=sports&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			var count=0;
 			for(var i=0;i<200;i++){
 				if(data.response.results[i]!=undefined){
@@ -110,7 +110,7 @@ jeevesApp.run(function($http) {
 				}
 			}
 		});
-		$http.get('http://beta.content.guardianapis.com/search?q=US&section=tech&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+		$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 			var count=0;
 			for(var i=0;i<200;i++){
 				if(data.response.results[i]!=undefined){
