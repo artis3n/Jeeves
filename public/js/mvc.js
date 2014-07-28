@@ -222,7 +222,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}
 
-		console.log($scope.jeeves.previousView);
 	};
 
 	$scope.openMenu = function() {
