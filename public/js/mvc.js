@@ -262,32 +262,37 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.reco = function(callback){
-		navigator.speechrecognizer.recognize(callback, failCallback, 3, "Jeeves Personal Assistant");
+		navigator.speechrecognizer.recognize(lowerSpeech, failCallback, 3, "Jeeves Personal Assistant");
+
+		function lowerSpeech(results) {
+			for (var i = 0; i < results.length; i++) {
+				results[i] = results[i].toLowerCase();
+			}
+			callback(results);
+		}
 
  		function failCallback(error){
 		    alert("Error: " + error);
 		}
 	}
 
-$scope.dialogMan = function(results){
-	for (var i = 0; i < results.length; i++) {
-		results[i] = results[i].toLowerCase();
+	$scope.dialogMan = function(results){
+		alert(results);
+		if ($scope.globalCommands(results)){
+			return;
+		} else if ($scope.weatherSpeech(results)) {
+			return;
+		} else if ($scope.newsSpeech(results)) {
+			return;
+		} else if ($scope.emailSpeech(results)){
+			return;
+		}
 	}
-	if ($scope.globalCommands($scope.speechresults)){
-		return;
-	} else if ($scope.weatherSpeech($scope.speechresults))	{ //view == * do
-		return;
-	} else if ($scope.newsSpeech($scope.speechresults)) {
-		return;
-	} else if ($scope.emailSpeech($scope.speechresults)){
-		return;
-	}
-}
 
 
 
 	$scope.globalCommands = function(results) {
-		for (var i = 0; i < results.length; i++){ results[i]
+		for (var i = 0; i < results.length; i++){
 			if (results[i] == "how is the weather" || results[i] == "how's the weather" || results[i] == "what's the weather" || results[i] == "what is the weather like today" || results[i] == "what's the weather like" || results[i] == "how's the weather today" || results[i] == "how is the weather today"){
 				$scope.$apply(function() {
 					$scope.changeView("weather");
