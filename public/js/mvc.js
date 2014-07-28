@@ -291,12 +291,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.reco = function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
-			for (var i = 0; i < results.length; i++) {
-				var result = results[i].toLowerCase();
-			}
-				return results;
+
  		}
 
+		alert(results + "beginning")
+			for (var i = 0; i < results.length; i++) {
+				results[i] = results[i].toLowerCase();
+			}
+			alert("after forloop");
+				return results;
  		function failCallback(error){
 		    alert("Error: " + error);
 		}
@@ -304,6 +307,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 $scope.dialogMan = function(){
 		var results = $scope.reco();
+		alert(results);
+		$scope.globalCommands(results)
 		if ($scope.globalCommands(results)){
 			return;
 		}else if ($scope.weatherSpeech(results))	{ //view == * do
@@ -315,6 +320,7 @@ $scope.dialogMan = function(){
 		else if ($scope.emailSpeech(results)){
 			return;
 		}
+		alert(results);
 	}
 
 
