@@ -591,9 +591,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
@@ -602,9 +602,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
@@ -613,9 +613,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
@@ -624,9 +624,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
@@ -635,9 +635,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
-			$scope.jeeves.newsPosition.contArticleContent=finalResult;
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
 						$scope.$apply(function() {
+							$scope.jeeves.newsPosition.contArticleContent=finalResult;
 							$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 						});
 				});
