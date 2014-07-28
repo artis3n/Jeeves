@@ -261,36 +261,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		$scope.jeeves.section = selected;
 	}
 
-	$scope.reco = function(){
-		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
-		function successCallback(results){
-			for (var i = 0; i < results.length; i++) {
-				results[i] = results[i].toLowerCase();
-			}
-				$scope.speechresults = results;
- 		}
+	$scope.reco = function(callback){
+		navigator.speechrecognizer.recognize(callback, failCallback, 3, "Jeeves Personal Assistant");
 
  		function failCallback(error){
 		    alert("Error: " + error);
 		}
 	}
 
-$scope.dialogMan = function(){
-		var promise = $scope.reco();
-		promise.then(function() {
-			if ($scope.globalCommands($scope.speechresults)){
-			return;
-			}else if ($scope.weatherSpeech($scope.speechresults))	{ //view == * do
-				return;
-			}
-			else if ($scope.newsSpeech($scope.speechresults)) {
-				return;
-			}
-			else if ($scope.emailSpeech($scope.speechresults)){
-				return;
-			}
-		})
+$scope.dialogMan = function(results){
+	for (var i = 0; i < results.length; i++) {
+		results[i] = results[i].toLowerCase();
 	}
+	if ($scope.globalCommands($scope.speechresults)){
+		return;
+	} else if ($scope.weatherSpeech($scope.speechresults))	{ //view == * do
+		return;
+	} else if ($scope.newsSpeech($scope.speechresults)) {
+		return;
+	} else if ($scope.emailSpeech($scope.speechresults)){
+		return;
+	}
+}
 
 
 
