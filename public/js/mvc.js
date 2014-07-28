@@ -597,37 +597,37 @@ $scope.dialogMan = function(){
 		if ($scope.jeeves.newsPosition.section == "news"){
 			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
 			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
 						$scope.$apply(function() {
-							$scope.reco();
+							$scope.dialogMan();
 						});
 				});
 		}
@@ -713,7 +713,7 @@ $scope.dialogMan = function(){
 		else if(position>=chunkArray.length){
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function(){
 				$scope.$apply(function(){
-					$scope.reco();
+					$scope.dialogMan();
 				});
 			});
 		}
@@ -726,15 +726,11 @@ $scope.dialogMan = function(){
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
-			alert("click pause true");
 			$scope.jeeves.newsPosition.pause=true;
 		}
 		else{
-			alert("click pause false");
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
-			alert("cont: "+cont);
-			alert("pause position: "+$scope.jeeves.newsPosition.pausePosition);
 			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 		}
 	}
