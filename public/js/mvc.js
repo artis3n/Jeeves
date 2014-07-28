@@ -585,11 +585,11 @@ $scope.dialogMan = function(){
 						navigator.tts.speak("There are no previous articles.");
 				}
 			}
-			else if(result.match(/more articles/)){
+			else if(results[i].match(/more articles/)){
 				//We have to remove if were changing the style of news, maybe?
 				$scope.differentFive($scope.jeeves.newsPosition.section,true);
 			}
-			else if(result.match(/previous five/)){
+			else if(results[i].match(/previous five/)){
 				$scope.differentFive($scope.jeeves.newsPosition.section,false);
 			}	
 			$scope.$apply();
