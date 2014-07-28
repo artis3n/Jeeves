@@ -539,8 +539,9 @@ $scope.dialogMan = function(){
 	$scope.newsSpeech = function(results){
 		for (var i = 0; results.length; i++) {
 			if ($scope.jeeves.view != 'news') {
-				$scope.changeView('news');
-				$scope.$apply();
+				$scope.$apply(function(){
+					$scope.changeView('news');
+				});
 			}
 			if (results[i].match(/read/)){
 				 if(results[i].match(/article/)){
