@@ -268,7 +268,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			for (var i = 0; i < results.length; i++) {
 				results[i] = results[i].toLowerCase();
 			}
-			callback(results);
+			callback(results); // Call respective dialogue management function.
 		}
 
  		function failCallback(error){
