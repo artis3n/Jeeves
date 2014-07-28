@@ -22,14 +22,16 @@
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
 
+	<!-- base64 decoding algorithm -->
+	<script src="js/base64.js"></script>
+
 	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="js/mvc.js"></script>
 	
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
 
-	<!-- base64 decoding algorithm -->
-	<script src="js/base64.js"></script>
+	
 
 	<script type="text/javascript">
 	$(function () { $("[data-toggle='tooltip']").tooltip(); });
@@ -43,7 +45,7 @@
 			<h1>Jeeves Personal Assistant <small><span id="version">v0.1.3</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
-			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled data-toggle="tooltip" data-placement="top" title="Currently unavailable. We're working on it!">
+			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled>
 				<span class="glyphicon glyphicon-star"></span>
 			</button>
 			<button ng-click="changeView('menu')" class="btn btn-primary pull-right" style="width: 150px;">
@@ -146,7 +148,7 @@
 				<div style="padding-bottom: 10px">
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 					<div>
-						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default">Authenticate</button>
+						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default" style="visibility:hidden">Refresh</button>
 					</div>
 				</div>
 				<div style="padding-bottom: 30px" id="message-content-here">

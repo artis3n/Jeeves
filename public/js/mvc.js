@@ -188,6 +188,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				$scope.openMenu();
 			}
 		} else {
+			if (selected == 'email') {
+				$scope.oauthlogin();
+				navigator.tts.speak("Please wait while I grab your emails.");
+			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			if ($scope.jeeves.isMenuOpen) {
@@ -689,14 +693,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			result.me().done(function(data) {
 				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
 				.done(function(list) {
-					document.getElementById('authorize-button').style.visibility = 'hidden';
-					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>------<br>';
+					document.getElementById('authorize-button').style.visibility = '';
+					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>';
 					var content = document.getElementById("message-list");
 					if (list.messages == null) {
 				        content.innerHTML = "<b>Your inbox is empty.</b>";
 				      } else {
-				      	// var encodings = 0;
-				        content.innerHTML = "";
+				        content.innerHTML = "------<br>";
 				        angular.forEach(list.messages, function(message) {
 				        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
 				        	.done(function(email) {
@@ -720,9 +723,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				              	var contents = document.createElement('div');
 				              	contents.setAttribute('id', 'email-content');
 				              	if (stuff.payload.parts == null) {
-				                	contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
+				              		try {
+				              			contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
+				              		} catch (err) {
+				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
+				              		}
 				              	} else {
-				                	contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
+				              		try {
+				              			contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
+				              		} catch (err) {
+				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
+				              		}
 				              	}
 				              	content.appendChild(contents);
 				        	})
