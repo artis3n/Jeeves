@@ -73,12 +73,16 @@
 				<accordion close-others="true">
 					<accordion-group heading="News" is-open="status.isFirstOpen">
 						<div ng-repeat="entry in jeeves.displayNews.news">
-						<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-							<span>{{entry.webTitle}}</span>
-						</button>
-						<div collapse="!collapsed">
-							<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+								<span>{{entry.webTitle}}</span>
+							</button>
+							<div collapse="!collapsed">
+								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							</div>
 						</div>
+						<div class="btn-group btn-block">
+							<button tyep="button" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
+							<button type="button" class="btn btn-default" ng-click="differentFive('news',true)">More </button>
 						</div>
 					</accordion-group>
 					<accordion-group heading="World">
