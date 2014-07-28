@@ -497,41 +497,41 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-				setTimeout(function(){
-			 	$scope.reco();
-			 }, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
-			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-			setTimeout(function(){
-				$scope.reco();
-			}, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-			setTimeout(function(){
-				$scope.reco();
-			}, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
-			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-			setTimeout(function(){
-				$scope.reco();
-			}, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
-			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-			setTimeout(function(){
-				$scope.reco();
-			}, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
-			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle);
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
-			setTimeout(function(){
-				$scope.reco();
-			}, 14000);
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
+						$scope.$apply(function() {
+							$scope.reco();
+						});
+				});
 		}
 		$scope.$apply();
 	}
@@ -548,7 +548,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle);
@@ -561,7 +560,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle);
@@ -574,7 +572,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle);
@@ -587,7 +584,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}else if ($scope.jeeves.newsPosition.section == "tech"){
 			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle);
@@ -600,7 +596,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle);
@@ -613,7 +608,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles");
 			setTimeout(function(){
 				$scope.reco();
-				$scope.jeeves.newsPosition.articleIndex++;
 			}, 200000);
 		}
 		$scope.$apply();
@@ -626,6 +620,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 		else if(position>=chunkArray.length){
 			//end
+			//add the if you would like to go to the next article here, and also change it so its a callback, howecer, recursive calls to tts is a problem
 		}
 		else{
 			navigator.tts.speak(output);
