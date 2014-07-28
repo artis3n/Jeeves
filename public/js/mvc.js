@@ -261,26 +261,40 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		$scope.jeeves.section = selected;
 	}
 
+	// $scope.reco = function(){
+	// 	navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
+	// 	function successCallback(results){
+	// 		for (var i = 0; i < results.length; i++) {
+	// 			var result = results[i].toLowerCase();
+	// 			if ($scope.globalCommands(result)) {
+	// 				break;
+	// 			} else if($scope.jeeves.view == 'weather'){
+	// 				$scope.weatherSpeech(result);
+	// 				break;
+	//     		} else if($scope.jeeves.view == 'news'){
+	//     			$scope.newsSpeech(result);
+	//     			break;
+	    		
+	//     		} else if($scope.jeeves.view == 'email'){
+	//     			$scope.emailSpeech(result);
+	//     			break;
+	//     		}
+	// 	   		$scope.$apply();
+	// 		}
+ // 		}
+
+ // 		function failCallback(error){
+	// 	    alert("Error: " + error);
+	// 	}
+	// }
+
 	$scope.reco = function(){
 		navigator.speechrecognizer.recognize(successCallback, failCallback, 3, "Jeeves Personal Assistant");
 		function successCallback(results){
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i].toLowerCase();
-				if ($scope.globalCommands(result)) {
-					break;
-				} else if($scope.jeeves.view == 'weather'){
-					$scope.weatherSpeech(result);
-					break;
-	    		} else if($scope.jeeves.view == 'news'){
-	    			$scope.newsSpeech(result);
-	    			break;
-	    		
-	    		} else if($scope.jeeves.view == 'email'){
-	    			$scope.emailSpeech(result);
-	    			break;
-	    		}
-		   		$scope.$apply();
 			}
+				return results;
  		}
 
  		function failCallback(error){
@@ -288,246 +302,269 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
-	$scope.globalCommands = function(result) {
-		if (result == "how is the weather" || result == "how's the weather" || result == "what's the weather" || result == "what is the weather like today" || result == "what's the weather like" || result == "how's the weather today" || result == "how is the weather today"){
-			$scope.$apply(function() {
-				$scope.changeView("weather");
-			})
-			navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
+$scope.dialogMan = function(){
+		var results = $scope.reco();
+		if ($scope.globalCommands(results)){
+			return;
+		}else if ($scope.weatherSpeech(results))	{ //view == * do
+			return;
+		}
+		else if ($scope.newsSpeech(results)) {
+			return;
+		}
+		else if ($scope.emailSpeech(results)){
+			return;
+		}
+	}
+
+
+
+	$scope.globalCommands = function(results) {
+		for (var i = 0; i < results.length; i++){ results[i]
+			if (results[i] == "how is the weather" || results[i] == "how's the weather" || results[i] == "what's the weather" || results[i] == "what is the weather like today" || results[i] == "what's the weather like" || results[i] == "how's the weather today" || results[i] == "how is the weather today"){
 				$scope.$apply(function() {
-					$scope.changeView('back');
+					$scope.changeView("weather");
 				})
-			})
-			return true;
-		} else if (result.match(/go to/) || result.match(/open/)) {
-			if (result.match(/news/)) {
-				if ($scope.jeeves.view != 'news') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('news');
-						});
+				navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
+					$scope.$apply(function() {
+						$scope.changeView('back');
 					})
-				} else {
-					navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
-				}
+				})
 				return true;
-			} else if (result.match(/email/)) {
-				if ($scope.jeeves.view != 'email') {
-					navigator.tts.speak("On it.", function() {
+			} else if (results[i].match(/go to/) || results[i].match(/open/)) {
+				if (results[i].match(/news/)) {
+					if ($scope.jeeves.view != 'news') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('news');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
+					}
+					return true;
+				} else if (results[i].match(/email/)) {
+					if ($scope.jeeves.view != 'email') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('email');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
+					}
+					
+					return true;
+				} else if (results[i].match(/weather/)) {
+					if ($scope.jeeves.view != 'weather') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('weather');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
+					}
+					return true;
+				} else if (results[i].match(/menu/)) {
+					if ($scope.jeeves.view != 'menu') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('menu');
+							});
+						})
+					} else {
+						navigator.tts.speak('You are already on the menu. Would you like to check out the news or your email?');
+					}
+					
+					return true;
+				} else if (results[i].match(/settings/)) {
+					if ($scope.jeeves.view != 'settings') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('settings');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.");
+					}
+					return true;
+				} else if (results[i].match(/contact/)) {
+					if ($scope.jeeves.view != 'contact') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('contact');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!");
+					}
+					return true;
+				} else if (results[i].match(/about/)) {
+					if ($scope.jeeves.view != 'about') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('about');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the about page. Let me introduce myself to you!");
+					}
+					return true;
+				} else if (results[i].match(/help/)) {
+					if ($scope.jeeves.view != 'help') {
+						navigator.tts.speak("On it.", function() {
+							$scope.$apply(function() {
+								$scope.changeView('help');
+							});
+						})
+					} else {
+						navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
+					}
+					return true;
+				}
+			}else if (results[i].match(/read/)) {
+				if (results[i].match(/email/)) {
+					navigator.tts.speak("No problem! Let's pull up your emails.", function () {
 						$scope.$apply(function() {
 							$scope.changeView('email');
 						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
-				}
-				
-				return true;
-			} else if (result.match(/weather/)) {
-				if ($scope.jeeves.view != 'weather') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('weather');
-						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
-				}
-				return true;
-			} else if (result.match(/menu/)) {
-				if ($scope.jeeves.view != 'menu') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('menu');
-						});
-					})
-				} else {
-					navigator.tts.speak('You are already on the menu. Would you like to check out the news or your email?');
-				}
-				
-				return true;
-			} else if (result.match(/settings/)) {
-				if ($scope.jeeves.view != 'settings') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('settings');
-						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.");
-				}
-				return true;
-			} else if (result.match(/contact/)) {
-				if ($scope.jeeves.view != 'contact') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('contact');
-						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!");
-				}
-				return true;
-			} else if (result.match(/about/)) {
-				if ($scope.jeeves.view != 'about') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('about');
-						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the about page. Let me introduce myself to you!");
-				}
-				return true;
-			} else if (result.match(/help/)) {
-				if ($scope.jeeves.view != 'help') {
-					navigator.tts.speak("On it.", function() {
-						$scope.$apply(function() {
-							$scope.changeView('help');
-						});
-					})
-				} else {
-					navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
-				}
-				return true;
-			}
-		}else if (result.match(/read/)) {
-			if (result.match(/email/)) {
-				navigator.tts.speak("No problem! Let's pull up your emails.", function () {
-					$scope.$apply(function() {
-						$scope.changeView('email');
+						// Start reading emails.
 					});
-					// Start reading emails.
-				});
-				return true;
-			} else {
-				//Begin news speech recognition.
-				$scope.newsSpeech(result);
-				return true;
-			}
-		}else if (result == "help") {
-			if ($scope.jeeves.view == 'weather') {
-				$scope.jeeves.weathermodalhelp = $modal.open({
-					templateUrl: "weather-help.html",
-					windowClass: 'help-window'
-				})
-				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
-					$scope.jeeves.weathermodalhelp.close();
-				});
-				return true;
-			}else if ($scope.jeeves.view == 'email') {
-				$scope.jeeves.emailmodalhelp = $modal.open({
-					templateUrl: "email-help.html",
-					windowClass: "help-window"
-				})
-				navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
-					$scope.jeeves.emailmodalhelp.close();
-				});
-				return true;
-			}else if (help.match(/favorites/)) {
-				//1
-				navigator.tts.speak("you can say read");
-			}else if (help.match(/menu/)) {
-				//1
-				navigator.tts.speak("you can say go to insert section");
-			}else if (help.match(/about/)) {
-				//1
-				navigator.tts.speak("you can say read");
-				navigator.tts.speak("or you can say tell me about jeeves")
-			}else if (help.match(/settings/)) {
-				//1
-				navigator.tts.speak("you can say change city to insert city"); 
-			}else if (help.match(/contact/)) {
-				//1
-				navigator.tts.speak("you can say read");
-			}else if (help.match(/news/)) {
-				//5
-				navigator.tts.speak("you can say read me - insert section");
-				navigator.tts.speak("you can say read me next article");
-				navigator.tts.speak("you can say read me article - insert title");
-				navigator.tts.speak("you can say more articles");
-				navigator.tts.speak("you can say read me last or previous article");
-			}
+					return true;
+				} else {
+					//Begin news speech recognition.
+					$scope.newsSpeech(results[i]);
+					return true;
+				}
+			}else if (results[i] == "help") {
+				if ($scope.jeeves.view == 'weather') {
+					$scope.jeeves.weathermodalhelp = $modal.open({
+						templateUrl: "weather-help.html",
+						windowClass: 'help-window'
+					})
+					navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
+						$scope.jeeves.weathermodalhelp.close();
+					});
+					return true;
+				}else if ($scope.jeeves.view == 'email') {
+					$scope.jeeves.emailmodalhelp = $modal.open({
+						templateUrl: "email-help.html",
+						windowClass: "help-window"
+					})
+					navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+						$scope.jeeves.emailmodalhelp.close();
+					});
+					return true;
+				}else if (help.match(/favorites/)) {
+					//1
+					navigator.tts.speak("you can say read");
+				}else if (help.match(/menu/)) {
+					//1
+					navigator.tts.speak("you can say go to insert section");
+				}else if (help.match(/about/)) {
+					//1
+					navigator.tts.speak("you can say read");
+					navigator.tts.speak("or you can say tell me about jeeves")
+				}else if (help.match(/settings/)) {
+					//1
+					navigator.tts.speak("you can say change city to insert city"); 
+				}else if (help.match(/contact/)) {
+					//1
+					navigator.tts.speak("you can say read");
+				}else if (help.match(/news/)) {
+					//5
+					navigator.tts.speak("you can say read me - insert section");
+					navigator.tts.speak("you can say read me next article");
+					navigator.tts.speak("you can say read me article - insert title");
+					navigator.tts.speak("you can say more articles");
+					navigator.tts.speak("you can say read me last or previous article");
+				}
 
+			}
 		}
 	}
 
-	$scope.weatherSpeech = function(result) {
+	$scope.weatherSpeech = function(results) {
 		var city = "INVALID";
-		var stop = false;
+		// var stop = false;
+		for (var i = 0; results.length; i++) {
+			if (results[i].lastIndexOf("change city to")==0){
+				city = results[i].slice(15);
+			}else if (results[i].lastIndexOf("change to")==0){
+				city = results[i].slice(10);
+			}else if (results[i].lastIndexOf("change weather to")==0){
+				city = results[i].slice(18);
+			// }else if (result.lastIndexOf("change whether to")==0){
+			// 	city = result.slice(18);
+			}else if (results[i].lastIndexOf("what's the weather of")==0){
+				city = results[i].slice(22);
+			}else {
+				alert(results[i] + " is an invalid command.");
+			}
 
-		if (result.lastIndexOf("change city to")==0){
-			city = result.slice(15);
-		}else if (result.lastIndexOf("change to")==0){
-			city = result.slice(10);
-		}else if (result.lastIndexOf("change weather to")==0){
-			city = result.slice(18);
-		// }else if (result.lastIndexOf("change whether to")==0){
-		// 	city = result.slice(18);
-		}else if (result.lastIndexOf("what's the weather of")==0){
-			city = result.slice(22);
-		}else {
-			alert(result + " is an invalid command.");
+			if(city !== "INVALID"){
+				$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
+				$scope.changeWeather(null);
+				// stop = true;
+
+				navigator.tts.speak("Changing the city to " + $scope.jeeves.city + ".");
+				return true;
+			} 
+			// return stop;
+			return false;
 		}
-
-		if(city !== "INVALID"){
-			$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
-			$scope.changeWeather(null);
-			stop = true;
-
-			navigator.tts.speak("Changing the city to " + $scope.jeeves.city + ".");
-		}
-
-		return stop;
 	}
 
 	//Commands are: read, read <section>, read article, continue, previous, more articles
-	$scope.newsSpeech = function(result){
-		if ($scope.jeeves.view != 'news') {
-			$scope.changeView('news');
-			$scope.$apply();
-		}
-		if (result.match(/read/)){
-			 if(result.match(/article/)){
-				$scope.readArticle();
-				$scope.jeeves.newsPosition.pause=false;
-				$scope.jeeves.newsPosition.pausePosition=0;
-				$scope.jeeves.newsPosition.contArticleContent="";
-			}
-			else{
-				if (result.length>4){
-					var section1=result.substring(5);
-					$scope.jeeves.newsPosition.section=section1;
-					$scope.jeeves.newsPosition.articleIndex = 0;
-					//$scope.changeSection(section1);
-				}
-				else{
-					$scope.jeeves.newsPosition.section=section;
-					//$scope.changeSection('news');
-				}
-				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+	$scope.newsSpeech = function(results){
+		for (var i = 0; results.length; i++) {
+			if ($scope.jeeves.view != 'news') {
+				$scope.changeView('news');
 				$scope.$apply();
 			}
-		}else if (result.match(/next article/) || result.match(/continue/)) {
-			navigator.tts.speak("Going to next article");
-			$scope.jeeves.newsPosition.articleIndex++;
-			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
-		}
-		else if (result.match(/previous/)){
-			if($scope.jeeves.newsPosition.articleIndex>1){
-				navigator.tts.speak("Going to previous article");
-				$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-2;
+			if (results[i].match(/read/)){
+				 if(results[i].match(/article/)){
+					$scope.readArticle();
+					$scope.jeeves.newsPosition.pause=false;
+					$scope.jeeves.newsPosition.pausePosition=0;
+					$scope.jeeves.newsPosition.contArticleContent="";
+				}
+				else{
+					if (results[i].length>4){
+						var section1=results[i].substring(5);
+						$scope.jeeves.newsPosition.section=section1;
+						$scope.jeeves.newsPosition.articleIndex = 0;
+						//$scope.changeSection(section1);
+					}
+					else{
+						$scope.jeeves.newsPosition.section=section;
+						//$scope.changeSection('news');
+					}
+					$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+					$scope.$apply();
+				}
+			}else if (results[i].match(/next article/) || results[i].match(/continue/)) {
+				navigator.tts.speak("Going to next article");
+				$scope.jeeves.newsPosition.articleIndex++;
 				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 			}
-			else{
-				navigator.tts.speak("There are no previous articles.");
+			else if (results[i].match(/previous/)){
+				if($scope.jeeves.newsPosition.articleIndex>1){
+					navigator.tts.speak("Going to previous article");
+					$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-2;
+					$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+				}
+				else{
+					navigator.tts.speak("There are no previous articles.");
+				}
 			}
+			else if(results[i].match(/more articles/)){
+				//We have to remove if were changing the style of news, maybe?
+				$scope.updateShowAmount();
+			}	
 		}
-		else if(result.match(/more articles/)){
-			//We have to remove if were changing the style of news, maybe?
-			$scope.updateShowAmount();
-		}	
-		$scope.$apply();
+			$scope.$apply();
 	}
 
 	$scope.sayWebTitle = function(section){
@@ -685,11 +722,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 
-	$scope.emailSpeech = function(result) {
-		if (result == "read my emails" || "read" || "start reading") {
-			var content = document.getElementById('email-announcement').innerText;
-			navigator.tts.speak(content);
-		}
+	$scope.emailSpeech = function(results) {
+		for (var i = 0; i <results.length; i++) {
+			if (results[i] == "read my emails" || "read" || "start reading") {
+				var content = document.getElementById('email-announcement').innerText;
+				navigator.tts.speak(content);
+			}
+		}	
 	}
 
 	$scope.capitaliseFirstLetter=function(string){
