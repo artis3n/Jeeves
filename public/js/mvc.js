@@ -713,6 +713,51 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		$scope.cutNews();
 	}
 
+	$scope.disableBack = function(){
+		if($scope.jeeves.displayNews.newsCount<5){
+			var button = document.getElementById('newsBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('newsBack');
+			button.disabled = null;
+		}
+		if($scope.jeeves.displayNews.worldCount<5){
+			var button = document.getElementById('worldBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('worldBack');
+			button.disabled = null;
+		}
+		if($scope.jeeves.displayNews.sportsCount<5){
+			var button = document.getElementById('sportsBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('sportsBack');
+			button.disabled = null;
+		}
+		if($scope.jeeves.displayNews.businessCount<5){
+			var button = document.getElementById('businessBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('businessBack');
+			button.disabled = null;
+		}
+		if($scope.jeeves.displayNews.techCount<5){
+			var button = document.getElementById('techBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('techBack');
+			button.disabled = null;
+		}
+		if($scope.jeeves.displayNews.scienceCount<5){
+			var button = document.getElementById('scienceBack');
+			button.disabled = 'disabled';
+		}else{
+			var button = document.getElementById('scienceBack');
+			button.disabled = null;
+		}
+	}
+
 	$scope.cutNews = function(){
 		$scope.jeeves.displayNews.news = $scope.jeeves.newsArticles.news.slice($scope.jeeves.displayNews.newsCount, $scope.jeeves.displayNews.newsCount+5);
 		$scope.jeeves.displayNews.world = $scope.jeeves.newsArticles.world.slice($scope.jeeves.displayNews.worldCount, $scope.jeeves.displayNews.worldCount+5);
@@ -720,6 +765,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		$scope.jeeves.displayNews.business = $scope.jeeves.newsArticles.business.slice($scope.jeeves.displayNews.businessCount, $scope.jeeves.displayNews.businessCount+5);
 		$scope.jeeves.displayNews.tech = $scope.jeeves.newsArticles.tech.slice($scope.jeeves.displayNews.techCount, $scope.jeeves.displayNews.techCount+5);
 		$scope.jeeves.displayNews.science = $scope.jeeves.newsArticles.science.slice($scope.jeeves.displayNews.scienceCount, $scope.jeeves.displayNews.scienceCount+5);
+		$scope.disableBack();
 	}
 
 
