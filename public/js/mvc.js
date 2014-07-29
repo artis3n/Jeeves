@@ -167,7 +167,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
 	// For the use of first showing up "News" Section
@@ -877,27 +877,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				              	content.appendChild(sender);
 				              	var contents = document.createElement('div');
 				              	contents.setAttribute('id', 'email-content');
-				              	alert("Read this");
-				              	contents.innerHTML = stuff.payload.body.data;
-				              	alert("Read this too");
-				              	// if (stuff.payload.parts == null) {
-				              	// 	alert("Read me 1");
-				              	// 	contents.innerHTML = atob(stuff.payload.body.data);
-				              	// 	// try {
-				              	// 	// 	contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
-				              	// 	// } catch (err) {
-				              	// 	// 	contents.innerHTML = "Error decoding, but got to this step.<br><br>"
-				              	// 	// }
-
-				              	// } else {
-				              	// 	alert("Read me 2");
-				              	// 	contents.innerHTML = atob(stuff.payload.parts[0].body.data);
-				              	// 	// try {
-				              	// 	// 	contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
-				              	// 	// } catch (err) {
-				              	// 	// 	contents.innerHTML = "Error decoding, but got to this step.<br><br>"
-				              	// 	// }
-				              	// }
+				              	if (email.payload.parts == null) {
+				              		contents.innerHTML = unescape(atob(email.payload.body.data));
+				              	} else {
+				              		contents.innerHTML = unescape(atob(email.payload.parts[0].body.data));
+				              	}
 				              	content.appendChild(contents);
 				        	})
 				        })
