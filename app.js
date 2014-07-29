@@ -15,21 +15,20 @@ app.use("/", express.static(__dirname + "/public"));
 
 
 // parse the bodies of all other queries as json
-app.use(bodyParser.json());
+app.use(bodyParser.json({strict: false}));
 
 
 // log the requests
 app.use(function(req, res, next) {
-    console.log('%s %s %s', req.method, req.url, JSON.stringify(req.body));
+    console.log('%s %s', req.method, req.url);
     //console.log("myData = "+JSON.stringify(myData));
     next();
 });
 
 // Send email data to be decoded and return decoded data.
-app.post('/decode/', function(req, res) {
+app.post('/decode', function(req, res) {
     console.log("Post activated.");
-    var decoded = mimelib.decodeMimeWord(req.body);
-    console.log(decoded);
+    var decoded = unescape(mimelib.decodeBase64(req.body));
     console.log("Decoded successfully.");
     res.json(200, {'content': decoded});
 });
