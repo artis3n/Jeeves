@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html ng-app="jeevesApp">
 <head>	
 	<title>Jeeves</title>
@@ -30,7 +30,6 @@
 	
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
-
 </head>
 
 <body id="body-controller-element" ng-controller="jeevesCtrl">
@@ -45,7 +44,6 @@
 			<button ng-click="changeView('menu')" class="btn btn-primary pull-right" style="width: 150px;">
 				<span class="glyphicon glyphicon-home"></span>
 			</button>
-			<br>
 			<br>
 		</div>
 
@@ -68,95 +66,97 @@
 		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
 			<div>
 				<h2 class="text-center">News</h2>
-				<button id="pause" class="btn btn-warning btn-block" ng-click="pauseAndPlay()"><span id="news1stitle">Pause/Play</span></button>
 			</div>
 			<div align = "center">
-				<accordion close-others="true">
-					<accordion-group heading="News" is-open="status.isFirstOpen">
-						<div ng-repeat="entry in jeeves.displayNews.news">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+				<div style="height:370px; overflow: scroll;">
+					<button id="pause" class="btn btn-warning btn-block" ng-click="pauseAndPlay()"><span id="news1stitle">Pause/Play</span></button>
+					<accordion close-others="true">
+						<accordion-group heading="News" is-open="status.isFirstOpen">
+							<div ng-repeat="entry in jeeves.displayNews.news">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed" display="inherit">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="newsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',true)">More </button>
-						</div>
-					</accordion-group>
-					<accordion-group heading="World">
-						<div ng-repeat="entry in jeeves.displayNews.world">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<div class="btn-group btn-block">
+								<button id="newsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('news',true)">More </button>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="worldBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',true)">More </button>
-						</div>
-					</accordion-group>
-					<accordion-group heading="Sports">
-						<div ng-repeat="entry in jeeves.displayNews.sports">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						</accordion-group>
+						<accordion-group heading="World">
+							<div ng-repeat="entry in jeeves.displayNews.world">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="sportsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',true)">More </button>
-						</div>
-					</accordion-group>
-					<accordion-group heading="Business">
-						<div ng-repeat="entry in jeeves.displayNews.business">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<div class="btn-group btn-block">
+								<button id="worldBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('world',true)">More </button>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="businessBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',true)">More </button>
-						</div>
-					</accordion-group>
-					<accordion-group heading="Technology">
-						<div ng-repeat="entry in jeeves.displayNews.tech">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+						</accordion-group>
+						<accordion-group heading="Sports">
+							<div ng-repeat="entry in jeeves.displayNews.sports">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="techBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',true)">More </button>
-						</div>
-					</accordion-group>
-					<accordion-group heading="Science">
-						<div ng-repeat="entry in jeeves.displayNews.science">
-							<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
-								<span>{{entry.webTitle}}</span>
-							</button>
-							<div collapse="!collapsed">
-								<div class="well well-lg" id="{{entry.webTitle}}"></div>
+							<div class="btn-group btn-block">
+								<button id="sportsBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('sports',true)">More </button>
 							</div>
-						</div>
-						<div class="btn-group btn-block">
-							<button id="scienceBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',false)">Go Back</button>
-							<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',true)">More </button>
-						</div>
-					</accordion-group>
-				</accordion>
+						</accordion-group>
+						<accordion-group heading="Business">
+							<div ng-repeat="entry in jeeves.displayNews.business">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
+							</div>
+							<div class="btn-group btn-block">
+								<button id="businessBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('business',true)">More </button>
+							</div>
+						</accordion-group>
+						<accordion-group heading="Technology">
+							<div ng-repeat="entry in jeeves.displayNews.tech">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
+							</div>
+							<div class="btn-group btn-block">
+								<button id="techBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('tech',true)">More </button>
+							</div>
+						</accordion-group>
+						<accordion-group heading="Science">
+							<div ng-repeat="entry in jeeves.displayNews.science">
+								<button class="btn btn-warning btn-block" ng-click="collapsed = !collapsed; setInnerHTML(entry)">
+									<span>{{entry.webTitle}}</span>
+								</button>
+								<div collapse="!collapsed">
+									<div class="well well-lg" id="{{entry.webTitle}}"></div>
+								</div>
+							</div>
+							<div class="btn-group btn-block">
+								<button id="scienceBack" tyep="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',false)">Go Back</button>
+								<button type="button" style="width:50%" class="btn btn-success" ng-click="differentFive('science',true)">More </button>
+							</div>
+						</accordion-group>
+					</accordion>
+				</div>
 			</div>
 			<script type="text/ng-template" id="news-help.html">
 			<div ng-controller="jeevesCtrl">
@@ -178,14 +178,12 @@
 
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
-				<h2>Email</h2>
-				<div style="padding-bottom: 10px">
+
+				<h2>Email<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default btn-sm">Refresh</button></span></h2>
+				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
-					<div>
-						<button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default" style="visibility:hidden">Refresh</button>
-					</div>
 				</div>
-				<div style="padding-bottom: 30px" id="message-content-here">
+				<div style="height:330px; overflow: scroll;" id="message-content-here">
 					<div id="message-list"></div>
 				</div>
 			</div>
@@ -206,6 +204,7 @@
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak ng-swipe-left="handleSwipe('right-to-left')">
 			<div>
+				<br>
 				<h2 class="text-center">Weather of {{jeeves.city}}</h2>
 			    <div align="center">
 				    <span>
@@ -229,6 +228,9 @@
 		    		</div>
 	        	</div>
 	      	</div>
+	      	<br>
+	      	<br>
+	      	<br>
 	      	<script type="text/ng-template" id="weather-help.html">
 			<div ng-controller="jeevesCtrl">
 				<div class="text-center"><h3>Weather Commands</h3></div>
@@ -296,12 +298,11 @@
 
 		<div id="bottom-buttons" class="view" >
 			<br>
-			<br>
 			<button ng-click="reco(dialogMan)" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
 			<!-- Help button change to "GO back button for now to debug" -->
 			<button ng-click="changeView('back')" class="btn btn-primary pull-right" style="width: 150px;">Help </button>
 			<br>
-			<br>	
+			<br>
 		</div>
 	</div>
 	<script type="text/javascript">
