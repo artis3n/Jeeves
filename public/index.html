@@ -68,8 +68,8 @@
 				<h2 class="text-center">News</h2>
 			</div>
 			<div align = "center">
-				<div style="height:370px; overflow: scroll;">
-					<button id="pause" class="btn btn-warning btn-block" ng-click="pauseAndPlay()"><span id="news1stitle">Pause/Play</span></button>
+				<button id="pause" class="btn btn-info btn-block" ng-click="pauseAndPlay()"><span id="news1stitle">Pause/Play</span></button>
+				<div style="height:345px; overflow: scroll;">
 					<accordion close-others="true">
 						<accordion-group heading="News" is-open="status.isFirstOpen">
 							<div ng-repeat="entry in jeeves.displayNews.news">
@@ -179,12 +179,13 @@
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
 
-				<h2>Email<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default btn-sm">Refresh</button></span></h2>
+				<h2 class="text-center">Email</h2>
 				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 				</div>
-				<div style="height:330px; overflow: scroll;" id="message-content-here">
-					<div id="message-list"></div>
+				<div style="height:340px; overflow: auto;" id="message-content-here">
+					<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default btn-sm">Refresh</button></span>
+					<accordion id="message-list" close-others="true"></accordion>
 				</div>
 			</div>
 			<script type="text/ng-template" id="email-help.html">
@@ -203,7 +204,7 @@
 		</div>
 
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak ng-swipe-left="handleSwipe('right-to-left')">
-			<div>
+			<div style="height:440px;">
 				<br>
 				<h2 class="text-center">Weather of {{jeeves.city}}</h2>
 			    <div align="center">
@@ -213,8 +214,8 @@
 		    		<span>
 		    			<h3>Current: {{ jeeves.weather.temp.current | number: 0}}&deg <span class="degree-letter">F</span></h3>
 		    		</span>
-    			</div>
-    			<br>
+				</div>
+				<br>
 	       		<div align="center">
 		       		<div class="input-group" style="width: 210px">
 		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city" onkeydown="if (event.keyCode == 13) document.getElementById('changeCity').click()">
@@ -223,14 +224,9 @@
 		        		</span>
 		        	</div>
 		    		<font size="1">Powered by OpenWeatherMap.org</font>
-		    		<div>
-		    			<button ng-click="testcall()">Test Call</button>
-		    		</div>
 	        	</div>
 	      	</div>
-	      	<br>
-	      	<br>
-	      	<br>
+
 	      	<script type="text/ng-template" id="weather-help.html">
 			<div ng-controller="jeevesCtrl">
 				<div class="text-center"><h3>Weather Commands</h3></div>
@@ -249,35 +245,39 @@
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
  			<h2 class="text-center">About</h2>
-			<p><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font></p>
+ 			<div style="height:378px; overflow: auto;">
+				<p><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font></p>
+			</div>
 		</div>
 
 		<div id="settings" class="view" ng-hide="jeeves.view != 'settings' " ng-cloak>
 			<div>
-			<h2 class="text-center">Settings</h2>
-			<div>
-				<h3>Weather</h3>
-				<h4><i>Change Location</i></h4>
-				<div class="input-group" style="width: 210px">
-		        		<input type="text" class="form-control" placeholder="City, State" id="weather_city_setting" onkeydown="if (event.keyCode == 13) document.getElementById('changeCitySetting').click()">
-		        		<span class="input-group-btn">
-			        		<button class="btn btn-default" type="submit" ng-click="changeWeather(true)" id="changeCitySetting">Change</button>
-		        		</span>
-		        	</div>
-				<p><font size="1">Powered by OpenWeatherMap.org</font></p>
-			</div>
-			<hr>
+				<h2 class="text-center">Settings</h2>
+				<div style="height:337px; overflow: auto;">
+					<h3>Weather</h3>
+					<h4><i>Change Location</i></h4>
+					<div class="input-group" style="width: 210px">
+			        		<input type="text" class="form-control" placeholder="City, State" id="weather_city_setting" onkeydown="if (event.keyCode == 13) document.getElementById('changeCitySetting').click()">
+			        		<span class="input-group-btn">
+				        		<button class="btn btn-default" type="submit" ng-click="changeWeather(true)" id="changeCitySetting">Change</button>
+			        		</span>
+			        </div>
+					<p><font size="1">Powered by OpenWeatherMap.org</font></p>
+				</div>
+				<hr>
 			</div>
 		</div>
 
 		<div id="contact" class="view" ng-hide="jeeves.view != 'contact'" ng-cloak>
 			<div>
 				<h2 class="text-center">Contact Us</h2>
-				<p><font size="4"> Co-Founders: </font></p>
-				<p><img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10314024_4131147334668_1448501559062959054_n.jpg?oh=a3e89dcd1c71d0daac430ec2b2cf9a54&oe=5453FA50&__gda__=1415069884_c2b2d9c31111b5341d5bf53abd5aaf7d" alt="Ari Kalfus" width="60" height="80"><b><font size = "4">  Ari Kalfus</font></b>: akalfus@brandeis.edu</p>
-				<p><img src="https://scontent-a.xx.fbcdn.net/hphotos-xaf1/t1.0-9/1604413_10202736434833868_462765446_n.jpg" alt="Burak Sezer" width="60" height="80"><b><font size = "4">  Burak Sezer</font></b>: bsezer@brandeis.edu</p>
-				<p><img src="https://scontent-b.xx.fbcdn.net/hphotos-xpf1/t1.0-9/1607065_10151908263002308_212651559_n.jpg" alt="Sam Raphael" width="60" height="60"><b><font size = "4">  Sam Raphael</font></b>: sraph@brandeis.edu</p>	
-				<p><img src="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xfp1/t1.0-9/10489684_670812976326270_6814612110053956320_n.jpg" alt="Wesley Wei Qian" width="60" height="60"><b><font size = "4">  Wesely Wei Qian</font></b>: weschin@brandeis.edu</p>					
+				<div style="height:378px; overflow: auto;">
+					<p><font size="4"> Co-Founders: </font></p>
+					<p><img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t1.0-9/10314024_4131147334668_1448501559062959054_n.jpg?oh=a3e89dcd1c71d0daac430ec2b2cf9a54&oe=5453FA50&__gda__=1415069884_c2b2d9c31111b5341d5bf53abd5aaf7d" alt="Ari Kalfus" width="60" height="80"><b><font size = "4">  Ari Kalfus</font></b>: akalfus@brandeis.edu</p>
+					<p><img src="https://scontent-a.xx.fbcdn.net/hphotos-xaf1/t1.0-9/1604413_10202736434833868_462765446_n.jpg" alt="Burak Sezer" width="60" height="80"><b><font size = "4">  Burak Sezer</font></b>: bsezer@brandeis.edu</p>
+					<p><img src="https://scontent-b.xx.fbcdn.net/hphotos-xpf1/t1.0-9/1607065_10151908263002308_212651559_n.jpg" alt="Sam Raphael" width="60" height="60"><b><font size = "4">  Sam Raphael</font></b>: sraph@brandeis.edu</p>	
+					<p><img src="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xfp1/t1.0-9/10489684_670812976326270_6814612110053956320_n.jpg" alt="Wesley Wei Qian" width="60" height="60"><b><font size = "4">  Wesely Chin</font></b>: weschin@brandeis.edu</p>
+				</div>					
 			</div>
 		 </div>
 
