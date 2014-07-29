@@ -565,8 +565,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			else{
 				if (results1[i].length>4){
 					var section1=results1[i].substring(5);
-					$scope.jeeves.newsPosition.section=section1;
-					$scope.jeeves.newsPosition.articleIndex = 0;
+					if (section1=='news'||section1=='world'||section1=='sports'||section1=='tech'||section1=='science') {
+						$scope.jeeves.newsPosition.section=section1;
+						$scope.jeeves.newsPosition.articleIndex = 0;
+					}
+					else{
+						navigator.tts.speak("You requested to read a section but the section name was unclear, please respond with the name of the section after saying read or say any other command.", function(){
+							$scope.reco($scope.routeToReadSection);
+						})
+						return true;
+					}
 				}
 				else{
 					$scope.jeeves.newsPosition.section=section;
@@ -577,6 +585,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}
 
+	}
+
+	$scope.routeToReadSection = function(results){
+		if($scope.regXloop(results, 'news')||$scope.regXloop(results, 'world')||$scope.regXloop(results, 'sports')||$scope.regXloop(results, 'tech')||$scope.regXloop(results, 'science')){
+			$scope.readDiagNews(results);
+		}
+		else{
+			$scope.dialogMan(results);
+		}
 	}
 
 	$scope.contDiagNews = function(){
@@ -617,27 +634,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
-			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
-			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
-			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
-			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
 							$scope.reco(scope.dialogMan);
 				});
 		}
@@ -726,7 +743,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.newsPosition.pausePosition=position;
 		}
 		else if(position>=chunkArray.length){
-			navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five.", function(){
+			navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 				$scope.$apply(function(){
 					$scope.reco($scope.dialogMan);
 				});
