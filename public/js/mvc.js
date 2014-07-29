@@ -277,9 +277,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
 			return;
-		} else if ($scope.weatherSpeech(results)) {
-			return;
 		} else if ($scope.newsSpeech(results)) {
+			return;
+		} else if ($scope.weatherSpeech(results)) {
 			return;
 		} else if ($scope.emailSpeech(results)){
 			return;
@@ -531,98 +531,142 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				});
 			}
 			if (results[i].match(/read/)){
-				 if(results[i].match(/article/)){
-					$scope.readArticle();
-					$scope.jeeves.newsPosition.pause=false;
-					$scope.jeeves.newsPosition.pausePosition=0;
-					$scope.jeeves.newsPosition.contArticleContent="";
-				}
-				else{
-				if (results[i].length>4){
-					var section1=results[i].substring(5);
-					$scope.jeeves.newsPosition.section=section1;
-					$scope.jeeves.newsPosition.articleIndex = 0;
+				return $scope.readDiagNews(results);
+				
+			}else if (results[i].match(/next article/) || results[i].match(/continue/)) {
+				return $scope.contDiagNews();
+			}
+			else if(results[i].match(/previous five/)){
+				$scope.$apply(function(){
+					$scope.differentFive($scope.jeeves.newsPosition.section,false);
+				});
+				return true;
+			}	
+			else if (results[i].match(/previous/)){
+				return $scope.previousDiagNews();
+			}
+			else if(results[i].match(/more articles/)){
+				$scope.$apply(function(){
+					$scope.differentFive($scope.jeeves.newsPosition.section,true);
+				});
+				return true;
+			}
+			$scope.$apply();
+		}
+	}
+
+	//Either reads the web title for the article on that section or reads the whole article if said read article
+	$scope.readDiagNews = function(results1){
+		for(var i=0; i<results1.length;i++){
+			if(results1[i].match(/article/)){
+				$scope.readArticle();
+				return true;
+			}
+			else{
+				if (results1[i].length>4){
+					var section1=results1[i].substring(5);
+					if (section1=='news'||section1=='world'||section1=='sports'||section1=='tech'||section1=='science') {
+						$scope.jeeves.newsPosition.section=section1;
+						$scope.jeeves.newsPosition.articleIndex = 0;
+					}
+					else{
+						navigator.tts.speak("You requested to read a section but the section name was unclear, please respond with the name of the section after saying read or say any other command.", function(){
+							$scope.reco($scope.routeToReadSection);
+						})
+						return true;
+					}
 				}
 				else{
 					$scope.jeeves.newsPosition.section=section;
 				}
 				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 				$scope.$apply();
-				}
-			}else if (results[i].match(/next article/) || results[i].match(/continue/)) {
-				navigator.tts.speak("Going to next article", function(){
-					$scope.$apply(function(){
-						$scope.jeeves.newsPosition.articleIndex++;
-						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
-					});
+				return true;
+			}
+		}
+
+	}
+
+	$scope.routeToReadSection = function(results){
+		if($scope.regXloop(results, 'news')||$scope.regXloop(results, 'world')||$scope.regXloop(results, 'sports')||$scope.regXloop(results, 'tech')||$scope.regXloop(results, 'science')){
+			$scope.readDiagNews(results);
+		}
+		else{
+			$scope.dialogMan(results);
+		}
+	}
+
+	$scope.contDiagNews = function(){
+		navigator.tts.speak("Going to next article", function(){
+		$scope.$apply(function(){
+			$scope.jeeves.newsPosition.articleIndex++;
+			$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+			});
+		});
+		return true;
+	}
+
+	$scope.previousDiagNews = function(){
+		if($scope.jeeves.newsPosition.articleIndex>=1){
+			navigator.tts.speak("Going to previous article", function(){
+				$scope.$apply(function(){
+					$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-1;
+					$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 				});
-			}
-			else if (results[i].match(/previous/)){
-				if($scope.jeeves.newsPosition.articleIndex>1){
-					navigator.tts.speak("Going to previous article", function(){
-						$scope.$apply(function(){
-							$scope.jeeves.newsPosition.articleIndex=$scope.jeeves.newsPosition.articleIndex-1;
-							$scope.sayWebTitle($scope.jeeves.newsPosition.section);
-						});
-					});
-				}
-				else{
-						navigator.tts.speak("There are no previous articles.");
-				}
-			}
-			else if(results[i].match(/more articles/)){
-				//We have to remove if were changing the style of news, maybe?
-				$scope.differentFive($scope.jeeves.newsPosition.section,true);
-			}
-			else if(results[i].match(/previous five/)){
-				$scope.differentFive($scope.jeeves.newsPosition.section,false);
-			}	
-			$scope.$apply();
+			});
+		}
+		else{
+				navigator.tts.speak("There are no previous articles. Would you like to hear the next article? Say yes or other command.", function(){
+					$scope.reco($scope.routeToPrevious);
+				});
+		}
+		return true;
+	}
+
+	$scope.routeToPrevious = function(results){
+		if($scope.regXloop(results, 'yes')){
+			var x = ['continue']
+			$scope.newsSpeech(x)
+		}else{
+			$scope.dialogMan(results);
 		}
 	}
 
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
-			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
-			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
-			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
-			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function() {
-						$scope.$apply(function() {
-							$scope.dialogMan();
-						});
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+							$scope.reco(scope.dialogMan);
 				});
 		}
 		$scope.$apply();
 	}
 
 	$scope.readArticle = function(){
+
+		$scope.jeeves.newsPosition.pause=false;
+		$scope.jeeves.newsPosition.pausePosition=0;
+		$scope.jeeves.newsPosition.contArticleContent="";
+
 		if ($scope.jeeves.newsPosition.section == "news"){			
 			var gotResult = $scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
@@ -699,9 +743,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.newsPosition.pausePosition=position;
 		}
 		else if(position>=chunkArray.length){
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me for another section, read article, previous, more articles.", function(){
+			navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 				$scope.$apply(function(){
-					$scope.dialogMan();
+					$scope.reco($scope.dialogMan);
 				});
 			});
 		}
@@ -720,6 +764,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
 			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+			return true;
 		}
 	}
 
