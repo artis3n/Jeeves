@@ -509,7 +509,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				alert(results[i] + " is an invalid command.");
 			}
 
-			if(city !== "INVALID"){
+			if(city != "INVALID"){
 				$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
 				$scope.changeWeather(null);
 				// stop = true;
