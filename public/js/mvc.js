@@ -606,27 +606,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
-			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
-			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
-			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
-			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco(scope.dialogMan);
 				});
 		}
@@ -715,7 +715,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.newsPosition.pausePosition=position;
 		}
 		else if(position>=chunkArray.length){
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read me section name, read article, previous, more articles or previous five.", function(){
+			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function(){
 				$scope.$apply(function(){
 					$scope.reco($scope.dialogMan);
 				});
