@@ -804,18 +804,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				              	content.appendChild(sender);
 				              	var contents = document.createElement('div');
 				              	contents.setAttribute('id', 'email-content');
-				              	if (stuff.payload.parts == null) {
-				              		try {
-				              			contents.innerHTML = base64.decode(stuff.payload.body.data) + "<br><br>";
-				              		} catch (err) {
-				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
-				              		}
+				              	if (email.payload.parts == null) {
+				              		contents.innerHTML = unescape(atob(email.payload.body.data));
 				              	} else {
-				              		try {
-				              			contents.innerHTML = base64.decode(stuff.payload.parts[0].body.data) + "<br><br>";
-				              		} catch (err) {
-				              			contents.innerHTML = "Error decoding, but got to this step.<br><br>"
-				              		}
+				              		contents.innerHTML = unescape(atob(email.payload.parts[0].body.data));
 				              	}
 				              	content.appendChild(contents);
 				        	})
