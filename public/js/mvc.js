@@ -599,34 +599,45 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			});
 		}
 		else{
-				navigator.tts.speak("There are no previous articles.");
+				navigator.tts.speak("There are no previous articles. Would you like to hear the next article? Say yes or other command.", function(){
+					$scope.reco($scope.routeToPrevious);
+				});
 		}
 		return true;
 	}
 
+	$scope.routeToPrevious = function(results){
+		if($scope.regXloop(results, 'yes')){
+			var x = ['continue']
+			$scope.newsSpeech(x)
+		}else{
+			$scope.dialogMan(results);
+		}
+	}
+
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
-			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
-			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
-			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
-			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
-			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function() {
+			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five.", function() {
 							$scope.reco(scope.dialogMan);
 				});
 		}
@@ -715,7 +726,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.newsPosition.pausePosition=position;
 		}
 		else if(position>=chunkArray.length){
-			navigator.tts.speak("If you would like to go to the next article, please say continue. Otherwise, say read section name, read article, previous, more articles or previous five.", function(){
+			navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five.", function(){
 				$scope.$apply(function(){
 					$scope.reco($scope.dialogMan);
 				});
