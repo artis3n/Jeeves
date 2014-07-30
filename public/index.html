@@ -178,7 +178,6 @@
 
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
-
 				<h2 class="text-center">Email</h2>
 				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
@@ -188,9 +187,12 @@
 					<div>
 						<div id="message-list"></div>
 						<accordion close-others="true">
+							<div ng-repeat="email in emailList">
+								{{email.subject}}<br>{{email.content}}
+							</div>
 							<accordion-group ng-repeat="email in emailList" heading="{{email.subject}}">
 							<div class="well well-lg">
-								<!-- {{email.content}} -->
+								{{email.content}}
 							</div>
 							</accordion-group>
 						</accordion>

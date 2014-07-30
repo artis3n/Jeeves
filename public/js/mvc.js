@@ -43,7 +43,7 @@ var model = {
 	menuModal: {},
 	isMenuOpen: false,
 	emailListTotal: [],
-	emailList: [],
+	emailList: [{'subject': 'This is a subject test.', 'content': 'This is the content from the test.'}],
 	emailListCount: 0,
 	emailCountDecrement: 5
 };
@@ -863,31 +863,27 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
+			$scope.getEmail();
 			navigator.tts.speak("You are now logged in to Gmail!");
 		})
 	}
 
 	$scope.getEmail = function() {
-		alert("This started.");
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		var loggedIn = OAuth.create("google_mail");
 		loggedIn.me().done(function(data) {
 			loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
 			.done(function(list) {
-				alert("I got the list.");
-				// document.getElementById('authorize-button').innerHTML = Refresh;
-				// alert("Button refreshed.");
-				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br><br>';
-				alert("innerHTML changed.");
+				$scope.jeeves.emailListCount = 0;
+				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br>';
 				var prologue = document.getElementById("message-list");
 				if (list.messages == null) {
 			        prologue.innerHTML = "<b>Your inbox is empty.</b>";
 			      } else {
-			        prologue.innerHTML = "------<br>";
+			        prologue.innerHTML = "------<br><br>";
 			        angular.forEach(list.messages, function(message) {
-			        	alert("I got the message loop started.");
 			        	var emailObject = {};
-			        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
+			        	loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
 			        	.done(function(email) {
 		        			var header = "";
 		            		var sender = "";
@@ -900,15 +896,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 					            }
 		            		})
 			              	emailObject.subject = header + "   " + sender;
-			              	alert(JSON.stringify(emailObject));
 			              	if (email.payload.parts == null) {
 			              		emailObject.content = unescape(atob(email.payload.body.data));
 			              	} else {
 			              		emailObject.content = unescape(atob(email.payload.parts[0].body.data));
 			              	}
-			              	alert(JSON.stringify(emailObject));
 			              	$scope.jeeves.emailListTotal.push(emailObject);
-			              	alert("Current list: " + JSON.stringify($scope.jeeves.emailListTotal));
 			        	})
 			        })
 			    }
@@ -919,19 +912,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	$scope.checkEmail = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		if (!OAuth.create('google_mail')) {
-			alert("Not logged in.");
 			$scope.oauthlogin();
 		} else {
-			alert("I got here.");
 			$scope.getEmail();
 		}
 	}
 
 	$scope.postEmail = function() {
 		navigator.tts.speak("Here's your current email.");
-		alert("Total emails: " + JSON.stringify($scope.jeeves.emailListTotal));
 		var initialSize = $scope.jeeves.emailListCount;
-		var size = $scope.emailListTotal.length;
+		var size = $scope.jeeves.emailListTotal.length;
 		if (size > 5) {
 			size = 5;
 		}
@@ -943,6 +933,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			$scope.jeeves.emailList.push($scope.jeeves.emailListTotal[i]);
 			$scope.jeeves.emailListCount++;
 		}
-		alert("Complete: " + JSON.stringify($scope.jeeves.emailList));
+		alert("This is the list: " + JSON.stringify($scope.jeeves.emailList));
+		$scope.$apply();
 	}
 });
