@@ -40,6 +40,7 @@ var model = {
 		pausePosition:0,
 		contArticleContent:""
 	},
+	newsIntroduction:true,
 	webTitle: {
 		calledTitle:0,
 		calledWebTitle:". Available commands are: next article, read section name, read article, previous, more articles or previous five articles."
@@ -328,7 +329,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if ($scope.jeeves.view != 'news') {
 				navigator.tts.speak("On it.", function() {
 					$scope.$apply(function() {
-						$scope.changeView('news');
+						if($scope.jeeves.newsIntroduction==true){
+							navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles. ", function(){
+								$scope.$apply(function(){
+									$scope.jeeves.newsIntroduction=false;
+									$scope.changeView('news');
+								});
+							});
+						}else{
+							$scope.changeView('news');
+						}
 					});
 				})
 			} else {
@@ -535,28 +545,32 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.changeView('news');
 				});
 			}
-			if (results[i].match(/read/)){
+			if($scope.jeeves.newsIntroduction==true){
+				navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles.");
+				$scope.jeeves.newsIntroduction=false;
+			}
+			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
 				
-			}else if (results[i].match(/next article/) || results[i].match(/continue/)) {
+			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')) {
 				return $scope.contDiagNews();
 			}
-			else if(results[i].match(/previous five/)){
+			else if($scope.regXloopForNews(results[i], 'previous five')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,false);
 				});
 				return true;
 			}	
-			else if (results[i].match(/previous/)){
+			else if ($scope.regXloopForNews(results[i], 'previous')){
 				return $scope.previousDiagNews();
 			}
-			else if(results[i].match(/more articles/)){
+			else if($scope.regXloopForNews(results[i], 'more articles')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,true);
 				});
 				return true;
 			}
-			else if(results[i].match(/news commands/)){
+			else if($scope.regXloopForNews(results[i], 'news commands')){
 				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 					$scope.reco(newsSpeech);
 				})
@@ -594,6 +608,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			}
 		}
+
+	}
+
+	$scope.newsChangeIfNot =function(){
 
 	}
 
@@ -666,6 +684,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		else if($scope.jeeves.webTitle.calledTitle>2){
 			$scope.jeeves.webTitle.calledWebTitle=".";
 		}
+	}
+
+	$scope.regXloopForNews = function(result, match) {
+		var regX = new RegExp(match);
+			if (regX.test(result)) {
+				return true;
+			}
+		return false;
 	}
 
 	$scope.sayWebTitle = function(section){
