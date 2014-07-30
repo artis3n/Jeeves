@@ -309,6 +309,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				return $scope.getHelp(results);
 			}
 		}
+		return false;
 	}
 
 	$scope.regXloop = function(results, match) {
@@ -889,13 +890,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		            		var sender = "";
 		            		angular.forEach(email.payload.headers, function(item) {
 		            			if (item.name == 'Subject') {
-		            				header = '<b>Subject: ' + item.value;
+		            				header = item.value;
 		              			}
 		              			if (item.name == "From") {
-					                sender = '<b>From: ' + item.value;
+					                sender = item.value;
 					            }
 		            		})
-			              	emailObject.subject = header + "   " + sender;
+			              	emailObject.subject = header;
+			              	emailObject.from = sender;
 			              	if (email.payload.parts == null) {
 			              		emailObject.content = unescape(atob(email.payload.body.data));
 			              	} else {
@@ -933,7 +935,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			$scope.jeeves.emailList.push($scope.jeeves.emailListTotal[i]);
 			$scope.jeeves.emailListCount++;
 		}
-		alert("This is the list: " + JSON.stringify($scope.jeeves.emailList));
 		$scope.$apply();
 	}
 });
