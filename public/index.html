@@ -35,7 +35,7 @@
 <body id="body-controller-element" ng-controller="jeevesCtrl">
 	<div class="container">
 		<div class="page-header">
-			<h1>Jeeves <small><span id="version">v0.1.3</span></small></h1>
+			<h1 class="text-center">Jeeves <small><span id="version">v0.1.5</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
 			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled>
@@ -178,14 +178,23 @@
 
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
-
 				<h2 class="text-center">Email</h2>
 				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 				</div>
-				<div style="height:340px; overflow: auto;" id="message-content-here">
-					<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="oauthlogin()" class="btn btn-default btn-sm">Refresh</button></span>
-					<div id="message-list"></div>
+				<div style="height:340px; overflow: auto;">
+					<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="getEmail()" class="btn btn-default btn-sm">Refresh</button></span>
+					<div>
+						<div id="message-list"></div>
+						<accordion close-others="true">
+							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}" id='{{email.subject}}'>
+							<div class="well well-lg" id="{{email.subject}}-email-content">
+								<b>From: {{email.from}}</b><br><br>
+								{{email.content}}
+							</div>
+							</accordion-group>
+						</accordion>
+					</div>
 				</div>
 			</div>
 			<script type="text/ng-template" id="email-help.html">
@@ -307,6 +316,7 @@
 	</div>
 	<script type="text/javascript">
 	document.addEventListener("deviceready", startTTS, false);
+	document.addEventListener("deviceready", emailCheck, false);
 	document.addEventListener("backbutton", goBack, false);
 	document.addEventListener("menubutton", openMenu, false);
 	document.addEventListener("shutdown", endTTS, false);
@@ -320,6 +330,16 @@
 
 		function fail () {
 			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", 'Jeeves', 'Confirm');
+		}
+	}
+
+	function emailCheck() {
+		try {
+			var $element = $('#body-controller-element');
+			var scope = angular.element($element).scope();
+			scope.checkEmail();
+		} catch (err) {
+			alert(err);
 		}
 	}
 
