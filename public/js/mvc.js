@@ -47,6 +47,7 @@ var model = {
 	},
 	// readingArticle:false,
 	menuModal: {},
+	failedUnderstandCount: 0;
 	isMenuOpen: false
 };
 
@@ -326,8 +327,29 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}else if (results[i] == "help") {
 				return $scope.getHelp(results);
 			}
+			j++;
+		}
+		
+		
+	$scope.failedToUnderstandFallback(){
+		if ($scope.jeeves.failedUnderstandCount == 0){
+			navigator.tts.speak("I'm sorry, I couldn't understand you. Can you try speaking again please?", function(){
+				$scope.jeeves.failedUnderstandCount++;
+				$scope.reco(dialogMan); 
+			})
+		}else if ($scope.jeeves.failedUnderstandCount == 1){
+			navigator.tts.speak("I'm sorry, again I couldn't understand you. Can you try speaking again please?", function(){
+				$scope.jeeves.failedUnderstandCount++;
+				$scope.reco(dialogMan); 
+			})
+		}else if ($scope.jeeves.failedUnderstandCount == 2){
+			navigator.tts.speak("I'm sorry, I seem to be having some technical difficulties right now, maybe you could try using the buttons.", function(){
+				$scope.jeeves.failedUnderstandCount++; //=0;
+				$scope.reco(dialogMan); 
+			})
 		}
 	}
+
 
 	$scope.regXloop = function(results, match) {
 		var regX = new RegExp(match);
@@ -439,7 +461,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
 			}
 			return true;
+		}else {
+			goToFallback(results);
+			return false;
 		}
+	}
+
+	$scope.goToFallback = function(results){
+		navigator.tts.speak("sorry, i didn't understand what you said, coudl you tell me again what page you wanted to go to?", $scope.reco(goToSpeech));
 	}
 
 	$scope.globalReadSpeech = function(results) {
@@ -555,6 +584,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(results){
 		for (var i = 0; results.length; i++) {
+
 // 			if ($scope.jeeves.view != 'news') {
 // 				$scope.$apply(function(){
 // 					$scope.changeView('news');
