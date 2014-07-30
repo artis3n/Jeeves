@@ -40,6 +40,7 @@ var model = {
 		pausePosition:0,
 		contArticleContent:""
 	},
+	newsIntroduction:true,
 	webTitle: {
 		calledTitle:0,
 		calledWebTitle:". Available commands are: next article, read section name, read article, previous, more articles or previous five articles."
@@ -60,7 +61,7 @@ jeevesApp.run(function($http) {
             model.weather.description = data.weather[0].description;
     });
 
-	// DO NOT DELETE. Loading News and this is the correct API url. DO NOT DELETE
+	// Loading News.
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
@@ -243,17 +244,32 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.changeWeather = function(setting) {
-		if(setting !== null){
+		var city = "";
+		if(typeof setting == "boolean"){
 			if (setting){
-				$scope.jeeves.city = document.getElementById("weather_city_setting").value;
+				city = document.getElementById("weather_city_setting").value;
 			}else{
-				$scope.jeeves.city = document.getElementById("weather_city").value;
+				city = document.getElementById("weather_city").value;
 			}
+		}else{
+			city=setting;
 		}
 
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
-            $scope.jeeves.weather.temp.current = data.main.temp;
-            $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+            if(data.cod == 200){
+            	navigator.tts.speak("Changing the city to " + city + ".");
+            	$scope.jeeves.city = city;
+		        $scope.jeeves.weather.temp.current = data.main.temp;
+		        $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+		    }else{
+		    	if(typeof setting == "boolean"){
+		    		alert("I am sorry, but "+city + " is not available. Please enter a another city name");
+		    	}else{
+		    		navigator.tts.speak("Sorry, I didn't catch the city name. Can you repeat the city name again?", function() {
+		    			$scope.reco($scope.weatherSpeechFallBack);
+		    		})
+		    	}
+		    }
     	});
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
@@ -282,9 +298,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
 			return;
-		} else if ($scope.newsSpeech(results)) {
-			return;
 		} else if ($scope.weatherSpeech(results)) {
+			return;
+		} else if ($scope.newsSpeech(results)) {
 			return;
 		} else if ($scope.emailSpeech(results)){
 			return;
@@ -328,7 +344,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if ($scope.jeeves.view != 'news') {
 				navigator.tts.speak("On it.", function() {
 					$scope.$apply(function() {
-						$scope.changeView('news');
+						if($scope.jeeves.newsIntroduction==true){
+							navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles. ", function(){
+								$scope.$apply(function(){
+									$scope.jeeves.newsIntroduction=false;
+									$scope.changeView('news');
+								});
+							});
+						}else{
+							$scope.changeView('news');
+						}
 					});
 				})
 			} else {
@@ -493,7 +518,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			return true;
 		}
 		return false;
-
 	}
 
 	$scope.weatherSpeech = function(results) {
@@ -513,13 +537,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}else {
 				alert(results[i] + " is an invalid command.");
 			}
-
 			if(city !== "INVALID"){
-				$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
-				$scope.changeWeather(null);
-				// stop = true;
-
-				navigator.tts.speak("Changing the city to " + $scope.jeeves.city + ".");
+				var cityChange = $scope.capitaliseFirstLetter(city)
+				$scope.changeWeather(cityChange);
 				return true;
 			} 
 			// return stop;
@@ -527,36 +547,45 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
+	$scope.weatherSpeechFallBack = function(cityName){
+		var city = $scope.capitaliseFirstLetter(cityName[0]);
+		$scope.changeWeather(city);
+	}
+
 	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(results){
 		for (var i = 0; results.length; i++) {
-			if ($scope.jeeves.view != 'news') {
-				$scope.$apply(function(){
-					$scope.changeView('news');
-				});
+// 			if ($scope.jeeves.view != 'news') {
+// 				$scope.$apply(function(){
+// 					$scope.changeView('news');
+// 				});
+// 			}
+			if($scope.jeeves.newsIntroduction==true){
+				navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles.");
+				$scope.jeeves.newsIntroduction=false;
 			}
-			if (results[i].match(/read/)){
+			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
 				
-			}else if (results[i].match(/next article/) || results[i].match(/continue/)) {
+			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')) {
 				return $scope.contDiagNews();
 			}
-			else if(results[i].match(/previous five/)){
+			else if($scope.regXloopForNews(results[i], 'previous five')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,false);
 				});
 				return true;
 			}	
-			else if (results[i].match(/previous/)){
+			else if ($scope.regXloopForNews(results[i], 'previous')){
 				return $scope.previousDiagNews();
 			}
-			else if(results[i].match(/more articles/)){
+			else if($scope.regXloopForNews(results[i], 'more articles')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,true);
 				});
 				return true;
 			}
-			else if(results[i].match(/news commands/)){
+			else if($scope.regXloopForNews(results[i], 'news commands')){
 				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 					$scope.reco(newsSpeech);
 				})
@@ -594,6 +623,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			}
 		}
+	}
+
+	$scope.newsChangeIfNot =function(){
 
 	}
 
@@ -668,6 +700,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
+	$scope.regXloopForNews = function(result, match) {
+		var regX = new RegExp(match);
+			if (regX.test(result)) {
+				return true;
+			}
+		return false;
+	}
+
 	$scope.sayWebTitle = function(section){
 		$scope.adaptivePrompt();
 		if ($scope.jeeves.newsPosition.section == "news"){
@@ -699,7 +739,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.readArticle = function(){
-
 		$scope.jeeves.newsPosition.pause=false;
 		$scope.jeeves.newsPosition.pausePosition=0;
 		$scope.jeeves.newsPosition.contArticleContent="";
