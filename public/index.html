@@ -187,8 +187,8 @@
 					<div>
 						<div id="message-list"></div>
 						<accordion close-others="true">
-							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}" id='{{email.subject}}'>
-							<div class="well well-lg" id="{{email.subject}}-email-content">
+							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}">
+							<div class="well well-lg" id="{{email.subject}}">
 								<b>From: {{email.from}}</b><br><br>
 								{{email.content}}
 							</div>

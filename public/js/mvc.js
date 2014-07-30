@@ -49,7 +49,7 @@ var model = {
 	menuModal: {},
 	isMenuOpen: false,
 	emailListTotal: [],
-	emailList: [{'subject': 'This is a subject test.', 'content': 'This is the content from the test.'}],
+	emailList: [],
 	emailListCount: 0,
 	emailCountDecrement: 5
 };
@@ -467,8 +467,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				$scope.$apply(function() {
 					$scope.changeView('email');
 				});
-				$scope.emailSpeech(results);
+				return $scope.emailSpeech(results);
 			});
+			return true;
+		} else if ($scope.jeeves.view == 'email') {
+			$scope.emailSpeech(results);
 			return true;
 		} else {
 			//Begin news speech recognition.
@@ -865,15 +868,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		}
 	}
 
-
 	$scope.emailSpeech = function(results) {
 		for (var i = 0; i <results.length; i++) {
-			if (results[i] == "read my emails" || "read" || "start reading") {
-				var content = document.getElementById('email-announcement').innerText;
-				navigator.tts.speak(content);
-				return true;
+			if (results[i] == "read my emails" || "start reading") {
+				var email = $scope.jeeves.emailList[0];
+				var content = document.getElementById(email.subject);
+				alert(JSON.stringify(content));
+				navigator.tts.speak(email.subject + ". " + content.innerText);
 			}
-		}	
+		}
+		alert("Email finished");
 	}
 
 	$scope.capitaliseFirstLetter=function(string){
