@@ -450,16 +450,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.goToFallBack = function(results) {
-		if ($scope.regXloop(results, 'news')) {
-			$scope.$apply(function() {
-				$scope.changeView('news');
-			})
-		} else if ($scope.regXloop(results, 'weather')) {
-			$scope.$apply(function(){
-				$scope.changeView('weather');
-			})
-			$scope.globalCommands("how's the weather");
-		}
+		navigator.tts.speak("Sorry, I didn't catch all of that. Where would you like to go?", function() {
+			$scope.reco(goToSpeech);
+		})
+	}
+
+	$scope.routeToMenu = function(results) {
+		if (!$scope.confirmSpeech(results, ['go to menu'])) {
+			$scope.dialogMan(results);
+		} // else, successfully routed.
 	}
 
 	$scope.globalReadSpeech = function(results) {
@@ -517,11 +516,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			return true;
 		}else if ($scope.jeeves.view == 'about') {
 			navigator.tts.speak("Nothing to do on this page! Can I take you back to the menu?", function() {
-				var resps = $scope.reco();
-				var confirmed = $scope.confirmSpeech(resps, "go to menu");
-				if (!confirmed) {
-					navigator.tts.speak("Not the menu? That's ok. Maybe you'd prefer to go to news or email?")
-				}
+				$scope.reco(confirmSpeech('go to menu'));
 			});
 			return true;
 		// }else if (help.match(/favorites/)) {
@@ -535,9 +530,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		}
 	}
 	
-	$scope.confirmSpeech = function(resps, command) {
+	$scope.confirmSpeech = function(results, command) {
 		if ($scope.regXloop(results, 'yes')) {
-			$scope.dialogMan(command); //This has to change.
+			$scope.dialogMan(command); // Command must be an array.
 			return true;
 		}
 		return false;
@@ -688,8 +683,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 
 	$scope.routeToPrevious = function(results){
 		if($scope.regXloop(results, 'yes')){
-			var x = ['continue']
-			$scope.newsSpeech(x)
+			var x = ['continue'];
+			$scope.newsSpeech(x);
 		}else{
 			$scope.dialogMan(results);
 		}
