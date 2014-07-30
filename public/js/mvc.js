@@ -556,6 +556,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				});
 				return true;
 			}
+			else if(results[i].match(/news commands/)){
+				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
+					$scope.reco(newsSpeech);
+				})
+			}
 			$scope.$apply();
 		}
 	}
@@ -655,14 +660,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
-		if($scope.jeeves.calledTitle>1){
+		if($scope.jeeves.webTitle.calledTitle==2){
+			$scope.jeeves.webTitle.calledWebTitle=". By the way, if you ever want to hear the available commands again, just press speech and say: news commands.";
+		}
+		else if($scope.jeeves.webTitle.calledTitle>2){
 			$scope.jeeves.webTitle.calledWebTitle=".";
 		}
 	}
 
 	$scope.sayWebTitle = function(section){
+		$scope.adaptivePrompt();
 		if ($scope.jeeves.newsPosition.section == "news"){
-			$scope.adaptivePrompt();
 			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
 							$scope.reco($scope.dialogMan);
 				});
