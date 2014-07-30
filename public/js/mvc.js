@@ -41,7 +41,11 @@ var model = {
 		contArticleContent:""
 	},
 	menuModal: {},
-	isMenuOpen: false
+	isMenuOpen: false,
+	emailListTotal: [],
+	emailList: [],
+	emailListCount: 0,
+	emailCountDecrement: 5
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -167,7 +171,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	$scope.jeeves = model;
 
 	// For the use of first showing up "News" Section
@@ -212,14 +216,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				$scope.openMenu();
 			}
 		} else {
-			if (selected == 'email') {
-				$scope.oauthlogin();
-				navigator.tts.speak("Please wait while I grab your emails.");
-			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			if ($scope.jeeves.isMenuOpen) {
 				$scope.closeMenu();
+			}
+			if (selected == 'email') {
+				$scope.postEmail();
 			}
 		}
 	};
@@ -409,6 +412,21 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
 			}
 			return true;
+		} else {
+			$scope.goToFallback(results);
+		}
+	}
+
+	$scope.goToFallBack = function(results) {
+		if ($scope.regXloop(results, 'news')) {
+			$scope.$apply(function() {
+				$scope.changeView('news');
+			})
+		} else if ($scope.regXloop(results, 'weather')) {
+			$scope.$apply(function(){
+				$scope.changeView('weather');
+			})
+			$scope.globalCommands("how's the weather");
 		}
 	}
 
@@ -845,49 +863,86 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
-			result.me().done(function(data) {
-				result.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
-				.done(function(list) {
-					document.getElementById('authorize-button').style.visibility = '';
-					document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>unread inbox</b> emails.</i><br><br>';
-					var content = document.getElementById("message-list");
-					if (list.messages == null) {
-				        content.innerHTML = "<b>Your inbox is empty.</b>";
-				      } else {
-				        content.innerHTML = "------<br>";
-				        angular.forEach(list.messages, function(message) {
-				        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
-				        	.done(function(email) {
-				        		// if (email.payload == null) {
-				        		// 	console.log("Payload null: " + message.id);
-				        		// }
-			        			var header = document.createElement('div');
-			            		var sender = document.createElement('div');
-			            		angular.forEach(email.payload.headers, function(item) {
-			            			if (item.name == 'Subject') {
-			            				header.setAttribute('id', 'email-header');
-			            				header.innerHTML = '<b>Subject: ' + item.value + '</b><br>';
-			              			}
-			              			if (item.name == "From") {
-						                sender.setAttribute('id', 'email-sender');
-						                sender.innerHTML = '<b>From: ' + item.value + '</b><br>';
-						            }
-			            		})
-				              	content.appendChild(header);
-				              	content.appendChild(sender);
-				              	var contents = document.createElement('div');
-				              	contents.setAttribute('id', 'email-content');
-				              	if (email.payload.parts == null) {
-				              		contents.innerHTML = unescape(atob(email.payload.body.data));
-				              	} else {
-				              		contents.innerHTML = unescape(atob(email.payload.parts[0].body.data));
-				              	}
-				              	content.appendChild(contents);
-				        	})
-				        })
-				    }
-				})
-			});
+			navigator.tts.speak("You are now logged in to Gmail!");
 		})
+	}
+
+	$scope.getEmail = function() {
+		alert("This started.");
+		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
+		var loggedIn = OAuth.create("google_mail");
+		loggedIn.me().done(function(data) {
+			loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
+			.done(function(list) {
+				alert("I got the list.");
+				// document.getElementById('authorize-button').innerHTML = Refresh;
+				// alert("Button refreshed.");
+				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br><br>';
+				alert("innerHTML changed.");
+				var prologue = document.getElementById("message-list");
+				if (list.messages == null) {
+			        prologue.innerHTML = "<b>Your inbox is empty.</b>";
+			      } else {
+			        prologue.innerHTML = "------<br>";
+			        angular.forEach(list.messages, function(message) {
+			        	alert("I got the message loop started.");
+			        	var emailObject = {};
+			        	result.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
+			        	.done(function(email) {
+		        			var header = "";
+		            		var sender = "";
+		            		angular.forEach(email.payload.headers, function(item) {
+		            			if (item.name == 'Subject') {
+		            				header = '<b>Subject: ' + item.value;
+		              			}
+		              			if (item.name == "From") {
+					                sender = '<b>From: ' + item.value;
+					            }
+		            		})
+			              	emailObject.subject = header + "   " + sender;
+			              	alert(JSON.stringify(emailObject));
+			              	if (email.payload.parts == null) {
+			              		emailObject.content = unescape(atob(email.payload.body.data));
+			              	} else {
+			              		emailObject.content = unescape(atob(email.payload.parts[0].body.data));
+			              	}
+			              	alert(JSON.stringify(emailObject));
+			              	$scope.jeeves.emailListTotal.push(emailObject);
+			              	alert("Current list: " + JSON.stringify($scope.jeeves.emailListTotal));
+			        	})
+			        })
+			    }
+			})
+		});
+	}
+
+	$scope.checkEmail = function() {
+		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
+		if (!OAuth.create('google_mail')) {
+			alert("Not logged in.");
+			$scope.oauthlogin();
+		} else {
+			alert("I got here.");
+			$scope.getEmail();
+		}
+	}
+
+	$scope.postEmail = function() {
+		navigator.tts.speak("Here's your current email.");
+		alert("Total emails: " + JSON.stringify($scope.jeeves.emailListTotal));
+		var initialSize = $scope.jeeves.emailListCount;
+		var size = $scope.emailListTotal.length;
+		if (size > 5) {
+			size = 5;
+		}
+		size = size + initialSize;
+		for (var i = initialSize; i < size; i++) {
+			if ($scope.jeeves.emailListTotal[i].content.length < 1) {
+				$scope.jeeves.emailListTotal[i].content = "I was unable to read this email.";
+			}
+			$scope.jeeves.emailList.push($scope.jeeves.emailListTotal[i]);
+			$scope.jeeves.emailListCount++;
+		}
+		alert("Complete: " + JSON.stringify($scope.jeeves.emailList));
 	}
 });
