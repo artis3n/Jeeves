@@ -55,7 +55,7 @@ jeevesApp.run(function($http) {
             model.weather.description = data.weather[0].description;
     });
 
-	// DO NOT DELETE. Loading News and this is the correct API url. DO NOT DELETE
+	// Loading News.
 	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
@@ -238,17 +238,32 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.changeWeather = function(setting) {
-		if(setting !== null){
+		var city = "";
+		if(typeof setting == "boolean"){
 			if (setting){
-				$scope.jeeves.city = document.getElementById("weather_city_setting").value;
+				city = document.getElementById("weather_city_setting").value;
 			}else{
-				$scope.jeeves.city = document.getElementById("weather_city").value;
+				city = document.getElementById("weather_city").value;
 			}
+		}else{
+			city=setting;
 		}
 
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+$scope.jeeves.city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
-            $scope.jeeves.weather.temp.current = data.main.temp;
-            $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+            if(data.cod == 200){
+            	navigator.tts.speak("Changing the city to " + city + ".");
+            	$scope.jeeves.city = city;
+		        $scope.jeeves.weather.temp.current = data.main.temp;
+		        $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+		    }else{
+		    	if(typeof setting == "boolean"){
+		    		alert("I am sorry, but "+city + " is not available. Please enter a another city name");
+		    	}else{
+		    		navigator.tts.speak("Sorry, I didn't catch the city name. Can you repeat the city name again?", function() {
+		    			$scope.reco($scope.weatherSpeechFallBack);
+		    		})
+		    	}
+		    }
     	});
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
@@ -277,9 +292,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
 			return;
-		} else if ($scope.newsSpeech(results)) {
-			return;
 		} else if ($scope.weatherSpeech(results)) {
+			return;
+		} else if ($scope.newsSpeech(results)) {
 			return;
 		} else if ($scope.emailSpeech(results)){
 			return;
@@ -488,7 +503,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			return true;
 		}
 		return false;
-
 	}
 
 	$scope.weatherSpeech = function(results) {
@@ -508,13 +522,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}else {
 				alert(results[i] + " is an invalid command.");
 			}
-
 			if(city !== "INVALID"){
-				$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
-				$scope.changeWeather(null);
-				// stop = true;
-
-				navigator.tts.speak("Changing the city to " + $scope.jeeves.city + ".");
+				var cityChange = $scope.capitaliseFirstLetter(city)
+				$scope.changeWeather(cityChange);
 				return true;
 			} 
 			// return stop;
@@ -522,14 +532,19 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		}
 	}
 
+	$scope.weatherSpeechFallBack = function(cityName){
+		var city = $scope.capitaliseFirstLetter(cityName[0]);
+		$scope.changeWeather(city);
+	}
+
 	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(results){
 		for (var i = 0; results.length; i++) {
-			if ($scope.jeeves.view != 'news') {
-				$scope.$apply(function(){
-					$scope.changeView('news');
-				});
-			}
+			// if ($scope.jeeves.view != 'news') {
+			// 	$scope.$apply(function(){
+			// 		$scope.changeView('news');
+			// 	});
+			// }
 			if (results[i].match(/read/)){
 				return $scope.readDiagNews(results);
 				
@@ -584,7 +599,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			}
 		}
-
 	}
 
 	$scope.routeToReadSection = function(results){
@@ -662,7 +676,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.readArticle = function(){
-
 		$scope.jeeves.newsPosition.pause=false;
 		$scope.jeeves.newsPosition.pausePosition=0;
 		$scope.jeeves.newsPosition.contArticleContent="";
