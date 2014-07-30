@@ -40,7 +40,7 @@ var model = {
 		pausePosition:0,
 		contArticleContent:""
 	},
-	newsIntroduction:true,
+	//newsIntroduction:true,
 	webTitle: {
 		calledTitle:0,
 		calledWebTitle:". Available commands are: next article, read section name, read article, previous, more articles or previous five articles."
@@ -329,16 +329,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if ($scope.jeeves.view != 'news') {
 				navigator.tts.speak("On it.", function() {
 					$scope.$apply(function() {
-						if($scope.jeeves.newsIntroduction==true){
-							navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles. ", function(){
-								$scope.$apply(function(){
-									$scope.jeeves.newsIntroduction=false;
-									$scope.changeView('news');
-								});
-							});
-						}else{
-							$scope.changeView('news');
-						}
+						// if($scope.jeeves.newsIntroduction==true){
+						// 	navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles. ", function(){
+						// 		$scope.$apply(function(){
+						// 			$scope.jeeves.newsIntroduction=false;
+						// 			$scope.changeView('news');
+						// 		});
+						// 	});
+						// }else{
+						// 	$scope.changeView('news');
+						// }
+						$scope.changeView('news');
 					});
 				})
 			} else {
@@ -545,10 +546,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.changeView('news');
 				});
 			}
-			if($scope.jeeves.newsIntroduction==true){
-				navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles.");
-				$scope.jeeves.newsIntroduction=false;
-			}
+			// if($scope.jeeves.newsIntroduction==true){
+			// 	navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles.");
+			// 	$scope.jeeves.newsIntroduction=false;
+			// }
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
 				
@@ -611,9 +612,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	}
 
-	$scope.newsChangeIfNot =function(){
-
-	}
 
 	$scope.routeToReadSection = function(results){
 		if($scope.regXloop(results, 'news')||$scope.regXloop(results, 'world')||$scope.regXloop(results, 'sports')||$scope.regXloop(results, 'tech')||$scope.regXloop(results, 'science')){
@@ -800,26 +798,51 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		$scope.$apply();
 	}
 
-	$scope.recursiveArticleChunk = function(chunkArray, position){
-		output = chunkArray[position];
-		// $scope.readingArticle=true;
-		if($scope.jeeves.newsPosition.pause==true){
-			$scope.jeeves.newsPosition.pausePosition=position;
-		}
-		else if(position>=chunkArray.length){
-			navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
-				$scope.$apply(function(){
-					// $scope.readingArticle=false;
-					$scope.reco($scope.dialogMan);
-				});
-			});
-		}
-		else{
-			navigator.tts.speak(output, function(){
-				$scope.recursiveArticleChunk(chunkArray, (position+1));
-			});
-		}
-	}
+	 $scope.recursiveArticleChunk = function(chunkArray, position){
+	 	output = chunkArray[position];
+	// 	$scope.readingArticle=true;
+	 	if($scope.jeeves.newsPosition.pause==true){
+	 		$scope.jeeves.newsPosition.pausePosition=position;
+	 	}
+	 	else if(position>=chunkArray.length){
+	 		navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
+	 			$scope.$apply(function(){
+	 				// $scope.readingArticle=false;
+	 				$scope.reco($scope.dialogMan);
+	 			});
+	 		});
+	 	}
+	 	else{
+	 		navigator.tts.speak(output, function(){
+	 			$scope.recursiveArticleChunk(chunkArray, (position+1));
+	 		});
+	 	}
+	 }
+
+
+	// $scope.recursiveArticleChunk = function(chunkArray, position, smallerIndex){
+	// 	output = chunkArray[position];
+	// 	// $scope.readingArticle=true;
+	// 	if($scope.jeeves.newsPosition.pause==true){
+	// 		$scope.jeeves.newsPosition.pausePosition=position;
+	// 	}
+	// 	else if(position>=chunkArray.length){
+	// 		navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
+	// 			$scope.$apply(function(){
+	// 				// $scope.readingArticle=false;
+	// 				$scope.reco($scope.dialogMan);
+	// 			});
+	// 		});
+	// 	}
+	// 	else if(smallerIndex>=(output.length-1)){
+	// 		navigator.tts.speak(output, function(){
+	// 			$scope.recursiveArticleChunk(chunkArray, (position+1), 0);
+	// 		});
+	// 	}
+	// 	else{
+	// 		setTimeout(function(){$scope.recursiveArticleChunk(chunkArray, position, (smallerIndex+1));}, 150);	
+	// 	}
+	// }
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
