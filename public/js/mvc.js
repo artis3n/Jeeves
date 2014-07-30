@@ -40,6 +40,10 @@ var model = {
 		pausePosition:0,
 		contArticleContent:""
 	},
+	webTitle: {
+		calledTitle:0,
+		calledWebTitle:". Available commands are: next article, read section name, read article, previous, more articles or previous five articles."
+	},
 	// readingArticle:false,
 	menuModal: {},
 	isMenuOpen: false
@@ -649,9 +653,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	// 	}
 	// }
 
+	$scope.adaptivePrompt = function(){
+		$scope.jeeves.webTitle.calledTitle++;
+		if($scope.jeeves.calledTitle>1){
+			$scope.jeeves.webTitle.calledWebTitle=".";
+		}
+	}
+
 	$scope.sayWebTitle = function(section){
 		if ($scope.jeeves.newsPosition.section == "news"){
-			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ ". Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function() {
+			$scope.adaptivePrompt();
+			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
 							$scope.reco($scope.dialogMan);
 				});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
