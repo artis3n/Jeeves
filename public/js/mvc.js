@@ -306,10 +306,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
+			$scope.failedUnderstandCount = 0;
 			return;
 		} else if ($scope.jeeves.view == "weather" && $scope.weatherSpeech(results)) {
+			$scope.failedUnderstandCount = 0;
 			return;
 		} else if ($scope.jeeves.view == "news" && $scope.newsSpeech(results)) {
+			$scope.failedUnderstandCount = 0;
 			return;
 		}else {
 			$scope.failedToUnderstandFallback();
@@ -647,7 +650,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.weatherSpeech = function(results) {
 		var city = "INVALID";
 		// var stop = false;
-<<<<<<< HEAD
 		for (var i = 0;i < results.length; i++) {
 
 			if (results[i].lastIndexOf("change city to")==0){
