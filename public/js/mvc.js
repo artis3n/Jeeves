@@ -48,10 +48,8 @@ var model = {
 	readingArticle:false,
 	menuModal: {},
 	isMenuOpen: false,
-	emailListTotal: [],
 	emailList: [],
-	emailListCount: 0,
-	emailCountDecrement: 5
+	emailListCount: 0
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -177,7 +175,7 @@ jeevesApp.directive('sglclick', ['$parse', function($parse) {
     };
 }]);
 
-jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
+jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.jeeves = model;
 
 	// For the use of first showing up "News" Section
@@ -228,7 +226,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				$scope.closeMenu();
 			}
 			if (selected == 'email') {
-				$scope.postEmail();
+				navigator.tts.speak("Let's grab your emails.");
+				$scope.checkEmail();
 			}
 		}
 	};
@@ -1039,13 +1038,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.getEmail = function() {
+		$scope.jeeves.emailList.length = 0;
+		document.getElementById("authorize-button").style.visibility = "hidden";
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		var loggedIn = OAuth.create("google_mail");
 		loggedIn.me().done(function(data) {
 			loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
 			.done(function(list) {
 				$scope.jeeves.emailListCount = 0;
-				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br>';
+				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br><br>';
 				var prologue = document.getElementById("message-list");
 				if (list.messages == null) {
 			        prologue.innerHTML = "<b>Your inbox is empty.</b>";
@@ -1072,7 +1073,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			              	} else {
 			              		emailObject.content = unescape(atob(email.payload.parts[0].body.data));
 			              	}
-			              	$scope.jeeves.emailListTotal.push(emailObject);
+			              	$scope.$apply(function() {
+			              		$scope.jeeves.emailList.push(emailObject);
+			              	});
+			              	document.getElementById("authorize-button").style.visibility = "visible";
 			        	})
 			        })
 			    }
@@ -1087,23 +1091,5 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		} else {
 			$scope.getEmail();
 		}
-	}
-
-	$scope.postEmail = function() {
-		navigator.tts.speak("Here's your current email.");
-		var initialSize = $scope.jeeves.emailListCount;
-		var size = $scope.jeeves.emailListTotal.length;
-		if (size > 5) {
-			size = 5;
-		}
-		size = size + initialSize;
-		for (var i = initialSize; i < size; i++) {
-			if ($scope.jeeves.emailListTotal[i].content.length < 1) {
-				$scope.jeeves.emailListTotal[i].content = "I was unable to read this email.";
-			}
-			$scope.jeeves.emailList.push($scope.jeeves.emailListTotal[i]);
-			$scope.jeeves.emailListCount++;
-		}
-		$scope.$apply();
 	}
 });

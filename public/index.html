@@ -183,7 +183,7 @@
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 				</div>
 				<div style="height:356px; overflow: auto;">
-					<span style="padding-left:10px;visibility:hidden"><button id='authorize-button' ng-click="getEmail()" class="btn btn-default btn-sm">Refresh</button></span>
+					<span style="padding-left:10px"><button id='authorize-button' ng-click="getEmail()" class="btn btn-default btn-sm">Load Emails</button></span>
 					<div>
 						<div id="message-list"></div>
 						<accordion close-others="true">
@@ -316,7 +316,6 @@
 	</div>
 	<script type="text/javascript">
 	document.addEventListener("deviceready", startTTS, false);
-	document.addEventListener("deviceready", emailCheck, false);
 	document.addEventListener("backbutton", goBack, false);
 	document.addEventListener("menubutton", openMenu, false);
 	document.addEventListener("shutdown", endTTS, false);
@@ -330,16 +329,6 @@
 
 		function fail () {
 			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", 'Jeeves', 'Confirm');
-		}
-	}
-
-	function emailCheck() {
-		try {
-			var $element = $('#body-controller-element');
-			var scope = angular.element($element).scope();
-			scope.checkEmail();
-		} catch (err) {
-			alert(err);
 		}
 	}
 
