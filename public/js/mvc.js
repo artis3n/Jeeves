@@ -284,7 +284,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.reco = function(callback){
-		navigator.speechrecognizer.recognize(lowerSpeech, failCallback, 3, "Jeeves Personal Assistant");
+		navigator.speechrecognizer.recognize(lowerSpeech, failCallback, 3, "How can I help?");
 
 		function lowerSpeech(results) {
 			for (var i = 0; i < results.length; i++) {
@@ -322,7 +322,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 					})
 				})
 				return true;
-			} else if (results[i].match(/go to/) || results[i].match(/open/)) {
+			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/)) {
 				return $scope.goToSpeech(results);
 			}else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
@@ -360,6 +360,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 						// }
 						$scope.changeView('news');
 					});
+					navigator.tts.speak("What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
 				})
 			} else {
 				navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
@@ -455,10 +458,26 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		})
 	}
 
-	$scope.routeToMenu = function(results) {
-		if (!$scope.confirmSpeech(results, ['go to menu'])) {
-			$scope.dialogMan(results);
-		} // else, successfully routed.
+	// $scope.routeToMenu = function(results) {
+	// 	if (!$scope.confirmSpeech(results, ['go to menu'])) {
+	// 		$scope.dialogMan(results);
+	// 	} // else, successfully routed.
+	// }
+
+	$scope.routeToNews = function(results) {
+		if (!$scope.confirmSpeech(results, ['go to news'])) {
+			navigator.tts.speak("Not to news? No problem.", function() {
+				var no = false;
+				for (var i = 0; i < results.length; i++) {
+					if (results[i] == 'no') {
+						no = true;
+					}
+				}
+				if (!no) {
+					$scope.dialogMan(results);
+				}
+			})
+		}
 	}
 
 	$scope.globalReadSpeech = function(results) {
@@ -488,6 +507,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			})
 			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
 				$scope.jeeves.weathermodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
 		}else if ($scope.jeeves.view == 'email') {
@@ -495,8 +517,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				templateUrl: "email-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or, if you want to update the list of emails, you can say 'Refresh.'", function() {
 				$scope.jeeves.emailmodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
 		}else if ($scope.jeeves.view == 'news') {
@@ -504,25 +529,35 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				templateUrl: "news-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Reed me, article name,' 'Reed me, section,' or 'More articles.'", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me, article name,' 'Reeed me, section,' 'More articles,' or 'Previous articles.'", function() {
 				$scope.jeeves.newsmodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
-		}else if ($scope.jeeves.isMenuOpen) {
-			// Don't open a new modal, menu is already a modal.
-			navigator.tts.speak("Let me know where you'd like to go! Can I grab your emails or check the latest news?", function() {
-				$scope.reco();
-			});
-			return true;
+			//You can't call speech from inside the menu.
+		// }else if ($scope.jeeves.isMenuOpen) {
+		// 	// Don't open a new modal, menu is already a modal.
+		// 	navigator.tts.speak("Let me know where you'd like to go! Can I check the latest news for you?", function() {
+		// 		$scope.reco(routeToNews);
+		// 	});
+		// 	return true;
 		}else if ($scope.jeeves.view == 'about') {
-			navigator.tts.speak("Nothing to do on this page! Can I take you back to the menu?", function() {
-				$scope.reco(confirmSpeech('go to menu'));
+			navigator.tts.speak("Nothing to do on this page! Let me open up the menu for you.", function() {
+				$scope.$apply(function() {
+					$scope.changeView('menu');
+				})
 			});
 			return true;
-		// }else if (help.match(/favorites/)) {
+		// }else if ($scope.jeeves.view == 'favorites') {
 			//Favorites is currently disabled.
 		}else if ($scope.jeeves.view == 'settings') {
-			navigator.tts.speak("you can say change city to insert city"); 
+			navigator.tts.speak("you can say 'Change city' to change the city on the weather page, or say 'Log out' to be signed out of your gmail account.", function() {
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
+			}); 
 			return true;
 		}else if ($scope.jeeves.view == 'contact') {
 			navigator.tts.speak("you can say read");
