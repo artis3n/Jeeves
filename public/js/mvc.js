@@ -916,6 +916,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
+			navigator.tts.stop();
 			$scope.jeeves.newsPosition.pause=true;
 		}
 		else{
