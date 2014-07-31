@@ -304,8 +304,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			return;
 		} else if ($scope.newsSpeech(results)) {
 			return;
-		} else if ($scope.emailSpeech(results)){
-			return;
 		}
 	}
 
@@ -333,6 +331,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}
 		}
 		return false;
+	}
+
+	$scope.speechFailed = function(results) {
+		navigator.tts.speak("")
 	}
 
 	$scope.regXloop = function(results, match) {
@@ -943,7 +945,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			$scope.jeeves.emailCount++;
 			if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
 				navigator.tts.speak("Would you like me to read the next email?", function() {
-					$scope.reco($confirmReadEmail);
+					$scope.reco($scope.confirmReadEmail);
 				})
 			} else {
 				navigator.tts.speak("That's all the emails. What now?", function() {
