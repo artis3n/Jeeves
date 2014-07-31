@@ -180,7 +180,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	// For the use of first showing up "News" Section
 	$scope.status = {
-	    isFirstOpen: true,
+	    isNewsOpen: true,
+	    isWorldOpen:false,
+	    isSportsOpen:false,
+	    isBusinessOpen:false,
+	    isTechOpen:false,
+	    isScienceOpen:false
 	};
 
 	$scope.imgurl = function() {
@@ -631,7 +636,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
 				
-			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')) {
+			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')||$scope.regXloopForNews(results[i], 'next')) {
 				return $scope.contDiagNews();
 			}
 			else if($scope.regXloopForNews(results[i], 'previous five')){
@@ -649,6 +654,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				});
 				return true;
 			}
+			else if($scope.regXloopForNews(results[i], 'change news to')){
+				return $scope.changeNewsSection(results);
+			}
 			else if($scope.regXloopForNews(results[i], 'news commands')){
 				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 					$scope.reco(newsSpeech);
@@ -659,6 +667,80 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 			return false;
 		}
+	}
+
+	$scope.changeNewsSection=function(results){
+		for(var i=0; i<results.length;i++){
+			if($scope.regXloopForNews(results[i], 'change news to')){
+				var x= results[i].substring(15);
+				$scope.changeNewsHelper(x);
+				return true;
+			}
+		}
+	}
+
+	$scope.changeNewsHelper=function(sectionName){
+				if($scope.regXloopForNews(sectionName, 'news')){
+					$scope.$apply(function(){
+						$scope.status.isNewsOpen=true;
+						$scope.status.isWorldOpen=false;
+						$scope.status.isSportsOpen=false;
+						$scope.status.isBusinessOpen=false;
+						$scope.status.isTechOpen=false;
+						$scope.status.isScienceOpen=false;
+					});
+				}else if($scope.regXloopForNews(sectionName, 'world')){
+					$scope.$apply(function(){
+						$scope.status.isWorldOpen=true;
+						$scope.status.isNewsOpen=false;
+						$scope.status.isSportsOpen=false;
+						$scope.status.isBusinessOpen=false;
+						$scope.status.isTechOpen=false;
+						$scope.status.isScienceOpen=false;
+					});
+				}else if($scope.regXloopForNews(sectionName, 'sports')){
+					$scope.$apply(function(){
+						$scope.status.isSportsOpen=true;
+						$scope.status.isWorldOpen=false;
+						$scope.status.isNewsOpen=false;
+						$scope.status.isBusinessOpen=false;
+						$scope.status.isTechOpen=false;
+						$scope.status.isScienceOpen=false;
+					});
+				}else if($scope.regXloopForNews(sectionName, 'business')){
+					$scope.$apply(function(){
+						$scope.status.isBusinessOpen=true;
+						$scope.status.isWorldOpen=false;
+						$scope.status.isSportsOpen=false;
+						$scope.status.isNewsOpen=false;
+						$scope.status.isTechOpen=false;
+						$scope.status.isScienceOpen=false;
+					});
+				}else if($scope.regXloopForNews(sectionName, 'tech')){
+					$scope.$apply(function(){
+						$scope.status.isTechOpen=true;
+						$scope.status.isWorldOpen=false;
+						$scope.status.isSportsOpen=false;
+						$scope.status.isBusinessOpen=false;
+						$scope.status.isNewsOpen=false;
+						$scope.status.isScienceOpen=false;
+					});
+				}else if($scope.regXloopForNews(sectionName, 'science')){
+					$scope.$apply(function(){
+						$scope.status.isScienceOpen=true;
+						$scope.status.isWorldOpen=false;
+						$scope.status.isSportsOpen=false;
+						$scope.status.isBusinessOpen=false;
+						$scope.status.isTechOpen=false;
+						$scope.status.isNewsOpen=false;
+					});
+				}else{	
+					navigator.tts.speak("You requested change section but the name of the section was unclear, please repeat the command.", function(){
+						$scope.$apply(function(){
+							$scope.reco(dialogMan);
+						})
+					})
+				}
 	}
 
 	//Either reads the web title for the article on that section or reads the whole article if said read article
@@ -674,6 +756,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					if (section1=='news'||section1=='world'||section1=='sports'||section1=='tech'||section1=='science') {
 						$scope.jeeves.newsPosition.section=section1;
 						$scope.jeeves.newsPosition.articleIndex = 0;
+						$scope.changeNewsHelper(section1);
 					}
 					else{
 						navigator.tts.speak("You requested to read a section but the section name was unclear, please respond with the name of the section after saying read or say any other command.", function(){
