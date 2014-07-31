@@ -300,12 +300,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
 			return;
-		} else if ($scope.weatherSpeech(results)) {
+		} else if ($scope.jeeves.view == "weather" && $scope.weatherSpeech(results)) {
 			return;
-		} else if ($scope.newsSpeech(results)) {
+		} else if ($scope.jeeves.view == "news" && $scope.newsSpeech(results)) {
 			return;
-		} else if ($scope.emailSpeech(results)){
-			return;
+		} else {
+			navigator.tts.speak("Sorry, I didn't catch that. Can you repeat that again?", function() {
+		    			$scope.reco($scope.dialogMan);
+		    		})		
 		}
 	}
 
@@ -589,7 +591,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.weatherSpeech = function(results) {
 		var city = "INVALID";
 		// var stop = false;
-		for (var i = 0; results.length; i++) {
+		for (var i = 0; i<results.length; i++) {
 			if (results[i].lastIndexOf("change city to")==0){
 				city = results[i].slice(15);
 			}else if (results[i].lastIndexOf("change to")==0){
@@ -607,8 +609,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				return true;
 			} 
 			// return stop;
-			return false;
 		}
+
+		return false;
 	}
 
 	$scope.weatherSpeechFallBack = function(cityName){
@@ -619,7 +622,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(results){
-		for (var i = 0; results.length; i++) {
+		for (var i = 0; i<results.length; i++) {
 			// if($scope.jeeves.newsIntroduction==true){
 			// 	navigator.tts.speak("Going to the news page. News commands are: read, read section name, read article, next article, previous, more articles or previous five articles.");
 			// 	$scope.jeeves.newsIntroduction=false;
@@ -651,7 +654,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.reco(newsSpeech);
 				})
 			}
+
 			$scope.$apply();
+
+			return false;
 		}
 	}
 
