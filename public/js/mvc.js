@@ -489,17 +489,19 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.globalReadSpeech = function(results) {
-		if ($scope.regXloop(results, 'email')) {
-			navigator.tts.speak("Let's pull up your emails.", function () {
-				$scope.$apply(function() {
-					$scope.changeView('email');
+		if ($scope.regXloop(results, 'email') || $scope.jeeves.view == 'email') {
+			if ($scope.jeeves.view != 'email') {
+				navigator.tts.speak("Let's pull up your emails.", function () {
+					$scope.$apply(function() {
+						$scope.changeView('email');
+					});
+					return $scope.emailSpeech(results);
 				});
-				return $scope.emailSpeech(results);
-			});
-			return true;
-		} else if ($scope.jeeves.view == 'email') {
-			$scope.emailSpeech(results);
-			return true;
+				return true;
+			} else {
+				$scope.emailSpeech(results);
+				return true;
+			}
 		} else {
 			if ($scope.jeeves.view != 'news') {
 					$scope.$apply(function(){
@@ -939,7 +941,25 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		var content = email.content;
 		navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
 			$scope.jeeves.emailCount++;
+			if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
+				navigator.tts.speak("Would you like me to read the next email?", function() {
+					$scope.reco($confirmReadEmail);
+				})
+			} else {
+				navigator.tts.speak("That's all the emails. What now?", function() {
+					$scope.reco($scope.dialogMan);
+				})
+			}
+			
 		});
+	}
+
+	$scope.confirmReadEmail = function(results) {
+		if (!$scope.confirmSpeech(results, ['read'])) {
+			navigator.tts.speak("Ok. So what next?", function() {
+				$scope.reco($dialogMan);
+			})
+		}
 	}
 
 	$scope.capitaliseFirstLetter=function(string){
