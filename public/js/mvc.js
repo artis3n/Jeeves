@@ -49,7 +49,7 @@ var model = {
 	menuModal: {},
 	isMenuOpen: false,
 	emailListTotal: [],
-	emailList: [{'subject': 'This is a subject test.', 'content': 'This is the content from the test.'}],
+	emailList: [],
 	emailListCount: 0,
 	emailCountDecrement: 5
 };
@@ -284,7 +284,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.reco = function(callback){
-		navigator.speechrecognizer.recognize(lowerSpeech, failCallback, 3, "Jeeves Personal Assistant");
+		navigator.speechrecognizer.recognize(lowerSpeech, failCallback, 3, "How can I help?");
 
 		function lowerSpeech(results) {
 			for (var i = 0; i < results.length; i++) {
@@ -322,7 +322,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 					})
 				})
 				return true;
-			} else if (results[i].match(/go to/) || results[i].match(/open/)) {
+			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/)) {
 				return $scope.goToSpeech(results);
 			}else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
@@ -360,6 +360,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 						// }
 						$scope.changeView('news');
 					});
+					navigator.tts.speak("What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
 				})
 			} else {
 				navigator.tts.speak("You're already on the news page. Would you like to listen to world or business news?")
@@ -450,15 +453,30 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 	}
 
 	$scope.goToFallBack = function(results) {
-		if ($scope.regXloop(results, 'news')) {
-			$scope.$apply(function() {
-				$scope.changeView('news');
+		navigator.tts.speak("Sorry, I didn't catch all of that. Where would you like to go?", function() {
+			$scope.reco(goToSpeech);
+		})
+	}
+
+	// $scope.routeToMenu = function(results) {
+	// 	if (!$scope.confirmSpeech(results, ['go to menu'])) {
+	// 		$scope.dialogMan(results);
+	// 	} // else, successfully routed.
+	// }
+
+	$scope.routeToNews = function(results) {
+		if (!$scope.confirmSpeech(results, ['go to news'])) {
+			navigator.tts.speak("Not to news? No problem.", function() {
+				var no = false;
+				for (var i = 0; i < results.length; i++) {
+					if (results[i] == 'no') {
+						no = true;
+					}
+				}
+				if (!no) {
+					$scope.dialogMan(results);
+				}
 			})
-		} else if ($scope.regXloop(results, 'weather')) {
-			$scope.$apply(function(){
-				$scope.changeView('weather');
-			})
-			$scope.globalCommands("how's the weather");
 		}
 	}
 
@@ -468,8 +486,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				$scope.$apply(function() {
 					$scope.changeView('email');
 				});
-				$scope.emailSpeech(results);
+				return $scope.emailSpeech(results);
 			});
+			return true;
+		} else if ($scope.jeeves.view == 'email') {
+			$scope.emailSpeech(results);
 			return true;
 		} else {
 			if ($scope.jeeves.view != 'news') {
@@ -491,6 +512,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 			})
 			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
 				$scope.jeeves.weathermodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
 		}else if ($scope.jeeves.view == 'email') {
@@ -498,8 +522,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				templateUrl: "email-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or 'Log me in.'", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or, if you want to update the list of emails, you can say 'Refresh.'", function() {
 				$scope.jeeves.emailmodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
 		}else if ($scope.jeeves.view == 'news') {
@@ -507,29 +534,35 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 				templateUrl: "news-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Reed me, article name,' 'Reed me, section,' or 'More articles.'", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me, article name,' 'Reeed me, section,' 'More articles,' or 'Previous articles.'", function() {
 				$scope.jeeves.newsmodalhelp.close();
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
 			});
 			return true;
-		}else if ($scope.jeeves.isMenuOpen) {
-			// Don't open a new modal, menu is already a modal.
-			navigator.tts.speak("Let me know where you'd like to go! Can I grab your emails or check the latest news?", function() {
-				$scope.reco();
-			});
-			return true;
+			//You can't call speech from inside the menu.
+		// }else if ($scope.jeeves.isMenuOpen) {
+		// 	// Don't open a new modal, menu is already a modal.
+		// 	navigator.tts.speak("Let me know where you'd like to go! Can I check the latest news for you?", function() {
+		// 		$scope.reco(routeToNews);
+		// 	});
+		// 	return true;
 		}else if ($scope.jeeves.view == 'about') {
-			navigator.tts.speak("Nothing to do on this page! Can I take you back to the menu?", function() {
-				var resps = $scope.reco();
-				var confirmed = $scope.confirmSpeech(resps, "go to menu");
-				if (!confirmed) {
-					navigator.tts.speak("Not the menu? That's ok. Maybe you'd prefer to go to news or email?")
-				}
+			navigator.tts.speak("Nothing to do on this page! Let me open up the menu for you.", function() {
+				$scope.$apply(function() {
+					$scope.changeView('menu');
+				})
 			});
 			return true;
-		// }else if (help.match(/favorites/)) {
+		// }else if ($scope.jeeves.view == 'favorites') {
 			//Favorites is currently disabled.
 		}else if ($scope.jeeves.view == 'settings') {
-			navigator.tts.speak("you can say change city to insert city"); 
+			navigator.tts.speak("you can say 'Change city' to change the city on the weather page, or say 'Log out' to be signed out of your gmail account.", function() {
+				navigator.tts.speak("Anything else?", function() {
+					$scope.reco($scope.dialogMan);
+				})
+			}); 
 			return true;
 		}else if ($scope.jeeves.view == 'contact') {
 			navigator.tts.speak("you can say read");
@@ -537,9 +570,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		}
 	}
 	
-	$scope.confirmSpeech = function(resps, command) {
+	$scope.confirmSpeech = function(results, command) {
 		if ($scope.regXloop(results, 'yes')) {
-			$scope.dialogMan(command); //This has to change.
+			$scope.dialogMan(command); // Command must be an array.
 			return true;
 		}
 		return false;
@@ -686,8 +719,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 
 	$scope.routeToPrevious = function(results){
 		if($scope.regXloop(results, 'yes')){
-			var x = ['continue']
-			$scope.newsSpeech(x)
+			var x = ['continue'];
+			$scope.newsSpeech(x);
 		}else{
 			$scope.dialogMan(results);
 		}
@@ -895,15 +928,16 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $q) {
 		}
 	}
 
-
 	$scope.emailSpeech = function(results) {
 		for (var i = 0; i <results.length; i++) {
-			if (results[i] == "read my emails" || "read" || "start reading") {
-				var content = document.getElementById('email-announcement').innerText;
-				navigator.tts.speak(content);
-				return true;
+			if (results[i] == "read my emails" || "start reading") {
+				var email = $scope.jeeves.emailList[0];
+				var content = document.getElementById(email.subject);
+				alert(JSON.stringify(content));
+				navigator.tts.speak(email.subject + ". " + content.innerText);
 			}
-		}	
+		}
+		alert("Email finished");
 	}
 
 	$scope.capitaliseFirstLetter=function(string){
