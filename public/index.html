@@ -165,8 +165,8 @@
 				<div>
 					<b id="help-text" >You can say:</b>
 					<ul>
-						<li>Read me **section**</li>
 						<li>Read me **article title**</li>
+						<li>Read me **section**</li>
 						<li>More articles</li>
 						<li>Previous articles</li>
 					</ul>
@@ -188,8 +188,8 @@
 					<div>
 						<div id="message-list"></div>
 						<accordion close-others="true">
-							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}" id='{{email.subject}}'>
-							<div class="well well-lg" id="{{email.subject}}-email-content">
+							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}">
+							<div class="well well-lg" id="{{email.subject}}">
 								<b>From: {{email.from}}</b><br><br>
 								{{email.content}}
 							</div>
@@ -206,7 +206,7 @@
 					<b id="help-text" >You can say:</b>
 					<ul>
 						<li>Read me emails</li>
-						<li>Log in</li>
+						<li>Refresh</li>
 					</ul>
 				</div>
 			</div>
@@ -308,7 +308,7 @@
 
 		<div id="bottom-buttons" class="view" >
 			<br>
-			<button ng-click="reco(dialogMan)" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
+			<button ng-click="redirect()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
 			<!-- Help button change to "GO back button for now to debug" -->
 			<button ng-click="changeView('help')" class="btn btn-primary pull-right" style="width: 150px;">Help </button>
 			<br>
