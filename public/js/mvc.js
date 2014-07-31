@@ -49,7 +49,7 @@ var model = {
 	menuModal: {},
 	isMenuOpen: false,
 	emailList: [],
-	emailListCount: 0
+	emailCount: 0
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -319,6 +319,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.$apply(function() {
 						$scope.changeView('back');
 					})
+					navigator.tts.speak("What now?", function() {
+						$scope.reco($dialogMan);
+					})
 				})
 				return true;
 			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/)) {
@@ -373,6 +376,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.$apply(function() {
 						$scope.changeView('email');
 					});
+					navigator.tts.speak("What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
 				})
 			} else {
 				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
@@ -385,6 +391,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.$apply(function() {
 						$scope.changeView('weather');
 					});
+					navigator.tts.speak("What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
 				})
 			} else {
 				navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
@@ -511,7 +520,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			})
 			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'How's the weather?' or 'Change city to - city name.'", function() {
 				$scope.jeeves.weathermodalhelp.close();
-				navigator.tts.speak("Anything else?", function() {
+				navigator.tts.speak("What now?", function() {
 					$scope.reco($scope.dialogMan);
 				})
 			});
@@ -523,7 +532,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			})
 			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me my emails!' or, if you want to update the list of emails, you can say 'Refresh.'", function() {
 				$scope.jeeves.emailmodalhelp.close();
-				navigator.tts.speak("Anything else?", function() {
+				navigator.tts.speak("What now?", function() {
 					$scope.reco($scope.dialogMan);
 				})
 			});
@@ -535,7 +544,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			})
 			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me, article name,' 'Reeed me, section,' 'More articles,' or 'Previous articles.'", function() {
 				$scope.jeeves.newsmodalhelp.close();
-				navigator.tts.speak("Anything else?", function() {
+				navigator.tts.speak("What now?", function() {
 					$scope.reco($scope.dialogMan);
 				})
 			});
@@ -558,7 +567,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			//Favorites is currently disabled.
 		}else if ($scope.jeeves.view == 'settings') {
 			navigator.tts.speak("you can say 'Change city' to change the city on the weather page, or say 'Log out' to be signed out of your gmail account.", function() {
-				navigator.tts.speak("Anything else?", function() {
+				navigator.tts.speak("What now?", function() {
 					$scope.reco($scope.dialogMan);
 				})
 			}); 
@@ -591,8 +600,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			// 	city = result.slice(18);
 			}else if (results[i].lastIndexOf("what's the weather of")==0){
 				city = results[i].slice(22);
-			}else {
-				alert(results[i] + " is an invalid command.");
 			}
 			if(city !== "INVALID"){
 				var cityChange = $scope.capitaliseFirstLetter(city)
@@ -928,15 +935,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 
 	$scope.emailSpeech = function(results) {
-		for (var i = 0; i <results.length; i++) {
-			if (results[i] == "read my emails" || "start reading") {
-				var email = $scope.jeeves.emailList[0];
-				var content = document.getElementById(email.subject);
-				alert(JSON.stringify(content));
-				navigator.tts.speak(email.subject + ". " + content.innerText);
-			}
-		}
-		alert("Email finished");
+		var email = $scope.jeeves.emailList[$scope.jeeves.emailCount];
+		var content = email.content;
+		navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
+			$scope.jeeves.emailCount++;
+		});
 	}
 
 	$scope.capitaliseFirstLetter=function(string){
@@ -1040,6 +1043,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	$scope.getEmail = function() {
 		$scope.jeeves.emailList.length = 0;
+		$scope.jeeves.emailCount = 0;
 		document.getElementById("authorize-button").style.visibility = "hidden";
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		var loggedIn = OAuth.create("google_mail");
