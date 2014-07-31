@@ -330,11 +330,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			}else if (results[i] == "help") {
 				return $scope.getHelp(results);
 			}
-			j++;
+			//j++;
 		}
+		$scope.failedToUnderstandFallback();
+	}
 		
-		
-	$scope.failedToUnderstandFallback(){
+	$scope.failedToUnderstandFallback = function(){
 		if ($scope.jeeves.failedUnderstandCount == 0){
 			navigator.tts.speak("I'm sorry, I couldn't understand you. Can you try speaking again please?", function(){
 				$scope.jeeves.failedUnderstandCount++;
