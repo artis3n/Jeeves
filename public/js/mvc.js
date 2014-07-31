@@ -546,7 +546,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				}
 			})
 		}
-// >>>>>>> 03d20dba75051d790e1144dc43763900a81bdc88
 	}
 
 	$scope.globalReadSpeech = function(results) {
