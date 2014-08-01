@@ -409,7 +409,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 			} else {
-				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?");
+				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?", function() {
+					$scope.reco($scope.confirmReadEmail);
+				});
 			}
 			
 			return true;
@@ -424,7 +426,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 			} else {
-				navigator.tts.speak("You're already on the weather page. You can ask for the current weather.");
+				navigator.tts.speak("You're already on the weather page. Would you like to hear the current weather?", function() {
+					$scope.reco($scope.confirmReadWeather);
+				});
 			}
 			return true;
 		} else if ($scope.regXloop(results, 'menu')) {
@@ -450,7 +454,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 			} else {
-				navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.");
+				navigator.tts.speak("You're already on the settings page. You can ask for help if you'd like assistance on any part of the app by saying 'help' on that page.", function() {
+					navigator.tts.speak("What next?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				});
 			}
 			return true;
 		} else if ($scope.regXloop(results, 'contact')) {
@@ -464,7 +472,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 			} else {
-				navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!");
+				navigator.tts.speak("You're already on the contact page. Whether you have an issue with our application or would like to express how much you love it, please feel free to email us at jeevescorp@gmail.com!", function() {
+					navigator.tts.speak("What next?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				});
 			}
 			return true;
 		} else if ($scope.regXloop(results, 'about')) {
@@ -478,7 +490,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 			} else {
-				navigator.tts.speak("You're already on the about page. Let me introduce myself to you!");
+				navigator.tts.speak("You're already on the about page. Let me introduce myself to you!", function() {
+					navigator.tts.speak("What next?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				});
 			}
 			return true;
 		} else if ($scope.regXloop(results, 'help')) {
@@ -490,7 +506,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					navigator.tts.speak("Let me know when you're finished, and I'll be happy to redirect you.");
 				})
 			} else {
-				navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
+				navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!", function() {
+					navigator.tts.speak("What next?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				});
 			}
 			return true;
 		} else if ($scope.regXloop(results, 'back')) {
@@ -531,16 +551,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			} else {
 				return $scope.emailSpeech(results);
 			}
-		} else {
-			if ($scope.jeeves.view != 'news') {
-				$scope.$apply(function(){
-					$scope.changeView('news');
-				});
-			 }
-			//Begin news speech recognition.
-			$scope.newsSpeech(results);
+		} else if (!$scope.newsSpeech(results)) {
 			return true;
 		}
+		return false;
 	}
 
 	$scope.getHelp = function(results) {
@@ -649,6 +663,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 
 	//Commands are: read, read <section>, read article, continue, previous, more articles
 	$scope.newsSpeech = function(results){
+		if ($scope.jeeves.view != 'news') {
+			$scope.$apply(function(){
+				$scope.changeView('news');
+			});
+		 }
+		//Begin news speech recognition.
+		$scope.newsSpeech(results);
 		for (var i = 0; i<results.length; i++) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
@@ -1032,7 +1053,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	$scope.confirmReadEmail = function(results) {
 		if (!$scope.confirmSpeech(results, ['read email'])) {
 			navigator.tts.speak("Ok. So what next?", function() {
-				$scope.reco($dialogMan);
+				$scope.reco($scope.dialogMan);
+			})
+		}
+	}
+
+	$scope.confirmReadWeather = function(results) {
+		if (!$scope.confirmSpeech(results, ["how's the weather"])) {
+			navigator.tts.speak("OK. So what next?", function() {
+				$scope.reco($scope.dialogMan);
 			})
 		}
 	}
