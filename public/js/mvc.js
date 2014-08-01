@@ -227,14 +227,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				$scope.openMenu();
 			}
 		} else {
+			if (selected == 'email') {
+				navigator.tts.speak("Let's grab your emails.");
+				$scope.checkEmail();
+			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			if ($scope.jeeves.isMenuOpen) {
 				$scope.closeMenu();
-			}
-			if (selected == 'email') {
-				navigator.tts.speak("Let's grab your emails.");
-				$scope.checkEmail();
 			}
 		}
 	};
@@ -1187,7 +1187,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.getEmail = function() {
 		$scope.jeeves.emailList.length = 0;
 		$scope.jeeves.emailCount = 0;
-		document.getElementById("authorize-button").style.visibility = "hidden";
+		document.getElementById("refresh-button").style.visibility = "hidden";
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		var loggedIn = OAuth.create("google_mail");
 		loggedIn.me().done(function(data) {
@@ -1224,7 +1224,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			              	$scope.$apply(function() {
 			              		$scope.jeeves.emailList.push(emailObject);
 			              	});
-			              	document.getElementById("authorize-button").style.visibility = "visible";
+			              	document.getElementById("refresh-button").style.visibility = "visible";
 			        	})
 			        })
 			    }

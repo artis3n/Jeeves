@@ -32,7 +32,7 @@
 <body id="body-controller-element" ng-controller="jeevesCtrl">
 	<div class="container">
 		<div class="page-header">
-			<h1 class="text-center">Jeeves <small><span id="version">v0.2</span></small></h1>
+			<h1 class="text-center">Jeeves <small><span id="version">v0.2.1</span></small></h1>
 		</div>
 		<div id="top-buttons" class="view" >
 			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled>
@@ -179,9 +179,11 @@
 				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 				</div>
-				<div style="height:340px; padding-top: 10px; overflow: auto;">
-					<span style="padding-left:10px"><button id='authorize-button' ng-click="getEmail()" class="btn btn-primary btn-sm">Load Emails</button></span>
-					<div>
+				<div style="height:340px; overflow: auto;">
+					<span style="padding-left:10px" class="btn-group">
+						<button id='refresh-button' ng-click="checkEmail()" class="btn btn-info btn-sm">Load Emails</button>
+					</span>
+					<div style="padding-top: 10px">
 						<div id="message-list"></div>
 						<accordion close-others="true">
 							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}">
@@ -269,6 +271,9 @@
 			        		</span>
 			        </div>
 					<p><font size="1">Powered by OpenWeatherMap.org</font></p>
+					<div>
+						<button id="settings-email-login" class="btn btn-primary" ng-click="oauthlogin()">Log In To Gmail</button>
+					</div>
 				</div>
 				<hr>
 			</div>
