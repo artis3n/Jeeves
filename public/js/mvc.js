@@ -306,13 +306,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	$scope.dialogMan = function(results){
 		if ($scope.globalCommands(results)){
-			$scope.failedUnderstandCount = 0;
+			$scope.jeeves.failedUnderstandCount = 0;
 			return;
 		} else if ($scope.jeeves.view == "weather" && $scope.weatherSpeech(results)) {
-			$scope.failedUnderstandCount = 0;
+			$scope.jeeves.failedUnderstandCount = 0;
 			return;
 		} else if ($scope.jeeves.view == "news" && $scope.newsSpeech(results)) {
-			$scope.failedUnderstandCount = 0;
+			$scope.jeeves.failedUnderstandCount = 0;
 			return;
 		}else {
 			$scope.failedToUnderstandFallback();
@@ -554,7 +554,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			} else {
 				return $scope.emailSpeech(results);
 			}
-		} else if (!$scope.newsSpeech(results)) {
+		} else if ($scope.newsSpeech(results)) {
 			return true;
 		}
 		return false;
@@ -672,7 +672,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		 }
 		//Begin news speech recognition.
-		$scope.newsSpeech(results);
 		for (var i = 0; i<results.length; i++) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
