@@ -186,6 +186,7 @@
 					<span style="padding-left:10px"><button id='authorize-button' ng-click="getEmail()" class="btn btn-default btn-sm">Load Emails</button></span>
 					<div>
 						<div id="message-list"></div>
+						<progressbar class="progress-striped active" value="{{dynamic}}" max="{{max}}" id="email-progress-bar"><span style: "color: black; white-space: nowrap">{{dynamic}} / {{max}}</span></progressbar>
 						<accordion close-others="true">
 							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}">
 							<div class="well well-lg" id="{{email.subject}}">
