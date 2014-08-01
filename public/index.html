@@ -298,34 +298,61 @@
 			<div>
 				<h2>Help</h2>
 				<div style="height:345px; overflow: scroll;">
-				<h4><b>General Commands: (you can say these on any page)</b></h4>
-					<dl>
-						<dt>How is (how's) the weather</dt>
-						
-						<dt>What's the weather</dt>
-						<dt>What's the weather like (today)</dt>
-						<dt>Go to or open</dt>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;news</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weather</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;about</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contact</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;help</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings</dd>
-						<dt>Read</dt>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</dd>
-						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News</dd>
-						<!-- <dt>does</dt>
-						<dt>the</dt>
-						<dt>scrolling</dt>
-						<dt>feature</dt>
-						<dt>work</dt>
-						<dt>on</dt>
-						<dt>the</dt>
-						<dt>help</dt>
-						<dt>page</dt>
-						<dt>????</dt> -->
-					</dl>	
+				<accordion  close-others="true">
+					<accordion-group heading="Global">
+					<h4><b>General Commands: (you can say these on any page)</b></h4>
+						<dl>
+							<dt>How is (how's) the weather</dt>
+							
+							<dt>What's the weather</dt>
+							<dt>What's the weather like (today)</dt>
+							<dt>Go to or open</dt>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Weather</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Help</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Settings</dd>
+							<dt>Read</dt>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</dd>
+							<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News</dd>
+							<!-- <dt>does</dt>
+							<dt>the</dt>
+							<dt>scrolling</dt>
+							<dt>feature</dt>
+							<dt>work</dt>
+							<dt>on</dt>
+							<dt>the</dt>
+							<dt>help</dt>
+							<dt>page</dt>
+							<dt>????</dt> -->
+						</dl>	
+					</accordion-group>
+					<accordion-group heading="News">
+						<dl>
+							<dt>
+								Read 
+								<dd>
+									Article
+								</dd>	
+								<dd>
+									(section)
+								</dd>
+							</dt>
+						</dl>
+					</accordion-group>
+					<accordion-group heading="Weather">
+						<dl><dt>command</dt> <dd>detail</dd> </dl>
+					</accordion-group>
+					<accordion-group heading="Email">
+						<dl><dt>command</dt> <dd>detail</dd> </dl>
+					</accordion-group>
+					<accordion-group heading="Settings">
+						<dl><dt>command</dt> <dd>detail</dd> </dl>
+					</accordion-group>
+					<!-- <accordion-group heading=""></accordion-group> -->
+				</accordion>
 				</div>
 				<br>
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
