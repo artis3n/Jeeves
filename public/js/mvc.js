@@ -339,9 +339,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
-			}
-			else if (results[i] == "help") {
+			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
+			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
+				navigator.tts.speak("I'll be here if you need me.");
+				return true;
 			}
 		}
 		return false;
@@ -404,12 +406,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					$scope.$apply(function() {
 						$scope.changeView('email');
 					});
-					$timeout(function() {
-						navigator.tts.speak("What next?", function() {
-							$scope.reco($scope.dialogMan);
-						})
-					}, 2500);
-					
+					if (OAuth.create("google_mail")) {
+						$timeout(function() {
+							navigator.tts.speak("What next?", function() {
+								$scope.reco($scope.dialogMan);
+							})
+						}, 2500);
+					}
 				})
 			} else {
 				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?", function() {
@@ -887,9 +890,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	$scope.regXloopForNews = function(result, match) {
 		var regX = new RegExp(match);
-			if (regX.test(result)) {
-				return true;
-			}
+		if (regX.test(result)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -897,28 +900,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		$scope.adaptivePrompt();
 		if ($scope.jeeves.newsPosition.section == "news"){
 			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
 			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}
 		$scope.$apply();
 	}
@@ -934,72 +937,72 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-						//$scope.recursiveArticleChunk(finalResult.match(/\S+/g), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+					//$scope.recursiveArticleChunk(finalResult.match(/\S+/g), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			var gotResult = $scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			var gotResult = $scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			var gotResult = $scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "tech"){
 			var gotResult = $scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			var gotResult = $scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}
 		$scope.$apply();
 	}
 
-	 $scope.recursiveArticleChunk = function(chunkArray, position){
+	$scope.recursiveArticleChunk = function(chunkArray, position){
 	 	output = chunkArray[position];
 	 	$scope.jeeves.readingArticle=true;
 	 	if($scope.jeeves.newsPosition.pause==true){
@@ -1018,7 +1021,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	 			$scope.recursiveArticleChunk(chunkArray, (position+1));
 	 		});
 	 	}
-	 }
+	}
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
@@ -1033,24 +1036,40 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	}
 
 	$scope.emailSpeech = function(results) {
-		var email = $scope.jeeves.emailList[$scope.jeeves.emailCount];
-		var content = email.content;
-		navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
-			$scope.jeeves.emailCount++;
-			if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
-				navigator.tts.speak("Would you like me to read the next email?", function() {
-					$scope.reco($scope.confirmReadEmail);
-				})
-			} else {
-				navigator.tts.speak("That's all the emails. What now?", function() {
-					$scope.reco($scope.dialogMan);
-				})
-			}
-		});
+		if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
+			var email = $scope.jeeves.emailList[$scope.jeeves.emailCount];
+			var content = email.content;
+			navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
+				$scope.jeeves.emailCount++;
+				if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
+					navigator.tts.speak("Would you like me to read the next email?", function() {
+						$scope.reco($scope.confirmReadEmail);
+					})
+				} else {
+					navigator.tts.speak("That's all the emails. What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				}
+			});
+		} else {
+			navigator.tts.speak("You have no new emails. Should I begin reading from the beginning?", function() {
+				$scope.reco($scope.confirmRestartEmail);
+			})
+		}
+		
 		return true;
 	}
 
 	$scope.confirmReadEmail = function(results) {
+		if (!$scope.confirmSpeech(results, ['read email'])) {
+			navigator.tts.speak("Ok. So what next?", function() {
+				$scope.reco($scope.dialogMan);
+			})
+		}
+	}
+
+	$scope.confirmRestartEmail = function(results) {
+		$scope.jeeves.emailCount = 0;
 		if (!$scope.confirmSpeech(results, ['read email'])) {
 			navigator.tts.speak("Ok. So what next?", function() {
 				$scope.reco($scope.dialogMan);
@@ -1152,13 +1171,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		$scope.disableBack();
 	}
 
-
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
 			$scope.getEmail();
-			navigator.tts.speak("You are now logged in to Gmail!");
+			navigator.tts.speak("You are now logged in to Gmail!", function() {
+				$timeout(function() {
+					navigator.tts.speak("Would you like me to read your email?", function() {
+						$scope.reco($scope.confirmReadEmail);
+					})
+				}, 500);
+			});
 		})
 	}
 
