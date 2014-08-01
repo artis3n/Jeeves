@@ -2,6 +2,26 @@
 	cursor: pointer;
 }
 
+.spalsh-screen{
+    opacity:0.9;
+    background-color:#000000;
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+}
+
+IMG.splash {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .help-window {
 	position: absolute;
 	top: 150px;

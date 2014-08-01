@@ -202,6 +202,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	    isScienceOpen:false
 	};
 
+	$scope.hideSpalshScreen = function(){
+		document.getElementById("splashScreen").style.display="none";
+	}
+
 	$scope.imgurl = function() {
                 var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
                 if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
