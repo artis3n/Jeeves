@@ -339,8 +339,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
-			} else if (results[i] == "help") {
+			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
+			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
+				navigator.tts.speak("I'll be here if you need me.");
+				return true;
 			}
 		}
 		return false;
