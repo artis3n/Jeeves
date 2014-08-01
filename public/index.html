@@ -3,9 +3,6 @@
 <head>	
 	<title>Jeeves</title>
 
-	<!-- Do not touch. This implements TrackJS. -->
-	<script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="0719e9c2128449e2908564cdd71bc409"></script>
-
 	<!--Meta data for mobile devices. -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -182,8 +179,8 @@
 				<div>
 					<div id="email-announcement"><i>Hello! I am ready to read your email.</i></div>
 				</div>
-				<div style="height:340px; overflow: auto;">
-					<span style="padding-left:10px"><button id='authorize-button' ng-click="getEmail()" class="btn btn-default btn-sm">Load Emails</button></span>
+				<div style="height:340px; padding-top: 10px; overflow: auto;">
+					<span style="padding-left:10px"><button id='authorize-button' ng-click="getEmail()" class="btn btn-primary btn-sm">Load Emails</button></span>
 					<div>
 						<div id="message-list"></div>
 						<accordion close-others="true">
