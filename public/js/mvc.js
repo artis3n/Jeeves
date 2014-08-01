@@ -404,9 +404,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					$scope.$apply(function() {
 						$scope.changeView('email');
 					});
-					navigator.tts.speak("What next?", function() {
-						$scope.reco($scope.dialogMan);
-					})
+					$timeout(function() {
+						navigator.tts.speak("What next?", function() {
+							$scope.reco($scope.dialogMan);
+						})
+					}, 2500);
 				})
 			} else {
 				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?", function() {
