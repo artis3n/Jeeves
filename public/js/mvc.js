@@ -552,6 +552,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				navigator.tts.speak("Let's pull up your emails.", function () {
 					$scope.$apply(function() {
 						$scope.changeView('email');
+						alert("View's not changing.");
 					});
 					return $scope.emailSpeech(results);
 				});
