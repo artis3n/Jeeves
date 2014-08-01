@@ -326,7 +326,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				$scope.$apply(function() {
 					$scope.changeView("weather");
 				})
-				navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + $scope.jeeves.weather.temp.current + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
+				navigator.tts.speak("The current temperature in " + $scope.jeeves.city + " is " + Math.round($scope.jeeves.weather.temp.current) + " degrees fahrenheit. " + $scope.jeeves.weather.description + ".", function() {
 					$scope.$apply(function() {
 						$scope.changeView('back');
 					})
@@ -335,7 +335,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 					})
 				})
 				return true;
-			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/)) {
+			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/) || results[i].match(/go back/)) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
@@ -493,6 +493,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 				navigator.tts.speak("You're already on the help page, which displays all the possible commands for every part of the app. If you still cannot figure something out, please email us at jeevescorp@gmail.com with your issue, and we will do our best to promptly respond to you!");
 			}
 			return true;
+		} else if ($scope.regXloop(results, 'back')) {
+			navigator.tts.speak("No problem.", function() {
+				$scope.$apply(function() {
+					$scope.changeView('back');
+				})
+			})
 		} else {
 			$scope.goToFallback(results);
 			return true;
@@ -994,8 +1000,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 		if($scope.jeeves.newsPosition.pause==false){
 			navigator.tts.stop();
 			$scope.jeeves.newsPosition.pause=true;
-		}
-		else{
+		} else{
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
 			$scope.recursiveArticleChunk(cont.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
@@ -1011,16 +1016,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 			if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
 				navigator.tts.speak("Would you like me to read the next email?", function() {
 					$scope.reco($scope.confirmReadEmail);
-					return true;
 				})
 			} else {
 				navigator.tts.speak("That's all the emails. What now?", function() {
 					$scope.reco($scope.dialogMan);
-					return true;
 				})
 			}
 		});
-		return false;
+		return true;
 	}
 
 	$scope.confirmReadEmail = function(results) {
