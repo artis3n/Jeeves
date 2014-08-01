@@ -621,7 +621,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	}
 	
 	$scope.confirmSpeech = function(results, command) {
-		if ($scope.regXloop(results, 'yes')) {
+		if ($scope.regXloop(results, 'yes') || $scope.regXloop(results, 'yeah') || $scope.regXloop(results, 'yup') || $scope.regXloop(results, 'sure') || $scope.regXloop(results, 'ok')) {
 			$scope.dialogMan(command); // Command must be an array.
 			return true;
 		}
@@ -866,8 +866,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	  				$scope.dialogMan(results);
 	  			}
 	  		})
-		 }
-	  	else {
+		 } else {
 	  		$scope.reco($scope.dialogMan);
 	  	}
 	}
