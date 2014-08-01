@@ -339,9 +339,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
-			}
-			else if (results[i] == "help") {
+			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
+			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
+				navigator.tts.speak("I'll be here if you need me.");
+				return true;
 			}
 		}
 		return false;
@@ -404,12 +406,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					$scope.$apply(function() {
 						$scope.changeView('email');
 					});
-					$timeout(function() {
-						navigator.tts.speak("What next?", function() {
-							$scope.reco($scope.dialogMan);
-						})
-					}, 2500);
-					
+					if (OAuth.create("google_mail")) {
+						$timeout(function() {
+							navigator.tts.speak("What next?", function() {
+								$scope.reco($scope.dialogMan);
+							})
+						}, 2500);
+					}
 				})
 			} else {
 				navigator.tts.speak("You're already on the email page. Would you like to hear your inbox messages?", function() {
@@ -678,7 +681,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')||$scope.regXloopForNews(results[i], 'next')) {
 				return $scope.contDiagNews();
 			}
-			else if($scope.regXloopForNews(results[i], 'previous five')){
+			else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,false);
 				});
@@ -694,7 +697,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return true;
 			}
 			else if($scope.regXloopForNews(results[i], 'change news to')){
-				return $scope.changeNewsSection(results);
+				return $scope.changeNewsSection(results[i]);
 			}
 			else if($scope.regXloopForNews(results[i], 'news commands')){
 				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
@@ -707,18 +710,15 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	}
 
 	$scope.changeNewsSection=function(results){
-		for(var i=0; i<results.length;i++){
-			if($scope.regXloopForNews(results[i], 'change news to')){
-				var x= results[i].substring(15);
-				$scope.changeNewsHelper(x);
+				$scope.changeNewsHelper(results);
 				return true;
-			}
-		}
 	}
 
 	$scope.changeNewsHelper=function(sectionName){
 		if($scope.regXloopForNews(sectionName, 'news')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='news';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isNewsOpen=true;
 				$scope.status.isWorldOpen=false;
 				$scope.status.isSportsOpen=false;
@@ -728,6 +728,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		}else if($scope.regXloopForNews(sectionName, 'world')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='world';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isWorldOpen=true;
 				$scope.status.isNewsOpen=false;
 				$scope.status.isSportsOpen=false;
@@ -737,6 +739,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		}else if($scope.regXloopForNews(sectionName, 'sports')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='sports';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isSportsOpen=true;
 				$scope.status.isWorldOpen=false;
 				$scope.status.isNewsOpen=false;
@@ -746,6 +750,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		}else if($scope.regXloopForNews(sectionName, 'business')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='business';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isBusinessOpen=true;
 				$scope.status.isWorldOpen=false;
 				$scope.status.isSportsOpen=false;
@@ -755,6 +761,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		}else if($scope.regXloopForNews(sectionName, 'tech')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='tech';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isTechOpen=true;
 				$scope.status.isWorldOpen=false;
 				$scope.status.isSportsOpen=false;
@@ -764,6 +772,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 		}else if($scope.regXloopForNews(sectionName, 'science')){
 			$scope.$apply(function(){
+				$scope.jeeves.newsPosition.section='science';
+				$scope.jeeves.newsPosition.articleIndex = 0;
 				$scope.status.isScienceOpen=true;
 				$scope.status.isWorldOpen=false;
 				$scope.status.isSportsOpen=false;
@@ -783,31 +793,25 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	//Either reads the web title for the article on that section or reads the whole article if said read article
 	$scope.readDiagNews = function(results1){
 		for(var i=0; i<results1.length;i++){
-			if(results1[i].match(/article/)){
+			if($scope.regXloopForNews(results1[i], 'article')||$scope.regXloopForNews(results1[i], 'this')||$scope.regXloopForNews(results1[i], 'now')){
 				$scope.readArticle();
 				return true;
 			}
 			else{
-				if (results1[i].length>4){
-					var section1=results1[i].substring(5);
-					if (section1=='news'||section1=='world'||section1=='sports'||section1=='tech'||section1=='science') {
-						$scope.jeeves.newsPosition.section=section1;
-						$scope.jeeves.newsPosition.articleIndex = 0;
-						$scope.changeNewsHelper(section1);
-					}
-					else{
-						navigator.tts.speak("You requested to read a section but the section name was unclear, please respond with the name of the section after saying read or say any other command.", function(){
-							$scope.reco($scope.routeToReadSection);
-						})
+				if ($scope.regXloopForNews(results1[i], 'news')||$scope.regXloopForNews(results1[i], 'world')||$scope.regXloopForNews(results1[i], 'sports')||$scope.regXloopForNews(results1[i], 'business')||$scope.regXloopForNews(results1[i], 'tech')||$scope.regXloopForNews(results1[i], 'science')){
+					if($scope.changeNewsSection(results1[i])){
+						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 						return true;
 					}
 				}
 				else{
-					$scope.jeeves.newsPosition.section=section;
+					navigator.tts.speak("I had trouble processing your news command, therefore, I'm moving to my default news section. However, you could always say any other read command to navigate to a different section.", function(){
+						$scope.changeNewsSection('news');
+						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+						$scope.reco($scope.routeToReadSection);
+						return true;
+					})
 				}
-				$scope.sayWebTitle($scope.jeeves.newsPosition.section);
-				$scope.$apply();
-				return true;
 			}
 		}return false;//??????
 	}
@@ -859,10 +863,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	  $scope.redirect = function() {
 	  	if ($scope.jeeves.readingArticle){
+	  		navigator.tts.stop();
 			$scope.jeeves.newsPosition.pause=true;
 	  		$scope.reco(function(results){
-	  			if ($scope.regXloop(results, 'pause')){
-	  			}else if($scope.regXloop(results, 'play')){
+	  			if ($scope.regXloop(results, 'pause')||$scope.regXloop(results, 'stop')){
+	  			}else if($scope.regXloop(results, 'play')||$scope.regXloop(results, 'resume')||$scope.regXloop(results, 'start')){
 	  				$scope.pauseAndPlay();	
 	  			}else {
 	  				$scope.dialogMan(results);
@@ -875,19 +880,19 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
-		if($scope.jeeves.webTitle.calledTitle==2){
-			$scope.jeeves.webTitle.calledWebTitle=". By the way, if you ever want to hear the available commands again, just press speech and say: news commands.";
+		if($scope.jeeves.webTitle.calledTitle==1){
+			$scope.jeeves.webTitle.calledWebTitle=". By the way, if you ever want to hear some example news commands, just press speech and say: news commands.";
 		}
-		else if($scope.jeeves.webTitle.calledTitle>2){
+		else if($scope.jeeves.webTitle.calledTitle>1){
 			$scope.jeeves.webTitle.calledWebTitle=".";
 		}
 	}
 
 	$scope.regXloopForNews = function(result, match) {
 		var regX = new RegExp(match);
-			if (regX.test(result)) {
-				return true;
-			}
+		if (regX.test(result)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -895,28 +900,28 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		$scope.adaptivePrompt();
 		if ($scope.jeeves.newsPosition.section == "news"){
 			navigator.tts.speak($scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			navigator.tts.speak($scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			navigator.tts.speak($scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			navigator.tts.speak($scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "technology"){
 			navigator.tts.speak($scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			navigator.tts.speak($scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle+ $scope.jeeves.webTitle.calledWebTitle, function() {
-					$scope.reco($scope.dialogMan);
-				});
+				$scope.reco($scope.dialogMan);
+			});
 		}
 		$scope.$apply();
 	}
@@ -932,72 +937,72 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.news[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-						//$scope.recursiveArticleChunk(finalResult.match(/\S+/g), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
+					//$scope.recursiveArticleChunk(finalResult.match(/\S+/g), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "world"){
 			var gotResult = $scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.world[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "sports"){
 			var gotResult = $scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.sports[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "business"){
 			var gotResult = $scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.business[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "tech"){
 			var gotResult = $scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.tech[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}else if ($scope.jeeves.newsPosition.section == "science"){
 			var gotResult = $scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].fields.body;
 			div1=document.createElement('div');
 			div1.innerHTML=gotResult;
 			var finalResult=$(div1).text();
 			navigator.tts.speak("Starting to read article: "+$scope.jeeves.newsArticles.science[$scope.jeeves.newsPosition.articleIndex].webTitle, function() {
-					$scope.$apply(function() {
-						$scope.jeeves.newsPosition.contArticleContent=finalResult;
-						$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
-					});
+				$scope.$apply(function() {
+					$scope.jeeves.newsPosition.contArticleContent=finalResult;
+					$scope.recursiveArticleChunk(finalResult.match( /[^\.!\?]+[\.!\?]+/g ), $scope.jeeves.newsPosition.pausePosition);
 				});
+			});
 		}
 		$scope.$apply();
 	}
 
-	 $scope.recursiveArticleChunk = function(chunkArray, position){
+	$scope.recursiveArticleChunk = function(chunkArray, position){
 	 	output = chunkArray[position];
 	 	$scope.jeeves.readingArticle=true;
 	 	if($scope.jeeves.newsPosition.pause==true){
@@ -1019,7 +1024,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	 			$scope.recursiveArticleChunk(chunkArray, (position+1));
 	 		});
 	 	}
-	 }
+	}
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
@@ -1034,24 +1039,40 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	}
 
 	$scope.emailSpeech = function(results) {
-		var email = $scope.jeeves.emailList[$scope.jeeves.emailCount];
-		var content = email.content;
-		navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
-			$scope.jeeves.emailCount++;
-			if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
-				navigator.tts.speak("Would you like me to read the next email?", function() {
-					$scope.reco($scope.confirmReadEmail);
-				})
-			} else {
-				navigator.tts.speak("That's all the emails. What now?", function() {
-					$scope.reco($scope.dialogMan);
-				})
-			}
-		});
+		if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
+			var email = $scope.jeeves.emailList[$scope.jeeves.emailCount];
+			var content = email.content;
+			navigator.tts.speak(email.subject + " from " + email.from + ". " + content + ".", function() {
+				$scope.jeeves.emailCount++;
+				if ($scope.jeeves.emailCount < $scope.jeeves.emailList.length) {
+					navigator.tts.speak("Would you like me to read the next email?", function() {
+						$scope.reco($scope.confirmReadEmail);
+					})
+				} else {
+					navigator.tts.speak("That's all the emails. What now?", function() {
+						$scope.reco($scope.dialogMan);
+					})
+				}
+			});
+		} else {
+			navigator.tts.speak("You have no new emails. Should I begin reading from the beginning?", function() {
+				$scope.reco($scope.confirmRestartEmail);
+			})
+		}
+		
 		return true;
 	}
 
 	$scope.confirmReadEmail = function(results) {
+		if (!$scope.confirmSpeech(results, ['read email'])) {
+			navigator.tts.speak("Ok. So what next?", function() {
+				$scope.reco($scope.dialogMan);
+			})
+		}
+	}
+
+	$scope.confirmRestartEmail = function(results) {
+		$scope.jeeves.emailCount = 0;
 		if (!$scope.confirmSpeech(results, ['read email'])) {
 			navigator.tts.speak("Ok. So what next?", function() {
 				$scope.reco($scope.dialogMan);
@@ -1153,13 +1174,18 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		$scope.disableBack();
 	}
 
-
 	$scope.oauthlogin = function() {
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		OAuth.popup('google_mail', {cache: true})
 		.done(function(result) {
 			$scope.getEmail();
-			navigator.tts.speak("You are now logged in to Gmail!");
+			navigator.tts.speak("You are now logged in to Gmail!", function() {
+				$timeout(function() {
+					navigator.tts.speak("Would you like me to read your email?", function() {
+						$scope.reco($scope.confirmReadEmail);
+					})
+				}, 500);
+			});
 		})
 	}
 
