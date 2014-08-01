@@ -985,6 +985,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal) {
 	 		navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 	 			$scope.$apply(function(){
 	 				 $scope.jeeves.readingArticle=false;
+	 				 $scope.jeeves.newsPosition.articleIndex++;
+	 				 $scope.jeeves.newsPosition.pause=false;
+	 				 $scope.jeeves.newsPosition.pausePosition=0;
 	 				$scope.reco($scope.dialogMan);
 	 			});
 	 		});
