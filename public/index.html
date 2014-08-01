@@ -297,6 +297,7 @@
 		<div id="help" class = "view" ng-hide="jeeves.view != 'help'" ng-cloak>
 			<div>
 				<h2>Help</h2>
+				<div style="height:345px; overflow: scroll;">
 				<h4><b>General Commands: (you can say these on any page)</b></h4>
 					<dl>
 						<dt>How is (how's) the weather</dt>
@@ -314,7 +315,18 @@
 						<dt>Read</dt>
 						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</dd>
 						<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News</dd>
+						<!-- <dt>does</dt>
+						<dt>the</dt>
+						<dt>scrolling</dt>
+						<dt>feature</dt>
+						<dt>work</dt>
+						<dt>on</dt>
+						<dt>the</dt>
+						<dt>help</dt>
+						<dt>page</dt>
+						<dt>????</dt> -->
 					</dl>	
+				</div>
 				<br>
 				<button ng-click="changeView('back')" class="btn btn-default btn-block">Go Back</button>
 			</div>
