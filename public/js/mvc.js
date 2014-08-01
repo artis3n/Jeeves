@@ -51,9 +51,7 @@ var model = {
 	menuModal: {},
 	isMenuOpen: false,
 	emailList: [],
-	emailCount: 0,
-	dynamic: 0,
-	max: 100
+	emailCount: 0
 };
 
 var jeevesApp = angular.module("jeevesApp", ['ui.bootstrap']);
@@ -1193,7 +1191,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX")
 			.done(function(list) {
 				$scope.jeeves.emailListCount = 0;
-				$scope.jeeves.max = list.messages.length;
 				document.getElementById('email-announcement').innerHTML = '<i>Hello! I am reading your <b>inbox</b> emails.</i><br><br>';
 				var prologue = document.getElementById("message-list");
 				if (list.messages == null) {
@@ -1223,7 +1220,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			              	}
 			              	$scope.$apply(function() {
 			              		$scope.jeeves.emailList.push(emailObject);
-			              		$scope.jeeves.dynamic++;
 			              	});
 			              	document.getElementById("authorize-button").style.visibility = "visible";
 			        	})
