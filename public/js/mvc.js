@@ -341,6 +341,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.globalReadSpeech(results);
 			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
+			} else if (results[i].match(/refresh/)) {
+
 			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
 				navigator.tts.speak("I'll be here if you need me.");
 				return true;
@@ -365,7 +367,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		}else if ($scope.jeeves.failedUnderstandCount == 2){
 			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. I suggest manually navigating around for a little while.", function(){
 				$scope.jeeves.failedUnderstandCount++;
-				$scope.reco($scope.dialogMan); 
 			});
 			return;
 		}else {
@@ -1175,11 +1176,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		.done(function(result) {
 			$scope.getEmail();
 			navigator.tts.speak("You are now logged in to Gmail!", function() {
-				$timeout(function() {
-					navigator.tts.speak("Would you like me to read your email?", function() {
+				if ($scope.jeeves.view == 'email') {
+					$timeout(function() {
+						navigator.tts.speak("Would you like me to read your email?", function() {
+							$scope.reco($scope.confirmReadEmail);
+						})
+					}, 500);
+				} else {
+					navigator.tts.speak("Would you like to check your emails?", function() {
 						$scope.reco($scope.confirmReadEmail);
 					})
-				}, 500);
+				}
 			});
 		})
 	}
@@ -1199,7 +1206,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				if (list.messages == null) {
 			        prologue.innerHTML = "<b>Your inbox is empty.</b>";
 			      } else {
-			        prologue.innerHTML = "------<br><br>";
+			        prologue.innerHTML = "---------<br><br>";
 			        angular.forEach(list.messages, function(message) {
 			        	var emailObject = {};
 			        	loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)

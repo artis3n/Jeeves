@@ -184,7 +184,7 @@
 						<button id='refresh-button' ng-click="checkEmail()" class="btn btn-info btn-sm">Load Emails</button>
 					</span>
 					<div style="padding-top: 10px">
-						<div id="message-list"></div>
+						<div id="message-list" style="margin-left: 10px"></div>
 						<accordion close-others="true">
 							<accordion-group ng-repeat="email in jeeves.emailList" heading="{{email.subject}}">
 							<div class="well well-lg" id="{{email.subject}}">
