@@ -66,13 +66,15 @@ jeevesApp.run(function($http) {
     });
 
 	// Loading News.
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=news&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 			if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
-					model.newsArticles.news[count]=data.response.results[i];
-					count=count+1;
+					if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
+						model.newsArticles.news[count]=data.response.results[i];
+						count=count+1;
+					}
 				}
 				if(count>100){
 					break;
@@ -80,27 +82,31 @@ jeevesApp.run(function($http) {
 			}
 		}
 	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=world&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 			if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
+				if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
 					model.newsArticles.world[count]=data.response.results[i];
 					count=count+1;
 				}
+				}
 				if(count>100){
 					break;
 				}
 			}
 		}
 	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=sport&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 			if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
+					if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
 					model.newsArticles.sports[count]=data.response.results[i];
 					count=count+1;
+					}
 				}
 				if(count>100){
 					break;
@@ -108,13 +114,15 @@ jeevesApp.run(function($http) {
 			}
 		}
 	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=business&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 			if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
-					model.newsArticles.business[count]=data.response.results[i];
-					count=count+1;
+					if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
+						model.newsArticles.business[count]=data.response.results[i];
+						count=count+1;
+					}
 				}
 				if(count>100){
 					break;
@@ -122,13 +130,15 @@ jeevesApp.run(function($http) {
 			}
 		}
 	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=technology&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 			if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
-					model.newsArticles.tech[count]=data.response.results[i];
-					count=count+1;
+					if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
+						model.newsArticles.tech[count]=data.response.results[i];
+						count=count+1;
+					}
 				}
 				if(count>100){
 					break;
@@ -136,13 +146,15 @@ jeevesApp.run(function($http) {
 			}
 		}
 	});
-	$http.get('http://beta.content.guardianapis.com/search?q=US&section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
+	$http.get('http://beta.content.guardianapis.com/search?section=science&page-size=99&show-fields=body&date-id=date%2Flast24hours&api-key=mfqem2e9vt7hjhww88ce99vr').success(function(data){
 		var count=0;
 		for(var i=0;i<200;i++){
 				if(data.response.results[i]!=undefined){
 				if(data.response.results[i].hasOwnProperty('fields')){
-					model.newsArticles.science[count]=data.response.results[i];
-					count=count+1;
+					if(!data.response.results[i].webTitle.match(/Photo/)&&!data.response.results[i].webTitle.match(/video/)&&!data.response.results[i].webTitle.match(/pictures/)){
+						model.newsArticles.science[count]=data.response.results[i];
+						count=count+1;
+					}
 				}
 				if(count>100){
 					break;
@@ -710,8 +722,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	}
 
 	$scope.changeNewsSection=function(results){
+		if ($scope.regXloopForNews(results, 'news')||$scope.regXloopForNews(results, 'world')||$scope.regXloopForNews(results, 'sports')||$scope.regXloopForNews(results, 'business')||$scope.regXloopForNews(results, 'tech')||$scope.regXloopForNews(results, 'science')){
 				$scope.changeNewsHelper(results);
 				return true;
+			}
+			return false;
 	}
 
 	$scope.changeNewsHelper=function(sectionName){
@@ -806,11 +821,12 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				}
 				else{
 					navigator.tts.speak("I had trouble processing your news command, therefore, I'm moving to my default news section. However, you could always say any other read command to navigate to a different section.", function(){
-						$scope.changeNewsSection('news');
-						$scope.sayWebTitle($scope.jeeves.newsPosition.section);
-						$scope.reco($scope.routeToReadSection);
-						return true;
+						if($scope.changeNewsSection('news')){
+							$scope.sayWebTitle($scope.jeeves.newsPosition.section);
+							return true;
+						}
 					})
+					return true;
 				}
 			}
 		}return false;//??????
@@ -1012,6 +1028,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	 		navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 	 			$scope.$apply(function(){
 	 				 $scope.jeeves.readingArticle=false;
+	 				 $scope.jeeves.newsPosition.articleIndex++;
+	 				 $scope.jeeves.newsPosition.pause=false;
+	 				 $scope.jeeves.newsPosition.pausePosition=0;
 	 				$scope.reco($scope.dialogMan);
 	 			});
 	 		});
