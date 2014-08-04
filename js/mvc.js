@@ -359,7 +359,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.getHelp(results);
 			} else if (results[i].match(/refresh/)) {
 				return $scope.refreshEmail();
-			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
+			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/) || results[i].match(/no/)) {
 				navigator.tts.speak("I'll be here if you need me.");
 				return true;
 			}
@@ -610,7 +610,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				templateUrl: "news-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'resume' if you want to continue an article you've paused, 'read, section name' to listen to articles in a certain section, 'next' or 'previous' to listen to the next or previous article title, or 'more articles' or 'previous articles' to change the list of articles on the screen.", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'continue,' if you want to resume an article you've paused, or say 'next' or 'previous' to listen to the next or previous article title.", function() {
 				$scope.jeeves.newsmodalhelp.close();
 				navigator.tts.speak("What next?", function() {
 					$scope.reco($scope.dialogMan);
