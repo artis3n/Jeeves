@@ -829,7 +829,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					}
 				}
 				else{
-					navigator.tts.speak("I had trouble processing your news command, therefore, I'm moving to my default news section. However, you could always say any other read command to navigate to a different section.", function(){
+					navigator.tts.speak("Reading news.", function(){
 						if($scope.changeNewsSection('news')){
 							$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 							return true;
@@ -888,7 +888,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	  $scope.redirect = function() {
 	  	if ($scope.jeeves.readingArticle){
-	  		navigator.tts.stop();
 			$scope.jeeves.newsPosition.pause=true;
 	  		$scope.reco(function(results){
 	  			if ($scope.regXloop(results, 'pause')||$scope.regXloop(results, 'stop')){
@@ -906,7 +905,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
 		if($scope.jeeves.webTitle.calledTitle==1){
-			$scope.jeeves.webTitle.calledWebTitle=". By the way, if you ever want to hear some example news commands, just press speech and say: news commands.";
+			$scope.jeeves.webTitle.calledWebTitle=". I welcome natural language but some example commands are read article, read section name, continue, previous, more articles, say help to see more examples.";
 		}
 		else if($scope.jeeves.webTitle.calledTitle>1){
 			$scope.jeeves.webTitle.calledWebTitle=".";
@@ -1053,8 +1052,11 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
-			navigator.tts.stop();
-			$scope.jeeves.newsPosition.pause=true;
+			navigator.tts.stop(function(){
+				$scope.$apply(function(){
+					$scope.jeeves.newsPosition.pause=true;
+				});
+			});
 		} else{
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
