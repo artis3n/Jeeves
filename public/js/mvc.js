@@ -202,6 +202,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	    isScienceOpen:false
 	};
 
+	$scope.hideSpalshScreen = function(){
+		document.getElementById("splashScreen").style.display="none";
+	}
+
 	$scope.imgurl = function() {
                 var baseUrl = 'https://ssl.gstatic.com/onebox/weather/128/';
                 if ($scope.jeeves.weather.clouds < 20 && $scope.jeeves.weather.clouds > -1) {
@@ -239,14 +243,14 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				$scope.openMenu();
 			}
 		} else {
+			if (selected == 'email') {
+				navigator.tts.speak("Let's grab your emails.");
+				$scope.checkEmail();
+			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
 			if ($scope.jeeves.isMenuOpen) {
 				$scope.closeMenu();
-			}
-			if (selected == 'email') {
-				navigator.tts.speak("Let's grab your emails.");
-				$scope.checkEmail();
 			}
 		}
 	};
@@ -353,6 +357,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.globalReadSpeech(results);
 			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
+			} else if (results[i].match(/refresh/)) {
+
 			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
 				navigator.tts.speak("I'll be here if you need me.");
 				return true;
@@ -377,7 +383,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		}else if ($scope.jeeves.failedUnderstandCount == 2){
 			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. I suggest manually navigating around for a little while.", function(){
 				$scope.jeeves.failedUnderstandCount++;
-				$scope.reco($scope.dialogMan); 
 			});
 			return;
 		}else {
@@ -563,6 +568,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				navigator.tts.speak("Let's pull up your emails.", function () {
 					$scope.$apply(function() {
 						$scope.changeView('email');
+						alert("View's not changing.");
 					});
 					return $scope.emailSpeech(results);
 				});
@@ -1196,11 +1202,17 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		.done(function(result) {
 			$scope.getEmail();
 			navigator.tts.speak("You are now logged in to Gmail!", function() {
-				$timeout(function() {
-					navigator.tts.speak("Would you like me to read your email?", function() {
+				if ($scope.jeeves.view == 'email') {
+					$timeout(function() {
+						navigator.tts.speak("Would you like me to read your email?", function() {
+							$scope.reco($scope.confirmReadEmail);
+						})
+					}, 500);
+				} else {
+					navigator.tts.speak("Would you like to check your emails?", function() {
 						$scope.reco($scope.confirmReadEmail);
 					})
-				}, 500);
+				}
 			});
 		})
 	}
@@ -1208,7 +1220,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.getEmail = function() {
 		$scope.jeeves.emailList.length = 0;
 		$scope.jeeves.emailCount = 0;
-		document.getElementById("authorize-button").style.visibility = "hidden";
+		document.getElementById("refresh-button").style.visibility = "hidden";
 		OAuth.initialize("hmTB5riczHFLIGKSA73h1_Tw9bU");
 		var loggedIn = OAuth.create("google_mail");
 		loggedIn.me().done(function(data) {
@@ -1220,7 +1232,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				if (list.messages == null) {
 			        prologue.innerHTML = "<b>Your inbox is empty.</b>";
 			      } else {
-			        prologue.innerHTML = "------<br><br>";
+			        prologue.innerHTML = "---------<br><br>";
 			        angular.forEach(list.messages, function(message) {
 			        	var emailObject = {};
 			        	loggedIn.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + message.id)
@@ -1245,7 +1257,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			              	$scope.$apply(function() {
 			              		$scope.jeeves.emailList.push(emailObject);
 			              	});
-			              	document.getElementById("authorize-button").style.visibility = "visible";
+			              	document.getElementById("refresh-button").style.visibility = "visible";
 			        	})
 			        })
 			    }
