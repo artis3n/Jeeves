@@ -15,6 +15,7 @@
 	<script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	
 	<!-- Add AngularJS modules -->
 	<script src="js/angular-animate.min.js"></script>
 	<script src="js/angular-touch.min.js"></script>
@@ -22,8 +23,14 @@
 	<!-- base64 decoding algorithm -->
 	<script src="js/base64.js"></script>
 
+	<!-- Gmail Script -->
 	<script src="https://apis.google.com/js/client.js"></script>
+
+	<!-- model-vision controller -->
 	<script src="js/mvc.js"></script>
+
+	<!-- HTML starting function -->
+	<script type="text/javascript" src="js/startFunction.js"></script>
 	
 	<!-- SPEECH FUNCTIONALITY -->
 	<script type="text/javascript" src="cordova.js"></script>
@@ -410,59 +417,5 @@
 			<br>
 		</div>
 	</div>
-	<script type="text/javascript">
-	document.addEventListener("deviceready", startTTS, false);
-	document.addEventListener("backbutton", goBack, false);
-	document.addEventListener("menubutton", openMenu, false);
-	document.addEventListener("shutdown", endTTS, false);
-
-	function startTTS() {
-		navigator.tts.startup(success, fail);
-
-		function success () {
-			setTimeout(function() {
-				var $element = $('#body-controller-element');
-				var scope = angular.element($element).scope();
-				scope.$apply(function() {
-					scope.hideSpalshScreen();
-				});
-			}, 2000);
-			navigator.tts.speak("Hello! I am ready to begin listening.");
-		}
-
-		function fail () {
-			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", 'Jeeves', 'Confirm');
-		}
-	}
-
-	function goBack() {
-		try {
-			var $element = $('#body-controller-element');
-			var scope = angular.element($element).scope();
-			scope.$apply(function() {
-				scope.changeView('back');
-			});
-		} catch (err) {
-			alert(err);
-		}
-		
-	}
-
-	function openMenu() {
-		try {
-			var $element = $('#body-controller-element');
-			var scope = angular.element($element).scope();
-			scope.$apply(function() {
-				scope.changeView('menu');	
-			});
-		} catch (err) {
-			alert(err);
-		}
-	}
-
-	function endTTS() {
-		navigator.tts.shutdown();
-	}
-	</script>
 </body>
 </html>
