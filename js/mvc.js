@@ -351,7 +351,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					})
 				})
 				return true;
-			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/) || results[i].match(/go back/)) {
+			} else if (results[i].match(/go to/) || results[i].match(/goto/) || results[i].match(/open/) || results[i].match(/go back/) || results[i].match(/take/)) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
@@ -697,7 +697,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		for (var i = 0; i<results.length; i++) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
-			}else if ($scope.regXloopForNews(results[i], 'next article') || $scope.regXloopForNews(results[i], 'continue')||$scope.regXloopForNews(results[i], 'next')) {
+			}else if ($scope.regXloopForNews(results[i], 'next')) {
 				return $scope.contDiagNews();
 			}
 			else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
@@ -827,7 +827,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					}
 				}
 				else{
-					navigator.tts.speak("I had trouble processing your news command, therefore, I'm moving to my default news section. However, you could always say any other read command to navigate to a different section.", function(){
+					navigator.tts.speak("Reading news.", function(){
 						if($scope.changeNewsSection('news')){
 							$scope.sayWebTitle($scope.jeeves.newsPosition.section);
 							return true;
@@ -889,8 +889,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	  		navigator.tts.stop();
 			$scope.jeeves.newsPosition.pause=true;
 	  		$scope.reco(function(results){
-	  			if ($scope.regXloop(results, 'pause')||$scope.regXloop(results, 'stop')){
-	  			}else if($scope.regXloop(results, 'play')||$scope.regXloop(results, 'resume')||$scope.regXloop(results, 'start')){
+	  			if ($scope.regXloop(results, 'pause') || $scope.regXloop(results, 'stop')){
+	  			}else if($scope.regXloop(results, 'play') || $scope.regXloop(results, 'resume') || $scope.regXloop(results, 'start') || $scope.regXloop(results, 'continue')){
 	  				$scope.pauseAndPlay();	
 	  			}else {
 	  				$scope.dialogMan(results);
@@ -904,10 +904,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
 		if($scope.jeeves.webTitle.calledTitle==1){
-			$scope.jeeves.webTitle.calledWebTitle=". By the way, if you ever want to hear some example news commands, just press speech and say: news commands.";
+			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are read article, read section name, continue, previous, or more articles. say help if you would like to hear these again.";
 		}
-		else if($scope.jeeves.webTitle.calledTitle>1){
-			$scope.jeeves.webTitle.calledWebTitle=".";
+		else if($scope.jeeves.webTitle.calledTitle>2){
+			$scope.jeeves.webTitle.calledWebTitle=". Say read article or continue.";
 		}
 	}
 
@@ -1028,10 +1028,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.recursiveArticleChunk = function(chunkArray, position){
 	 	output = chunkArray[position];
 	 	$scope.jeeves.readingArticle=true;
+	 	$scope.jeeves.newsPosition.pausePosition=position;
 	 	if($scope.jeeves.newsPosition.pause==true){
-	 		$scope.jeeves.newsPosition.pausePosition=position;
-	 	}
-	 	else if(position>=chunkArray.length){
+
+	 	} else if(position>=chunkArray.length){
 	 		navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
 	 			$scope.$apply(function(){
 	 				 $scope.jeeves.readingArticle=false;
@@ -1041,8 +1041,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	 				$scope.reco($scope.dialogMan);
 	 			});
 	 		});
-	 	}
-	 	else{
+	 	} else{
 	 		navigator.tts.speak(output, function(){
 	 			$scope.recursiveArticleChunk(chunkArray, (position+1));
 	 		});
@@ -1051,8 +1050,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 
 	$scope.pauseAndPlay = function(){
 		if($scope.jeeves.newsPosition.pause==false){
-			navigator.tts.stop();
-			$scope.jeeves.newsPosition.pause=true;
+			navigator.tts.stop(function() {
+				$scope.jeeves.newsPosition.pause=true;
+			});
 		} else{
 			$scope.jeeves.newsPosition.pause=false;
 			var cont=$scope.jeeves.newsPosition.contArticleContent;
