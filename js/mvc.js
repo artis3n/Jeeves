@@ -200,7 +200,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	    isSportsOpen:false,
 	    isBusinessOpen:false,
 	    isTechOpen:false,
-	    isScienceOpen:false
+	    isScienceOpen:false,
+	    isGlobalHelpOpen:true
 	};
 
 	$scope.hideSpalshScreen = function(){
