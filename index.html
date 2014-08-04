@@ -247,7 +247,7 @@
 			</script>
 		</div>
 
-		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak ng-swipe-left="handleSwipe('right-to-left')">
+		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
 			<div style="height:440px;">
 				<br>
 				<h2 class="text-center">Weather of {{jeeves.city}}</h2>
@@ -289,8 +289,22 @@
 
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
  			<h2 class="text-center">About</h2>
- 			<div style="height:378px; overflow: auto;">
-				<p style="text-indent:40px;"><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font></p>
+ 			<div style="height:340px; overflow: auto;">
+	 			<div style="height:378px; overflow: auto;">
+					<p><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font><hr></p>
+				</div>
+				<div id="mit-license">
+					Unless otherwise noted, all third-party API's are licensed under the MIT License as noted below:<br>
+					<br>
+					Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br>
+					<br>
+					The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.<br>
+					<br>
+					THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><hr>
+				</div>
+				<div id="weather-license">
+					The <a href="http://www.openweathermap.org/api">OpenWeatherMap API</a> by <a href="http://www.openweathermap.org/about">Extreme Electronics Ltd.</a> is licensed under <a href="http://www.creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>
+				</div>
 			</div>
 		</div>
 

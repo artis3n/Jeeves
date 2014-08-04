@@ -1117,8 +1117,13 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	};
 
 	$scope.setInnerHTML = function(entry){
-		document.getElementById(entry.webTitle).innerHTML=entry.fields.body;
-	};
+	 	var article = document.getElementById(entry.webTitle);
+	 	article.innerHTML = entry.fields.body;
+	 	var link = document.createElement('a');
+	 	link.href = entry.webUrl;
+	 	link.innerHTML = "Read this on The Guardian";
+	 	article.appendChild(link);
+	 };
 
 	$scope.differentFive = function(selected, increment){
 		var change = 5;
