@@ -359,7 +359,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			} else if (results[i].match(/help/)) {
 				return $scope.getHelp(results);
 			} else if (results[i].match(/refresh/)) {
-
+				return $scope.refreshEmail();
 			} else if (results[i].match(/done/) || results[i].match(/go away/) || results[i].match(/that's all/)) {
 				navigator.tts.speak("I'll be here if you need me.");
 				return true;
@@ -1275,5 +1275,10 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		} else {
 			$scope.getEmail();
 		}
+	}
+
+	$scope.refreshEmail = function() {
+		navigator.tts.speak("Refreshing...");
+		$scope.checkEmail();
 	}
 });
