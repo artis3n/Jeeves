@@ -354,7 +354,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				return $scope.goToSpeech(results);
 			} else if (results[i].match(/read/)) {
 				return $scope.globalReadSpeech(results);
-			} else if (results[i].match(/help/)) {
+			} else if (results[i].match(/help/) || results[i].match(/what can i say/)) {
 				return $scope.getHelp(results);
 			} else if (results[i].match(/refresh/)) {
 				return $scope.refreshEmail();
@@ -609,7 +609,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				templateUrl: "news-help.html",
 				windowClass: "help-window"
 			})
-			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'Read me, article name,' 'Reeed me, section,' 'More articles,' or 'Previous articles.'", function() {
+			navigator.tts.speak("I welcome natural language! But if you need a hint, you can say 'resume' if you want to continue an article you've paused, 'read, section name' to listen to articles in a certain section, 'next' or 'previous' to listen to the next or previous article title, or 'more articles' or 'previous articles' to change the list of articles on the screen.", function() {
 				$scope.jeeves.newsmodalhelp.close();
 				navigator.tts.speak("What next?", function() {
 					$scope.reco($scope.dialogMan);
@@ -903,7 +903,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
 		if($scope.jeeves.webTitle.calledTitle==1){
-			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are read article, read section name, continue, previous, or more articles. say help if you would like to hear these again.";
+			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are 'read article', 'read, section name', 'continue,' 'previous,' or 'more articles.' Say help if you would like to hear these again.";
 		}
 		else if($scope.jeeves.webTitle.calledTitle>2){
 			$scope.jeeves.webTitle.calledWebTitle=". Say read article or continue.";

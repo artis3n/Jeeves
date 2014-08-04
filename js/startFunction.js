@@ -13,7 +13,7 @@
 				scope.$apply(function() {
 					scope.hideSpalshScreen();
 				});
-			}, 2000);
+			}, 2500);
 			navigator.tts.speak("Hello! I am ready to begin listening.");
 		}
 
