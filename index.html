@@ -339,9 +339,9 @@
 		<div id="help" class = "view" ng-hide="jeeves.view != 'help'" ng-cloak>
 			<div>
 				<h2>Help</h2>
-				<div style="height:345px; overflow: scroll;">
+				<div style="height:323px; overflow: auto;">
 				<accordion  close-others="true">
-					<accordion-group heading="Global">
+					<accordion-group heading="Global" is-open="status.isGlobalHelpOpen">
 					<h4><b>General Commands: (you can say these on any page)</b></h4>
 						<dl>
 							<dt>How is (how's) the weather</dt>
