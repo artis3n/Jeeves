@@ -384,11 +384,13 @@
 		navigator.tts.startup(success, fail);
 
 		function success () {
-			var $element = $('#body-controller-element');
-			var scope = angular.element($element).scope();
-			scope.$apply(function() {
-				scope.hideSpalshScreen();
-			});
+			setTimeout(function() {
+				var $element = $('#body-controller-element');
+				var scope = angular.element($element).scope();
+				scope.$apply(function() {
+					scope.hideSpalshScreen();
+				});
+			}, 2000);
 			navigator.tts.speak("Hello! I am ready to begin listening.");
 		}
 
