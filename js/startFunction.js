@@ -18,7 +18,7 @@
 		}
 
 		function fail () {
-			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", 'Jeeves', 'Confirm');
+			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", function(){},'Jeeves', 'Confirm');
 		}
 	}
 
@@ -29,9 +29,7 @@
 			scope.$apply(function() {
 				scope.changeView('back');
 			});
-		} catch (err) {
-			alert(err);
-		}
+		} catch (err) {}
 		
 	}
 
@@ -42,9 +40,7 @@
 			scope.$apply(function() {
 				scope.changeView('menu');	
 			});
-		} catch (err) {
-			alert(err);
-		}
+		} catch (err) {}
 	}
 
 	function endTTS() {

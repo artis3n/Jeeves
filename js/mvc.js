@@ -289,7 +289,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		        $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
 		    }else{
 		    	if(typeof setting == "boolean"){
-		    		alert("I am sorry, but "+city + " is not available. Please enter a another city name");
+		    		navigator.notification.alert("I am sorry, but "+city + " is not available. Please enter a another city name",function(){},'Invalid City Name','OK');
 		    	}else{
 		    		navigator.tts.speak("Sorry, I didn't catch the city name. Can you repeat the city name again?", function() {
 		    			$scope.reco($scope.weatherSpeechFallBack);
@@ -316,9 +316,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			callback(results); // Call respective dialogue management function.
 		}
 
- 		function failCallback(error){
-		    alert("Error: " + error);
-		}
+ 		function failCallback(error){}
 	}
 
 	$scope.dialogMan = function(results){
@@ -569,7 +567,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				navigator.tts.speak("Let's pull up your emails.", function () {
 					$scope.$apply(function() {
 						$scope.changeView('email');
-						alert("View's not changing.");
 					});
 					return $scope.emailSpeech(results);
 				});
