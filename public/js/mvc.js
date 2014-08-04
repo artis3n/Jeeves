@@ -1,4 +1,5 @@
 
+
 //Authors: Ari Kalfus, Burak Sezer, Sam Raphael, Wesley Wei Qian
 
 var model = {
@@ -668,6 +669,8 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			}else if (results[i].lastIndexOf("what's the weather of")==0){
 				city = results[i].slice(22);
 
+			}else if (results.match(/change the city to/)){
+				results[i].slice(19);
 			}
 			if(city !== "INVALID"){
 				var cityChange = $scope.capitaliseFirstLetter(city)
