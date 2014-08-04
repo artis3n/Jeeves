@@ -56,7 +56,7 @@
 				<br>
 				<br>
 			</div>
-			<h1 class="text-center"><font color="white">Loading ...... </font></h1>
+			<h1 class="text-center"><font color="white">Loading ... </font></h1>
 	</div>
 	<div class="container">
 		<div class="page-header">
@@ -384,13 +384,12 @@
 		navigator.tts.startup(success, fail);
 
 		function success () {
-			navigator.tts.speak("Hello! I am ready to begin listening.", function(){
-				var $element = $('#body-controller-element');
-				var scope = angular.element($element).scope();
-				scope.$apply(function() {
-					scope.hideSpalshScreen();
-				});
+			var $element = $('#body-controller-element');
+			var scope = angular.element($element).scope();
+			scope.$apply(function() {
+				scope.hideSpalshScreen();
 			});
+			navigator.tts.speak("Hello! I am ready to begin listening.");
 		}
 
 		function fail () {
