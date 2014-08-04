@@ -542,6 +542,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 					$scope.changeView('back');
 				})
 			})
+			return true;
 		} else {
 			$scope.goToFallback(results);
 			return true;
