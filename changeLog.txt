@@ -1,0 +1,4 @@
+Change Log
+Version 1.0.2
+- "Weather in <city>" of "Weather of <city>".
+- Catch the exceoption of empty string as city name.

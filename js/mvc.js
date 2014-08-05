@@ -282,26 +282,30 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			city=setting;
 		}
 
-		$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
-            if(data.cod == 200){
-            	navigator.tts.speak("Changing the city to " + city + ".");
-            	$scope.jeeves.city = city;
-		        $scope.jeeves.weather.temp.current = data.main.temp;
-		        $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
-		    }else{
-		    	if(typeof setting == "boolean"){
-		    		navigator.notification.alert("I am sorry, but "+city + " is not available. Please enter a another city name",function(){},'Invalid City Name','OK');
-		    	}else{
-		    		navigator.tts.speak("Sorry, I didn't catch the city name. Can you repeat the city name again?", function() {
-		    			$scope.reco($scope.weatherSpeechFallBack);
-		    		})
-		    	}
-		    }
-    	});
+		if(city != ""){
+			$http.jsonp('http://api.openweathermap.org/data/2.5/weather?q='+city+','+$scope.jeeves.country+ '&units=imperial&callback=JSON_CALLBACK').success(function(data) {
+	            if(data.cod == 200){
+	            	navigator.tts.speak("Changing the city to " + city + ".");
+	            	$scope.jeeves.city = $scope.capitaliseFirstLetter(city);
+			        $scope.jeeves.weather.temp.current = data.main.temp;
+			        $scope.jeeves.weather.clouds = data.clouds ? data.clouds.all : undefined;
+			    }else{
+			    	if(typeof setting == "boolean"){
+			    		navigator.notification.alert("I am sorry, but "+city + " is not available. Please enter a another city name",function(){},'Invalid City Name','OK');
+			    	}else{
+			    		navigator.tts.speak("Sorry, I didn't catch the city name. Can you repeat the city name again?", function() {
+			    			$scope.reco($scope.weatherSpeechFallBack);
+			    		})
+			    	}
+			    }
+	    	});
+	    }else{
+	    	navigator.notification.alert("Sorry, the city name cannot be empty.",function(){},'Empty City Name','OK');
+	    }
     	document.getElementById("weather_city").value = "";
     	document.getElementById("weather_city_setting").value = "";
-	}
-
+	
+}
 	$scope.changeSection=function(selected){
 		document.getElementById($scope.jeeves.section).innerHTML="";
 		$scope.jeeves.section = selected;
