@@ -702,25 +702,21 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		for (var i = 0; i<results.length; i++) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
-			}else if ($scope.regXloopForNews(results[i], 'next')) {
+			} else if ($scope.regXloopForNews(results[i], 'next')) {
 				return $scope.contDiagNews();
-			}
-			else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
+			} else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,false);
 				});
 				return true;
-			}	
-			else if ($scope.regXloopForNews(results[i], 'previous')){
+			} else if ($scope.regXloopForNews(results[i], 'previous')){
 				return $scope.previousDiagNews();
-			}
-			else if($scope.regXloopForNews(results[i], 'more articles')){
+			} else if($scope.regXloopForNews(results[i], 'more articles')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,true);
 				});
 				return true;
-			}
-			else if($scope.regXloopForNews(results[i], 'change news to')){
+			} else if($scope.regXloopForNews(results[i], 'change news to')){
 				return $scope.changeNewsSection(results[i]);
 			}
 			$scope.$apply(); // This might need to be called before every return statement.
