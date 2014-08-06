@@ -1,4 +1,4 @@
 Change Log
-Version 1.0.2
+Version 0.2.2
 - "Weather in <city>" of "Weather of <city>". (Wes)
-- Catch the exceoption of empty string as city name. (Wes)
+- Catch the exception of empty string as city name. (Wes)
