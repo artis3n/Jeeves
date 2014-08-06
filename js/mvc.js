@@ -385,7 +385,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 			return;
 		}else if ($scope.jeeves.failedUnderstandCount == 2){
-			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. I suggest manually navigating around for a little while.", function(){
+			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. It's not you, it's me. I suggest manually navigating around for a little while.", function(){
 				$scope.jeeves.failedUnderstandCount++;
 			});
 			return;
