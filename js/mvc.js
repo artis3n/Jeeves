@@ -723,11 +723,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			else if($scope.regXloopForNews(results[i], 'change news to')){
 				return $scope.changeNewsSection(results[i]);
 			}
-			else if($scope.regXloopForNews(results[i], 'news commands')){
-				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
-					$scope.reco($scope.newsSpeech);
-				})
-			}
 			$scope.$apply(); // This might need to be called before every return statement.
 			return false;
 		}
