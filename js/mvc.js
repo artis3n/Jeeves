@@ -385,7 +385,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 			return;
 		}else if ($scope.jeeves.failedUnderstandCount == 2){
-			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. It's not you, it's me. I suggest manually navigating around for a little while.", function(){
+			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. It's not you, it's me. I think we need some space. I suggest manually navigating around for a little while.", function(){
 				$scope.jeeves.failedUnderstandCount++;
 			});
 			return;
@@ -900,7 +900,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
 		if($scope.jeeves.webTitle.calledTitle==1){
-			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are 'read article', 'read, section name', 'continue,' 'previous,' or 'more articles.' Say help if you would like to hear these again.";
+			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are 'read article', 'read, section name', 'continue,' 'previous,' or 'more articles.' Say 'help' if you would like to hear these again.";
 		}
 		else if($scope.jeeves.webTitle.calledTitle>2){
 			$scope.jeeves.webTitle.calledWebTitle=". Say read article or continue.";
