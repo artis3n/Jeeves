@@ -34,9 +34,11 @@
 </head>
 
 <body id="body-controller-element" ng-controller="jeevesCtrl">
+		<!-- Splash Screen -->
 		<div class="splash-screen" id="splashScreen">
 			<img class="splash" src="splash.png" alt="logo" height="200" width="200">
 			<div>
+				<!-- Have to manually add <br> -->
 				<br>
 				<br>
 				<br>
@@ -62,10 +64,15 @@
 			</div>
 			<h1 class="text-center"><font color="white">Loading ... </font></h1>
 	</div>
+
+	<!-- The main container of the app -->
 	<div class="container">
+		<!-- The header -->
 		<div class="page-header">
-			<h1 class="text-center">Jeeves <small><span id="version">v0.2.1</span></small></h1>
+			<h1 class="text-center">Jeeves <small><span id="version">v0.2.3</span></small></h1>
 		</div>
+
+		<!-- The top two buttons -->
 		<div id="top-buttons" class="view" >
 			<button ng-click="changeView('favorites')" class="btn btn-primary pull-left" style="width: 150px;" disabled>
 				<span class="glyphicon glyphicon-star"></span>
@@ -76,6 +83,7 @@
 			<br>
 		</div>
 
+		<!-- The menu modal -->
 		<div id="menu" ng-controller="jeevesCtrl" class = "view" ng-hide="jeeves.view != 'menu'" ng-cloak>
 			<script type="text/ng-template" id="menuContent.html">
 			<div ng-controller="jeevesCtrl">
@@ -92,6 +100,7 @@
 			</script>
 		</div>
 
+		<!-- The news page -->
 		<div id="rssNews" class="view" ng-hide="jeeves.view != 'news'" ng-cloak>
 			<div>
 				<h2 class="text-center">News</h2>
@@ -188,6 +197,7 @@
 					</accordion>
 				</div>
 			</div>
+			<!-- Help for news section -->
 			<script type="text/ng-template" id="news-help.html">
 			<div ng-controller="jeevesCtrl">
 				<div class="text-center"><h3>News Commands</h3></div>
@@ -209,6 +219,7 @@
 			</script>
 		</div>
 
+		<!-- Email page -->
 		<div id="email" class="view" ng-hide="jeeves.view != 'email'" ng-cloak>
 			<div>
 				<h2 class="text-center">Email</h2>
@@ -232,6 +243,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- Help for email view -->
 			<script type="text/ng-template" id="email-help.html">
 			<div ng-controller="jeevesCtrl">
 				<div class="text-center"><h3>Email Commands</h3></div>
@@ -247,6 +259,7 @@
 			</script>
 		</div>
 
+		<!-- The weather view -->
 		<div id="weather" class="view" ng-hide="jeeves.view != 'weather'" ng-cloak>
 			<div style="height:440px;">
 				<br>
@@ -270,7 +283,7 @@
 		    		<font size="1">Powered by OpenWeatherMap.org</font>
 	        	</div>
 	      	</div>
-
+	      	<!-- Help for weather page -->
 	      	<script type="text/ng-template" id="weather-help.html">
 			<div ng-controller="jeevesCtrl">
 				<div class="text-center"><h3>Weather Commands</h3></div>
@@ -287,12 +300,14 @@
 			</script>
 	    </div>
 
+	    <!-- The about view -->
  		<div id="about" class="view" ng-hide="jeeves.view != 'about'" ng-cloak>
  			<h2 class="text-center">About</h2>
  			<div style="height:340px; overflow: auto;">
 	 			<div style="height:378px; overflow: auto;">
 					<p><font size = "3">Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your Facebook feed? Never worry about making these choices again. We present a new, hands-free voice-based application that will read the news, stock market updates, your Facebook or Twitter feed, the weather, and much more to you while you go about your morning schedule. We call it <b>Jeeves</b>. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Brushing your teeth? Have Jeeves read you traffic updates. Best of all, this app is simple, user-friendly, and <i>free</i>.</font><hr></p>
 				</div>
+				<!-- License information-->
 				<div id="mit-license">
 					Unless otherwise noted, all third-party API's are licensed under the MIT License as noted below:<br>
 					<br>
@@ -302,12 +317,14 @@
 					<br>
 					THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br><hr>
 				</div>
+				<!-- License information for weather -->
 				<div id="weather-license">
 					The <a href="http://www.openweathermap.org/api">OpenWeatherMap API</a> by <a href="http://www.openweathermap.org/about">Extreme Electronics Ltd.</a> is licensed under <a href="http://www.creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>
 				</div>
 			</div>
 		</div>
 
+		<!-- Setting view -->
 		<div id="settings" class="view" ng-hide="jeeves.view != 'settings' " ng-cloak>
 			<div>
 				<h2 class="text-center">Settings</h2>
@@ -331,6 +348,7 @@
 			</div>
 		</div>
 
+		<!-- Contact View -->
 		<div id="contact" class="view" ng-hide="jeeves.view != 'contact'" ng-cloak>
 			<div>
 				<h2 class="text-center">Contact Us</h2>
@@ -344,6 +362,7 @@
 			</div>
 		 </div>
 
+		<!-- Favorite view, but still in progress -->
 		<div id="favorites" class="view" ng-hide="jeeves.view != 'favorites'" ng-cloak>
 			<div>
 				<h2>Favorites</h2>
@@ -351,6 +370,7 @@
 			</div>
 		</div>
 
+		<!-- Help View -->
 		<div id="help" class = "view" ng-hide="jeeves.view != 'help'" ng-cloak>
 			<div>
 				<h2 class="text-center">Help</h2>
@@ -374,16 +394,6 @@
 								<dt>Read</dt>
 								<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</dd>
 								<dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News</dd>
-								<!-- <dt>does</dt>
-								<dt>the</dt>
-								<dt>scrolling</dt>
-								<dt>feature</dt>
-								<dt>work</dt>
-								<dt>on</dt>
-								<dt>the</dt>
-								<dt>help</dt>
-								<dt>page</dt>
-								<dt>????</dt> -->
 							</dl>	
 						</accordion-group>
 						<accordion-group heading="News">
@@ -425,6 +435,7 @@
 			</div>
 		</div>
 
+		<!-- The bottom two buttons -->
 		<div id="bottom-buttons" class="view" >
 			<br>
 			<button ng-click="redirect()" class="btn btn-primary pull-left" style="width: 150px;">Speech </button>
@@ -434,6 +445,7 @@
 			<br>
 		</div>
 	</div>
+	
 	<!-- HTML starting function -->
 	<script type="text/javascript" src="js/startFunction.js"></script>
 </body>

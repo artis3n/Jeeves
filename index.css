@@ -1,7 +1,9 @@
+/*css for menu modal*/
 #menu-title {
 	cursor: pointer;
 }
 
+/*css for splash screen*/
 .splash-screen{
     opacity:0.9;
     background-color:#000000;
@@ -13,6 +15,7 @@
     z-index:1000;
 }
 
+/*css for the splash screen image*/
 IMG.splash {
     position: absolute;
     margin: auto;
@@ -22,11 +25,13 @@ IMG.splash {
     bottom: 0;
 }
 
+/*css for the help modal*/
 .help-window {
 	position: absolute;
 	top: 150px;
 }
 
+/*css for the text in the help modal*/
 #help-text {
 	margin-left: 15px;
 }

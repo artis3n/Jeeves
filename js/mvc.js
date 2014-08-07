@@ -397,7 +397,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 			});
 			return;
 		}else if ($scope.jeeves.failedUnderstandCount == 2){
-			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. I suggest manually navigating around for a little while.", function(){
+			navigator.tts.speak("I'm sorry, I seem to be having some difficulty right now. It's not you, it's me, but I think we need some space. I suggest manually navigating around for a little while.", function(){
 				$scope.jeeves.failedUnderstandCount++;
 				// When it reaches threee, won't try to use recognizer catch anything anymore.
 			});
@@ -720,31 +720,22 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		for (var i = 0; i<results.length; i++) {
 			if ($scope.regXloopForNews(results[i], 'read')){
 				return $scope.readDiagNews(results);
-			}else if ($scope.regXloopForNews(results[i], 'next')) {
+			} else if ($scope.regXloopForNews(results[i], 'next')) {
 				return $scope.contDiagNews();
-			}
-			else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
+			} else if($scope.regXloopForNews(results[i], 'previous five')||$scope.regXloopForNews(results[i], 'previous articles')||$scope.regXloopForNews(results[i], 'previous news')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,false);
 				});
 				return true;
-			}	
-			else if ($scope.regXloopForNews(results[i], 'previous')){
+			} else if ($scope.regXloopForNews(results[i], 'previous')){
 				return $scope.previousDiagNews();
-			}
-			else if($scope.regXloopForNews(results[i], 'more articles')){
+			} else if($scope.regXloopForNews(results[i], 'more articles')){
 				$scope.$apply(function(){
 					$scope.differentFive($scope.jeeves.newsPosition.section,true);
 				});
 				return true;
-			}
-			else if($scope.regXloopForNews(results[i], 'change news to')){
+			} else if($scope.regXloopForNews(results[i], 'change news to')){
 				return $scope.changeNewsSection(results[i]);
-			}
-			else if($scope.regXloopForNews(results[i], 'news commands')){
-				navigator.tts.speak("Available commands are: next article, read section name, read article, previous, more articles or previous five articles.", function(){
-					$scope.reco($scope.newsSpeech);
-				})
 			}
 			$scope.$apply(); // This might need to be called before every return statement.
 			return false;
@@ -939,7 +930,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.adaptivePrompt = function(){
 		$scope.jeeves.webTitle.calledTitle++;
 		if($scope.jeeves.webTitle.calledTitle==1){	// Hint at the beggining
-			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are 'read article', 'read, section name', 'continue,' 'previous,' or 'more articles.' Say help if you would like to hear these again.";
+			$scope.jeeves.webTitle.calledWebTitle=". If you need a hint, some example commands are 'read article', 'read, section name', 'continue,' 'previous,' or 'more articles.' Say 'help' if you would like to hear these again.";
 		}
 		else if($scope.jeeves.webTitle.calledTitle>2){
 			$scope.jeeves.webTitle.calledWebTitle=". Say read article or continue.";

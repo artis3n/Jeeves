@@ -18,7 +18,7 @@
 		}
 
 		function fail () {
-			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", function(){},'Jeeves', 'Confirm');
+			navigator.notification.alert("Something went wrong with the TTS engine. Please restart the application.", function(){},'Speech Error', 'Confirm');
 		}
 	}
 
