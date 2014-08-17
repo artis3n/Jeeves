@@ -8,6 +8,13 @@
 <img src="https://lh3.ggpht.com/fm4oq8c5THFf0HCWX156jAe5ayi2Ptv8LUSbghFCLNPnjib5yPGxAUi5PGHcEhhtpg=h310-rw" align="left" height="300">
 
 
+
+
+
+
+
+
+
 ####Description
 Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your email? Never worry about making these choices again. We present a new, hands- and eyes-free, voice-based application that will read the news, your email, and the weather to you while you go about your morning schedule. We call it Jeeves. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Caught in rush hour traffic? Have Jeeves read you your latest emails. Best of all, this app is simple, user-friendly, and free.
 
