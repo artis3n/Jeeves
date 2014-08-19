@@ -20,7 +20,7 @@ We match the speech to commands using regular expressions, which allows the user
 There were a lot of features that we would have liked to implement, but ultimately did not either because of time restraints or due to legal feasibility. We wanted to incorporate a lot of touch features to allow for sliding components around or swiping to navigate around the app. In the future, we’d like to return to this and really ‘touchify’ our app. As for the news in particular, we would like to work with several additional news outlets besides The Guardian to allow some user choice in news provider. Due to legal restrictions, we weren’t able to include any other news sources, and because of time limitations during building these last 5 weeks, we weren’t able to enter into these discussions. We would also like to explore including other items besides news, email, and weather into Jeeves, such as social media.
 
 ####Testing
-Our app is currently in the play store for testing, however, it is not publicly available. In the future, we would like make the app freely available to any user.
+Our app is currently in the play store for testing, however, it is not publicly available. In the future, we would like make the app freely available to any user
 
 ####Co-Founders
 Ari Kalfus akalfus@brandeis.edu
