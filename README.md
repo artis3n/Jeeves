@@ -1,3 +1,5 @@
+Note: We had only been introduced to Angular a couple of weeks before beginning work on this project. Because of this, we were relatively unfamiliar with items such as services, dependencies, and multiple controllers and modules. We will eventually go back to this code and completely refactor it so it is good clean Angular code, but until then, please excuse our overly long files!
+
 #&nbsp;&nbsp;Jeeves<a href="url"><img src="https://lh3.ggpht.com/2S1_31n4Wu6Xxmo4Ocrkt5IG8rZs5NoXS3KCHbKrY8UiO1wPfLCB9nqCDMiUU7BG8Cc=w300-rw" align="left" height="40" width="40" ></a>
 
 ####Description
