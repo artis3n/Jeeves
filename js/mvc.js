@@ -164,31 +164,6 @@ jeevesApp.run(function($http) {
 	});
 });
 
-// Create a sglclick action to avoid the ng-click conflict with ng-dblclick
-jeevesApp.directive('sglclick', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attr) {
-          	var fn = $parse(attr['sglclick']);
-          	var delay = 300, clicks = 0, timer = null;
-          	element.on('click', function (event) {
-	            clicks++;  //count clicks
-	            if(clicks === 1) {
-	              	timer = setTimeout(function() {
-	               		scope.$apply(function (){
-	               			fn(scope, { $event: event });
-	               		}); 
-	                	clicks = 0;			//after action performed, reset counter
-	              	}, delay);
-	            } else {
-	                clearTimeout(timer);	//prevent single-click action
-	                clicks = 0;				//after action performed, reset counter
-            	}
-          	});
-        }
-    };
-}]);
-
 jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	$scope.jeeves = model;
 
@@ -204,7 +179,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 	};
 
 	// A function to hide the splash block
-	$scope.hideSpalshScreen = function(){
+	$scope.hideSplashScreen = function(){
 		document.getElementById("splashScreen").style.display="none";
 	}
 
@@ -244,7 +219,6 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				$scope.checkEmail();
 			}else if (selected == "news"){
 				$scope.cutNews();		// Cut news for display.
-				$scope.closeMenu();		// Close the menu after change view.
 			}
 			$scope.jeeves.previousView.push(selected);
 			$scope.jeeves.view = selected;
@@ -254,7 +228,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		}
 	};
 
-	// Triger the menu modal
+	// Trigger the menu modal
 	$scope.openMenu = function() {
 		$scope.jeeves.menuModal = $modal.open({
 			templateUrl: 'menuContent.html',
@@ -558,6 +532,9 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				$scope.$apply(function() {
 					$scope.changeView('back');
 				})
+				navigator.tts.speak("What next?", function() {
+					$scope.reco($scope.dialogMan)
+				})
 			})
 			return true;
 		} else {		// If the "go to" match no section, go to goToFallBack
@@ -689,7 +666,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 				city = results[i].slice(19);
 			}
 
-			if(city !== "INVALID"){
+			if(city != "INVALID"){
 				var cityChange = $scope.capitaliseFirstLetter(city)
 				$scope.changeWeather(cityChange);
 				return true;
@@ -1185,7 +1162,7 @@ jeevesApp.controller("jeevesCtrl", function($scope, $http, $modal, $timeout) {
 		}else if (selected=="science"){
 			$scope.jeeves.displayNews.scienceCount += change;
 		}else{
-			console.log("Something wrong with the cutting");
+			//console.log("Something wrong with the cutting");
 		}
 
 		// After setting up the cutting point, do the cut.
