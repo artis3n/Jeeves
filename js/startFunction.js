@@ -17,7 +17,7 @@
 				}, 3500)
 				window.localStorage.setItem('firstTimeCookie', 'last checked in: ' + Date.now());
 
-				navigator.tts.speak("Hello! Welcome to Jeeves. Please give me the next few seconds of your time. You can speak with me using natural, regular conversation. I will figure out what you mean, or ask you for further clarification! On any page, you can say help to get some example phrases. I am also designed to be hands and eyes-free. So, after a speech command, I will usually begin listening for the next command, so you can keep your hands and eyes on whatever else you are doing. I hope you enjoy getting to know me!", function() {
+				navigator.tts.speak("Hello! Welcome to Jeeves. Please give me the next few seconds of your time, and do not close the application. You can speak with me using natural, regular conversation. I will figure out what you mean, or ask you for further clarification! On any page, you can say help to get some example phrases. I am also designed to be hands and eyes-free. So, after a speech command, I will usually begin listening for the next command, so you can keep your hands and eyes on whatever else you are doing. I hope you enjoy getting to know me!", function() {
 					scope.$apply(function() {
 						scope.hideSplashScreen();
 					});

@@ -1,2 +1,4 @@
 Change Log Version 0.2.3
 - Improved fallback response
+- Fixed bug in weather speech recognition
+- Added check for first time user and accompanying speech.
