@@ -1,6 +1,6 @@
 Note: We had only been introduced to Angular a couple of weeks before beginning work on this project. Because of this, we were relatively unfamiliar with items such as services, dependencies, and multiple controllers and modules. We will eventually go back to this code and completely refactor it so it is good clean Angular code, but until then, please excuse our overly long files!
 
-#&nbsp;&nbsp;Jeeves<a href="url"><img src="https://lh3.ggpht.com/2S1_31n4Wu6Xxmo4Ocrkt5IG8rZs5NoXS3KCHbKrY8UiO1wPfLCB9nqCDMiUU7BG8Cc=w300-rw" align="left" height="40" width="40" ></a>
+#&nbsp;&nbsp;Jeeves<a href="url"><img src="https://lh3.ggpht.com/2S1_31n4Wu6Xxmo4Ocrkt5IG8rZs5NoXS3KCHbKrY8UiO1wPfLCB9nqCDMiUU7BG8Cc=w300-rw" align="left" height="40" width="40" ></a> <a href="https://codeclimate.com/github/arikalfus/Jeeves"><img src="https://codeclimate.com/github/arikalfus/Jeeves/badges/gpa.svg" /></a>
 
 ####Description
 Who has time to sit and read the morning paper anymore? Should you make coffee, or turn on the news? Brush your teeth, or catch up on your email? Never worry about making these choices again. We present a new, hands- and eyes-free, voice-based application that will read the news, your email, and the weather to you while you go about your morning schedule. We call it Jeeves. Getting dressed in the morning? Tell Jeeves to read you the latest headlines. Caught in rush hour traffic? Have Jeeves read you your latest emails. Best of all, this app is simple, user-friendly, and free.
