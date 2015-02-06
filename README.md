@@ -24,16 +24,7 @@ There were a lot of features that we would have liked to implement, but ultimate
 ####Testing
 Our app is currently in the play store for testing, however, it is not publicly available. In the future, we would like make the app freely available to any user.
 
-####Co-Founders
-Ari Kalfus akalfus@brandeis.edu
-
-Burak Sezer bsezer@brandeis.edu
-
-Sam Raphael sraph@brandeis.edu
-
-Wesely Chin weschin@brandeis.edu
-
-####ScreenShoot
+####ScreenShots
 <img src="https://lh5.ggpht.com/LjxXFkJgxWaihGpELPiedIYXD-T5TWef4suPP-hYZ89eGb-W9oADo7kbjVzzSZTbiw=h310-rw" align="left" height="300" Hspace="30" Vspace="10">
 <img src="https://lh3.ggpht.com/6ZAXc5RwbRWSIcmBtfv3-nHJm5Kw_8Z8Cgm_4lKURIo1pkgw_E9bz_7XWTcq9c_5fOE=h310-rw" align="left" height="300" Hspace="30" Vspace="10">
 <img src="https://lh5.ggpht.com/Ydi06nEWkkFJpISvM1zEgxe3cP4JvxMw_p-p2buujViWV9vNGzhciyckp9tyUZyhQw=h310-rw" align="left" height="300" Hspace="30" Vspace="10">
